@@ -43,11 +43,13 @@ où
 ## Notations
 Le paramètre `cron` est une chaine de caractères composées de cinq éléments
 séparés par un espace. Les éléments représentent :
+
 1. les minutes : `0` à `59` ;
 2. les heures : `0` à `23` ;
 3. le jour du mois : `0` à `31` ;
 4. le mois : `1` ou `jan`, `2` ou `feb`, ..., `12` ou `dec` ;
 5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, ..., `6` ou `sat`.
+
 Pour chaque élément, des compositions sont possibles :
 - `*` : chaque unité (`0`, `1`, `2`, ...) ;
 - `-` : définir un interval (`1-3` corresponds aux unités `1`, `2` et `3`) ;
