@@ -54,7 +54,7 @@ Pour chaque élément, des compositions sont possibles :
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
 - `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
 
-Il existe aussi des raccourcies :
+Il existe aussi des raccourcis :
 - `"@yearly"` ou `"@annually"` : tous les ans, le 1er janvier ;
 - `"@monthly"` : le 1er jour de chaque mois ;
 - `"@weekly"` : une fois par semaine, le dimanche ;
