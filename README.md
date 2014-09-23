@@ -42,7 +42,7 @@ où
 
 ## Notations
 Le paramètre `cron` est une chaine de caractères composées de cinq éléments
-séparés par un espace. Les éléments représentent :
+séparés par une espace. Les éléments représentent :
 
 1. les minutes : `0` à `59` ;
 2. les heures : `0` à `23` ;
@@ -66,14 +66,14 @@ Il existe aussi des raccourcis :
 ## Exemples
 ```JavaScript
 // Appeler la fonction poissonDAvril tous les 1er avril à 8h00.
-var cronID = setCron(poinssonDAvril, "0 8 1 apr *");
+var cronID = setCron(poissonDAvril, "0 8 1 apr *");
 
-// Appeler la fonction jouerAuLoto, avec les numéros à jouer en paramètres, tous
-// les vendredi 13 à 13h13.
-setCron(jouerAuLoto, "13 13 13 * fri", 31, 15, 33, 27, 36, 8);
+// Appeler la fonction jouerAuLoto, avec les numéros à jouer en
+// paramètres, tous les vendredis 13 à 13h13.
+setCron(jouerAuLoto, "13 13 13 * fri", 19, 42, 30, 48, 44, 10);
 
-// Appeler la fonction anonyme toutes les cinq minutes au travail (entre 9h et
-// 14h puis entre 14h et 18h) en semaine (du lundi au vendredi).
+// Appeler la fonction anonyme toutes les cinq minutes au travail (entre
+// 9h et 14h puis entre 14h et 18h) en semaine (du lundi au vendredi).
 setCron(function() {
     alert("Tic-tac !");
 }, "*/5 9-12,14-18 * * 1-5");
@@ -83,7 +83,7 @@ clearCron(cronID);
 ```
 
 ## Compatibilité
-Voici les versions minimales nécessaire pour utiliser la bibliothèque avec les
+Voici les versions minimales nécessaires pour utiliser la bibliothèque avec les
 principaux navigateurs.
 
  Chrome | Firefox | Internet Explorer | Opera | Safari
