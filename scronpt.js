@@ -1,8 +1,71 @@
+/* global window, setInterval, clearInterval, setTimeout */
+
 /**
  * @file Bibliothèque JavaScript Scronpt implémentant un programme Unix cron.
  * @author Sébastien Règne
- * @version 1.0
- * @license Licence Public Rien À Branler
+ * @version 1.0.1
+ * @license Licence Public Rien À Branler.
+ */
+
+/**
+ * <p>
+ *   Une notation <em>cron</em> doit respecter le format suivant :
+ * </p>
+ * <ul>
+ *   <li>
+ *     <em>cron</em>
+ *     <ul>
+ *       <li>"@yearly"</li>
+ *       <li>"@annually"</li>
+ *       <li>"@monthly"</li>
+ *       <li>"@weekly"</li>
+ *       <li>"@daily"</li>
+ *       <li>"@midnight"</li>
+ *       <li>"@hourly"</li>
+ *       <li><em>list</em> " " <em>list</em> " " <em>list</em> " "
+ *           <em>list</em> " " <em>list</em></li>
+ *     </ul>
+ *   </li>
+ *   <li>
+ *     <em>list</em>
+ *     <ul>
+ *       <li><em>range</em></li>
+ *       <li><em>range</em> "," <em>list</em></li>
+ *     </ul>
+ *   </li>
+ *   <li>
+ *     <em>range</em>
+ *     <ul>
+ *       <li>"*"</li>
+ *       <li>"*" "/" <em>number</em></li>
+ *       <li><em>number</em></li>
+ *       <li><em>number</em> "-" <em>number</em></li>
+ *       <li><em>number</em> "-" <em>number</em> "/" <em>number</em></li>
+ *     </ul>
+ *   </li>
+ *   <li>
+ *     <em>number</em>
+ *     <ul>
+ *       <li><em>digit</em></li>
+ *       <li><em>digit</em> <em>number</em></li>
+ *     </ul>
+ *   </li>
+ *   <li>
+ *     <em>digit</em>
+ *     <ul>
+ *       <li>"0"</li>
+ *       <li>"1"</li>
+ *       <li>"2"</li>
+ *       <li>"3"</li>
+ *       <li>"4"</li>
+ *       <li>"5"</li>
+ *       <li>"6"</li>
+ *       <li>"7"</li>
+ *       <li>"8"</li>
+ *       <li>"9"</li>
+ *     </ul>
+ *   </li>
+ * </ul>
  */
 
 (function() {
@@ -39,6 +102,7 @@
      *
      * @param {!string} input - la notation cron.
      * @return {!Object} Retourne les conditions pour exécuter la tâche.
+     * @throws {Error} Si la notation cron n'est pas valide.
      * @private
      */
     var parse = function(input) {
@@ -54,7 +118,7 @@
         var fields = input.split(" ");
         if (5 !== fields.length)
             throw new Error("Syntax error, 5 fields (separated by one space)" +
-                            " expected: '" + input + "'");
+                            " expected: \"" + input + "\"");
 
         // Remplacer les formes littérales des mois.
         fields[3] = fields[3].replace(/jan/g,  "1")
@@ -85,7 +149,8 @@
             for (var j in ranges) {
                 var result = /^(\*|\d+)(-\d+)?(\/\d+)?$/.exec(ranges[j]);
                 if (null === result)
-                    throw new Error("Syntax error: '" + input + "'");
+                    throw new Error("Syntax error, unrecognized expression:" +
+                                    " \"" + input + "\"");
 
                 var min  = 0,
                     max  = Infinity,
@@ -119,14 +184,10 @@
      * @private
      */
     var valide = function(conds, value) {
-        for (var i in conds) {
-            var cond = conds[i];
-
-            if (cond.min <= value && value <= cond.max &&
-                    0 === (value - cond.min) % cond.step)
-                return true;
-        }
-        return false;
+        return conds.some(function(cond) {
+            return cond.min <= value && value <= cond.max &&
+                   0 === (value - cond.min) % cond.step;
+        });
     }; // valide()
 
     /**
@@ -143,6 +204,9 @@
 
     /**
      * Ajouter une tâche.
+     *
+     * @example
+     * setCron(alert, "0,30 * * * *", "Ding ! Dong !");
      *
      * @param {!function()} func - la fonction effectuant la tâche.
      * @param {!string}     cron - les horaires quand la tâche sera effectuée.
@@ -184,6 +248,11 @@
 
     /**
      * Supprimer une tâche.
+     *
+     * @example
+     * var cronID = setCron(alert, "0,30 * * * *", "Ding ! Dong !");
+     * // ...
+     * clearCron(cronID);
      *
      * @param {!number} cronID - l'identifiant de la tâche à supprimer.
      * @see setCron
