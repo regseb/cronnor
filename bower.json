@@ -1,19 +1,19 @@
 {
     "name": "scronpt",
     "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
-    "version": "1.0",
+    "version": "0.2",
     "license": "Licence Public Rien À Branler",
-    "ignore": [ "LICENSE", "package.json" ],
+    "ignore": ["LICENSE", "package.json"],
     "keywords": [
-        "scronpt", "javascript", "cron"
+        "scronpt", "javascript", "js", "cron"
     ],
     "authors": [
-        { "name": "Sébastien Règne", "homepage": "https://github.com/regseb/" }
+        "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb/)"
     ],
     "homepage": "https://regseb.github.io/scronpt/",
     "repository": {
         "type": "git",
         "url": "git://github.com/regseb/scronpt.git"
     },
-    "dependencies": { }
+    "dependencies": {}
 }
