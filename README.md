@@ -45,8 +45,8 @@ Récupérer l'état de la tâche. La méthode retourne `true` si la tâche est
 active ; et `false` pour une tâche inactive.
 
 ## Téléchargement
-Vous pouvez récupérer le script minifié en vous rendant sur le site Internet de
-la bibliothèque : http://regseb.github.io/scronpt/.
+Vous pouvez récupérer le script minifié (2 429 octets) en vous rendant sur le
+site Internet de la bibliothèque : http://regseb.github.io/scronpt/.
 
 Si vous utiliser
 [npm](https://www.npmjs.org/package/scronpt "Node Packaged Modules") ou
@@ -133,9 +133,9 @@ Pour plus d'information, vous pouvez consulter le [manuel de `crontab`]
 // Appeler la fonction poissonDAvril tous les 1er avril à 8h00.
 var cron = new Cron("0 8 1 apr *", poissonDAvril);
 
-// Appeler la fonction anonyme toutes les cinq minutes au travail (entre
-// 9h et 18h) en semaine (du lundi au vendredi).
-new Cron("0,30 9-18 * * mon-fri", alert, "Ding ! Dong !");
+// Appeler la fonction alert toutes les demi-heures au travail (entre 9h et
+// 18h) en semaine (du lundi au vendredi).
+new Cron("0,30 9-18 * * 1-5", alert, "Ding ! Dong !");
 
 // Arrêter la tâche du poisson d'avril, ce n'est plus de notre age.
 cron.stop();
