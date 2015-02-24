@@ -6,7 +6,7 @@
  *
  * @module scronpt
  * @author Sébastien Règne
- * @version 0.2
+ * @version 0.2.1
  * @license Licence Public Rien À Branler.
  */
 
