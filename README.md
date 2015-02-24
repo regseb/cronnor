@@ -21,6 +21,7 @@ où
   `notation` ;
 - `param1`, `param2`, `...` sont des paramètres qui seront passés à la
   `fonction`.
+
 Le constructeur peut lancer une exception :
 - `Error` si la syntaxe de la notation *cron* est incorrecte ;
 - `RangeError` si un intervalle est invalide (hors limite ou la borne supérieure
@@ -47,8 +48,9 @@ active ; et `false` pour une tâche inactive.
 Vous pouvez récupérer le script minifié en vous rendant sur le site Internet de
 la bibliothèque : http://regseb.github.io/scronpt/.
 
-Si vous utiliser [npm](https://www.npmjs.org/ "Node Packaged Modules") ou
-[bower](http://bower.io/) : la bibliothèque est disponible avec les lignes de
+Si vous utiliser
+[npm](https://www.npmjs.org/package/scronpt "Node Packaged Modules") ou
+[bower](http://bower.io/), la bibliothèque est disponible avec les lignes de
 commande suivantes :
 ```
 npm install scronpt
@@ -73,7 +75,7 @@ define(["scronpt"], function (Cron) {
 ```
 
 ### CommonJS
-Si vous souhaitez utiliser la bibliothèque dans [node.js](http://nodejs.org/)
+Si vous souhaitez utiliser la bibliothèque dans [Node.js](http://nodejs.org/)
 (qui utilise le protocole CommonJS), voici un exemple :
 ```JavaScript
 var Cron = require("scronpt");
@@ -112,7 +114,7 @@ séparés par une espace. Les éléments représentent :
 
 Pour chaque élément, des compositions sont possibles :
 - `*` : chaque unité (`0`, `1`, `2`, ...) ;
-- `-` : définir un interval (`1-3` corresponds aux unités `1`, `2` et `3`) ;
+- `-` : définir un intervalle (`1-3` corresponds aux unités `1`, `2` et `3`) ;
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
 - `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
 
@@ -132,8 +134,8 @@ Pour plus d'information, vous pouvez consulter le [manuel de `crontab`]
 var cron = new Cron("0 8 1 apr *", poissonDAvril);
 
 // Appeler la fonction anonyme toutes les cinq minutes au travail (entre
-// 9h et 14h puis entre 14h et 18h) en semaine (du lundi au vendredi).
-new Cron("0,30 * * * *", alert, "Ding ! Dong !");
+// 9h et 18h) en semaine (du lundi au vendredi).
+new Cron("0,30 9-18 * * mon-fri", alert, "Ding ! Dong !");
 
 // Arrêter la tâche du poisson d'avril, ce n'est plus de notre age.
 cron.stop();

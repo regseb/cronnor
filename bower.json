@@ -1,11 +1,12 @@
 {
     "name": "scronpt",
     "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
-    "version": "0.2",
+    "version": "0.2.1",
+    "main": "scronpt.js",
     "license": "Licence Public Rien À Branler",
-    "ignore": ["LICENSE", "package.json"],
+    "ignore": [".flowconfig", ".git", "package.json"],
     "keywords": [
-        "scronpt", "javascript", "js", "cron"
+        "scronpt", "javascript", "js", "cron", "crontab", "scheduler"
     ],
     "authors": [
         "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb/)"
