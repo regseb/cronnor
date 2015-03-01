@@ -1,7 +1,7 @@
 # Scronpt
 **Bibliothèque JavaScript implémentant un programme Unix cron.**
 
-[Site Internet](https://regseb.github.io/scronpt)
+[Site Internet](https://regseb.github.io/scronpt/)
 
 ## Description
 La bibliothèque JavaScript **Scronpt** fourni une classe **`Cron`** pour créer
@@ -45,8 +45,9 @@ Récupérer l'état de la tâche. La méthode retourne `true` si la tâche est
 active ; et `false` pour une tâche inactive.
 
 ## Téléchargement
-Vous pouvez récupérer le script minifié (2 429 octets) en vous rendant sur le
-site Internet de la bibliothèque : http://regseb.github.io/scronpt/.
+Vous pouvez récupérer le script minifié (2 427 octets) en vous rendant sur le
+site Internet de la bibliothèque :
+[regseb.github.io/scronpt](http://regseb.github.io/scronpt/).
 
 Si vous utiliser
 [npm](https://www.npmjs.org/package/scronpt "Node Packaged Modules") ou
@@ -113,7 +114,7 @@ séparés par une espace. Les éléments représentent :
 5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, ..., `6` ou `sat`.
 
 Pour chaque élément, des compositions sont possibles :
-- `*` : chaque unité (`0`, `1`, `2`, ...) ;
+- `*` : couvrir toutes les unités (`0`, `1`, `2`, ...) ;
 - `-` : définir un intervalle (`1-3` corresponds aux unités `1`, `2` et `3`) ;
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
 - `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
@@ -156,7 +157,7 @@ principaux navigateurs.
 Aucune bibliothèque tierce n'est nécessaire pour utiliser Scronpt.
 
 ## Contributeur
-- [Sébastien Règne](https://github.com/regseb/)
+- [Sébastien Règne](https://github.com/regseb)
 
 ## Licence
 La bibliothèque est publiée sous la
