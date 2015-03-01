@@ -6,7 +6,7 @@
  *
  * @module scronpt
  * @author Sébastien Règne
- * @version 0.2.1
+ * @version 0.2.2
  * @license Licence Public Rien À Branler.
  */
 
@@ -81,10 +81,10 @@
      * L'identifiant de l'intervalle qui vérifie toutes les minutes si des
      * tâches doivent-être exécutées.
      *
-     * @type {?number}
+     * @type {!number}
      * @private
      */
-    var intervalID = null;
+    var intervalID = -1;
 
 
     /**
@@ -334,5 +334,4 @@
 
     // Exposer la classe Cron.
     return Cron;
-
 }));
