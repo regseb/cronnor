@@ -78,7 +78,7 @@ define(["scronpt"], function (Cron) {
 ```
 
 ### CommonJS
-Si vous souhaitez utiliser la bibliothèque dans [Node.js](http://nodejs.org)
+Si vous souhaitez utiliser la bibliothèque dans [Node.js](https://nodejs.org)
 (qui utilise le protocole CommonJS), voici un exemple :
 ```JavaScript
 var Cron = require("scronpt");
