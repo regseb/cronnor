@@ -1,7 +1,7 @@
 {
     "name": "scronpt",
     "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "main": "scronpt.js",
     "license": "Licence Public Rien À Branler",
     "ignore": [".flowconfig", ".git", "package.json"],
