@@ -6,7 +6,7 @@
  *
  * @module scronpt
  * @author Sébastien Règne
- * @version 0.2.2
+ * @version 0.2.3
  * @license Licence Public Rien À Branler.
  */
 
@@ -98,7 +98,7 @@
      */
     var parse = function (input) {
         // Remplacer les chaines spéciales.
-        switch(input) {
+        switch (input) {
             case "@yearly": case "@annually": input = "0 0 1 1 *"; break;
             case "@monthly":                  input = "0 0 1 * *"; break;
             case "@weekly":                   input = "0 0 * * 0"; break;
