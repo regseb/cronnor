@@ -10,7 +10,7 @@ des tâches récurentes.
 ## API
 ### Constructeur
 ```JavaScript
-new Cron(notation, [état], fonction, [, param1, param2, ...])
+new Cron(notation, [état], fonction, [param1, param2, ...])
 ```
 où
 - `notation` contient la notation *cron* indiquant quand sera appelé la
@@ -25,7 +25,9 @@ où
 Le constructeur peut lancer une exception :
 - `Error` si la syntaxe de la notation *cron* est incorrecte ;
 - `RangeError` si un intervalle est invalide (hors limite ou la borne supérieure
-  est plus grand que la borne inférieure).
+  est plus grand que la borne inférieure) ;
+- `TypeError` si le constucteur est appellé sans le mot clé `new` ou si des
+  paramètres n'ont pas le bon type.
 
 ### Méthodes
 ```JavaScript
@@ -47,11 +49,11 @@ active ; et `false` pour une tâche inactive.
 ## Téléchargement
 Vous pouvez récupérer le script minifié (2 427 octets) en vous rendant sur le
 site Internet de la bibliothèque :
-[regseb.github.io/scronpt](http://regseb.github.io/scronpt/).
+[regseb.github.io/scronpt](https://regseb.github.io/scronpt/).
 
 Si vous utiliser
-[npm](https://www.npmjs.org/package/scronpt "Node Packaged Modules") ou
-[bower](http://bower.io/), la bibliothèque est disponible avec les lignes de
+[npm](https://www.npmjs.com/package/scronpt "Node Packaged Modules") ou
+[bower](http://bower.io), la bibliothèque est disponible avec les lignes de
 commande suivantes :
 ```
 npm install scronpt
@@ -62,7 +64,7 @@ bower install scronpt
 ### AMD
 Pour l'utilisation de la bibliothèque avec un chargeur
 [AMD](https://github.com/amdjs/amdjs-api "Asynchronous Module Definition") (par
-exemple [RequireJS](http://requirejs.org/)) :
+exemple [RequireJS](http://requirejs.org)) :
 ```JavaScript
 require(["scronpt"], function (Cron) {
     // ...
@@ -76,7 +78,7 @@ define(["scronpt"], function (Cron) {
 ```
 
 ### CommonJS
-Si vous souhaitez utiliser la bibliothèque dans [Node.js](http://nodejs.org/)
+Si vous souhaitez utiliser la bibliothèque dans [Node.js](http://nodejs.org)
 (qui utilise le protocole CommonJS), voici un exemple :
 ```JavaScript
 var Cron = require("scronpt");
@@ -134,8 +136,8 @@ Pour plus d'information, vous pouvez consulter le [manuel de `crontab`]
 // Appeler la fonction poissonDAvril tous les 1er avril à 8h00.
 var cron = new Cron("0 8 1 apr *", poissonDAvril);
 
-// Appeler la fonction alert toutes les demi-heures au travail (entre 9h et
-// 18h) en semaine (du lundi au vendredi).
+// Appeler la fonction alert toutes les demi-heures au travail (entre
+// 9h et 18h) en semaine (du lundi au vendredi).
 new Cron("0,30 9-18 * * 1-5", alert, "Ding ! Dong !");
 
 // Arrêter la tâche du poisson d'avril, ce n'est plus de notre age.
