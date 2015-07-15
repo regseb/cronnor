@@ -1,0 +1,16 @@
+{
+    "patterns": ["**", "!.git/**"],
+    "hidden": true,
+    "checkers": [
+        {
+            "patterns": ["**/*.js", "!**/*.min.js"],
+            "linters": ["jscs", "jshint"]
+        }, {
+            "patterns": "**/*.md",
+            "linters": "markdownlint"
+        }, {
+            "patterns": "**/*.json",
+            "linters": { "jsonlint": { "comments": false } }
+        }
+    ]
+}

@@ -1,7 +1,8 @@
 {
     "name": "scronpt",
-    "version": "0.2.3",
-    "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
+    "version": "0.3.0",
+    "description":
+        "Bibliothèque JavaScript implémentant un programme Unix cron.",
     "keywords": [
         "scronpt", "javascript", "js", "cron", "crontab", "scheduler"
     ],
@@ -20,5 +21,11 @@
         "type": "git",
         "url": "http://github.com/regseb/scronpt.git"
     },
-    "dependencies": {}
+    "scripts": {
+        "lint": "metalint"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "metalint": "^0.1.0"
+    }
 }
