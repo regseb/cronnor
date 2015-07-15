@@ -1,18 +1,32 @@
 # Scronpt
-**Bibliothèque JavaScript implémentant un programme Unix cron.**
 
-[Site Internet](https://regseb.github.io/scronpt/)
+[![NPM][img-npm]][link-npm]
+[![Bower][img-bower]][link-bower]
+[![Module][img-module]][link-module]
+[![Dependencies][img-dependencies]][link-dependencies]
+[![Code Climate][img-codeclimate]][link-codeclimate]
+[![SemVer][img-semver]][link-semver]
+[![License][img-license]][link-license]
+
+> Bibliothèque JavaScript implémentant un programme Unix cron.
+
+[Site Internet](//regseb.github.io/scronpt/)
 
 ## Description
+
 La bibliothèque JavaScript **Scronpt** fourni une classe **`Cron`** pour créer
 des tâches récurentes.
 
 ## API
+
 ### Constructeur
+
 ```JavaScript
 new Cron(notation, [état], fonction, [param1, param2, ...])
 ```
+
 où
+
 - `notation` contient la notation *cron* indiquant quand sera appelé la
   `fonction` ;
 - `état` est un booléen indiquant si la tâche est active : `true` (valeur par
@@ -23,48 +37,58 @@ où
   `fonction`.
 
 Le constructeur peut lancer une exception :
+
 - `Error` si la syntaxe de la notation *cron* est incorrecte ;
 - `RangeError` si un intervalle est invalide (hors limite ou la borne supérieure
-  est plus grand que la borne inférieure) ;
+  est plus grande que la borne inférieure) ;
 - `TypeError` si le constucteur est appellé sans le mot clé `new` ou si des
   paramètres n'ont pas le bon type.
 
 ### Méthodes
+
 ```JavaScript
 Cron.prototype.start()
 ```
+
 Activer la tâche. Si la tâche est déjà active : la méthode n'a aucun effet.
 
 ```JavaScript
 Cron.prototype.stop()
 ```
+
 Désactiver la tâche. Si la tâche est déjà inactive : la méthode n'a aucun effet.
 
 ```JavaScript
 Cron.prototype.status()
 ```
+
 Récupérer l'état de la tâche. La méthode retourne `true` si la tâche est
 active ; et `false` pour une tâche inactive.
 
 ## Téléchargement
+
 Vous pouvez récupérer le script minifié (2 427 octets) en vous rendant sur le
 site Internet de la bibliothèque :
-[regseb.github.io/scronpt](https://regseb.github.io/scronpt/).
+[regseb.github.io/scronpt](//regseb.github.io/scronpt/).
 
 Si vous utiliser
-[npm](https://www.npmjs.com/package/scronpt "Node Packaged Modules") ou
-[bower](http://bower.io), la bibliothèque est disponible avec les lignes de
-commande suivantes :
-```
+[npm](//www.npmjs.com/package/scronpt "Node Packaged Modules") ou
+[bower](http://bower.io/search/?q=scronpt), la bibliothèque est disponible avec
+les lignes de commande suivantes :
+
+```shell
 npm install scronpt
 bower install scronpt
 ```
 
 ## Utilisation
+
 ### AMD
+
 Pour l'utilisation de la bibliothèque avec un chargeur
-[AMD](https://github.com/amdjs/amdjs-api "Asynchronous Module Definition") (par
+[AMD](//github.com/amdjs/amdjs-api "Asynchronous Module Definition") (par
 exemple [RequireJS](http://requirejs.org)) :
+
 ```JavaScript
 require(["scronpt"], function (Cron) {
     // ...
@@ -78,8 +102,10 @@ define(["scronpt"], function (Cron) {
 ```
 
 ### CommonJS
-Si vous souhaitez utiliser la bibliothèque dans [Node.js](https://nodejs.org)
-(qui utilise le protocole CommonJS), voici un exemple :
+
+Si vous souhaitez utiliser la bibliothèque dans [Node.js](//nodejs.org) (qui
+utilise le protocole CommonJS), voici un exemple :
+
 ```JavaScript
 var Cron = require("scronpt");
 // ...
@@ -87,7 +113,9 @@ var cron = new Cron(/* ... */);
 ```
 
 ### Variable global
+
 Il suffit de télécharger le script et de l'inclure dans la page HTML.
+
 ```HTML
 <!DOCTYPE html>
 <html>
@@ -106,6 +134,7 @@ Il suffit de télécharger le script et de l'inclure dans la page HTML.
 ```
 
 ## Notations
+
 Le paramètre `notation` est une chaine de caractères composées de cinq éléments
 séparés par une espace. Les éléments représentent :
 
@@ -116,22 +145,25 @@ séparés par une espace. Les éléments représentent :
 5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, ..., `6` ou `sat`.
 
 Pour chaque élément, des compositions sont possibles :
+
 - `*` : couvrir toutes les unités (`0`, `1`, `2`, ...) ;
 - `-` : définir un intervalle (`1-3` corresponds aux unités `1`, `2` et `3`) ;
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
 - `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
 
 Il existe aussi des chaines spéciales :
+
 - `"@yearly"` ou `"@annually"` : tous les ans, le 1er janvier ;
 - `"@monthly"` : le 1er jour de chaque mois ;
 - `"@weekly"` : une fois par semaine, le dimanche ;
 - `"@daily"` ou `"@midnight"` : tous les jours à minuit ;
 - `"@hourly"` : toutes les heures.
 
-Pour plus d'information, vous pouvez consulter le [manuel de `crontab`]
-(http://manpages.debian.org/cgi-bin/man.cgi?query=crontab&sektion=5&locale=fr).
+Pour plus d'information, vous pouvez consulter le
+[manuel de `crontab`](http://manpages.debian.org/cgi-bin/man.cgi?query=crontab&sektion=5&locale=fr).
 
 ## Exemples
+
 ```JavaScript
 // Appeler la fonction poissonDAvril tous les 1er avril à 8h00.
 var cron = new Cron("0 8 1 apr *", poissonDAvril);
@@ -148,6 +180,7 @@ cron.start();
 ```
 
 ## Compatibilité
+
 Voici les versions minimales nécessaires pour utiliser la bibliothèque avec les
 principaux navigateurs.
 
@@ -155,12 +188,19 @@ principaux navigateurs.
 :------:|:-------:|:-----------------:|:-----:|:------:
    4    |    5    |         9         |  12   |   5
 
-## Dépendances
-Aucune bibliothèque tierce n'est nécessaire pour utiliser Scronpt.
+[img-npm]:https://img.shields.io/npm/v/scronpt.svg
+[img-bower]:https://img.shields.io/bower/v/scronpt.svg
+[img-module]:https://img.shields.io/badge/module-UMD-blue.svg
+[img-dependencies]:https://img.shields.io/david/regseb/scronpt.svg
+[img-codeclimate]:https://img.shields.io/codeclimate/github/regseb/scronpt.svg
+[img-semver]:https://img.shields.io/badge/semver-2.0.0-blue.svg
+[img-license]:https://img.shields.io/badge/license-LPRAB-blue.svg
 
-## Contributeur
-- [Sébastien Règne](https://github.com/regseb)
-
-## Licence
-La bibliothèque est publiée sous la
-[Licence Public Rien À Branler](http://sam.zoy.org/lprab/ "LPRAB").
+[link-npm]://npmjs.com/package/scronpt "Node Packaged Modules"
+[link-bower]:http://bower.io/search/?q=scronpt
+[link-module]://github.com/umdjs/umd "Universal Module Definition"
+[link-dependencies]://david-dm.org/regseb/scronpt
+[link-codeclimate]://codeclimate.com/github/regseb/scronpt
+[link-semver]:http://semver.org/lang/fr/spec/v2.0.0.html
+              "Gestion sémantique de version 2.0.0"
+[link-license]:http://sam.zoy.org/lprab/ "Licence Public Rien À Branler"
