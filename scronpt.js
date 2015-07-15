@@ -1,4 +1,3 @@
-/* @flow */
 /* global setInterval, clearInterval, setTimeout, define, module */
 
 /**
@@ -6,7 +5,7 @@
  *
  * @module scronpt
  * @author Sébastien Règne
- * @version 0.2.3
+ * @version 0.3.0
  * @license Licence Public Rien À Branler.
  */
 
@@ -14,22 +13,23 @@
     "use strict";
 
     // Si la bibliothèque est chargée avec un AMD loader.
-    if ("function" === typeof define && define.amd)
+    if ("function" === typeof define && define.amd) {
         define([], factory);
     // Si c'est un CommonJS-like qui charge la bibliothèque.
-    else if ("object" === typeof exports)
+    } else if ("object" === typeof exports) {
         module.exports = factory();
-    else // Sinon : un chargement classique est utilisé.
+    } else { // Sinon : un chargement classique est utilisé.
         root.Cron = factory();
+    }
 }(this, function () {
     "use strict";
 
     /**
      * Les formes littérales des mois et des jours de la semaine. Les autres
-     * champs (minute, heure, jour du mois) n'en ont pas. Ce sont les index des
-     * éléments dans le tableau qui sont utilisés pour la correspondance. Pour
-     * les mois : un élément est inséré au début du tableau pour que l'index du
-     * mois de janvier soit 1.
+     * champs (minute, heure et jour du mois) n'en ont pas. Ce sont les index
+     * des éléments dans le tableau qui sont utilisés pour la correspondance.
+     * Pour les mois : un élément vide est inséré au début du tableau pour que
+     * l'index du mois de janvier soit 1.
      *
      * @type {!Object}
      * @const
@@ -43,8 +43,8 @@
     ];
 
     /**
-     * Les valeurs minimales et maximales pouvant être saisies dans les cinq
-     * champs (pour des valeurs simples ou des intervalles).
+     * Les valeurs minimales et maximales (incluses) pouvant être saisies dans
+     * les cinq champs (pour des valeurs simples ou des intervalles).
      *
      * @type {!Object}
      * @const
@@ -92,8 +92,11 @@
      *
      * @param {!string} input - la notation cron.
      * @return {!Object} Retourne les conditions pour exécuter la tâche.
-     * @throws {Error} Si la notation cron n'est pas valide.
-     * @throws {RangeError} Si une valeur de la notation est invalide.
+     * @throws {Error}      Si la syntaxe de la notation cron est incorrecte.
+     * @throws {RangeError} Si un intervalle est invalide (hors limite ou la
+     *                      borne supérieure est plus grande que la borne
+     *                      inférieure).
+     * @throws {TypeError}  Si le paramètre n'est pas une chaine de caractères.
      * @private
      */
     var parse = function (input) {
@@ -109,20 +112,23 @@
         // Séparer les cinq champs (minute, heure, jour du mois, mois et jour de
         // la semaine).
         var fields = input.split(/\s+/);
-        if (5 !== fields.length)
+        if (5 !== fields.length) {
             throw new Error(ERROR + input);
+        }
 
         // Parcourir les cinq champs.
         return fields.map(function (field, i) {
             // Gérer les notations avec un astérisque ("*" ou "*/x").
             var result = /^\*(?:\/(\d+))?$/.exec(field);
             if (null !== result) {
-                if (undefined === result[1]) // "*".
+                if (undefined === result[1]) { // "*".
                     return null;
+                }
 
                 var step = parseInt(result[1], 10);
-                if (0 === step)
+                if (0 === step) {
                     throw new RangeError(ERROR + input);
+                }
 
                 return [{
                     "min":  0,
@@ -134,18 +140,20 @@
             // Gérer le nom des mois ("jan", "feb", ...) et des jours de la
             // semaine ("sun", "mon", ...).
             var value = NAMES[i].indexOf(field.toLowerCase());
-            if (-1 !== value)
+            if (-1 !== value) {
                 return [{
                     "min":  value,
                     "max":  value,
                     "step": 1
                 }];
+            }
 
             // Gérer les listes.
             return field.split(",").map(function (range) {
                 var result = /^(\d+)(?:-(\d+)(?:\/(\d+))?)?$/.exec(range);
-                if (null === result)
+                if (null === result) {
                     throw new Error(ERROR + input);
+                }
 
                 var min  = parseInt(result[1], 10);
                 var max  = parseInt(result[2], 10);
@@ -154,8 +162,9 @@
                 // Vérifier que les valeurs sont dans les intervalles.
                 if (min < LIMITS[i].min || LIMITS[i].max < min ||
                         max < LIMITS[i].min || LIMITS[i].max < max ||
-                        max < min || 0 === step)
+                        max < min || 0 === step) {
                     throw new RangeError(ERROR + input);
+                }
 
                 return {
                     "min":  min,
@@ -203,8 +212,9 @@
             // conditions.
             if (!valide(job.conds[0], now.getMinutes()) ||
                     !valide(job.conds[1], now.getHours()) ||
-                    !valide(job.conds[3], now.getMonth() + 1))
+                    !valide(job.conds[3], now.getMonth() + 1)) {
                 return;
+            }
 
             // Quand le jour du mois et le jour de la semaine sont renseignés
             // (différent de l'astérisque), la tâche est exécutée si au moins
@@ -212,17 +222,19 @@
             if (null !== job.conds[2] && null !== job.conds[4]) {
                 if (!valide(job.conds[2], now.getDate()) &&
                         !(valide(job.conds[4], now.getDay()) ||
-                                0 === now.getDay() &&     // Gérer la valeur 7
-                                valide(job.conds[4], 7))) // pour le dimanche.
+                                0 === now.getDay() &&       // Gérer la valeur 7
+                                valide(job.conds[4], 7))) { // pour le dimanche.
                     return;
+                }
             // Sinon : soit le jour du mois, soit le jour de la semaine ou aucun
             // des deux ne sont renseignés. Dans ce cas, vérifier classiquement
             // les deux conditions.
             } else if (!valide(job.conds[2], now.getDate()) ||
                     !(valide(job.conds[4], now.getDay()) ||
-                            0 === now.getDay() &&     // Gérer la valeur 7 pour
-                            valide(job.conds[4], 7))) // le dimanche.
+                            0 === now.getDay() &&       // Gérer la valeur 7
+                            valide(job.conds[4], 7))) { // pour le dimanche.
                 return;
+            }
 
             // Si toutes les conditions sont respectées : lancer la tâche en
             // parallèle.
@@ -245,7 +257,13 @@
      * @param {...*}        args   - les paramètres qui seront passés à la
                                      fonction.
      * @return {!Object} Retourne la tâche créée.
-     * @throws {Error} Si la notation cron n'est pas valide.
+     * @throws {Error}      Si la syntaxe de la notation cron est incorrecte.
+     * @throws {RangeError} Si un intervalle est invalide (hors limite ou la
+     *                      borne supérieure est plus grande que la borne
+     *                      inférieure).
+     * @throws {TypeError} Si le constucteur est appellé sans le mot clé
+     *                     <code>new</code> ou si des paramètres n'ont pas le
+     *                     bon type.
      * @public
      * @constructor
      */
@@ -256,8 +274,9 @@
             args   = Array.prototype.slice.call(arguments, 2);
             func   = status;
             status = true;
-        } else
+        } else {
             args = Array.prototype.slice.call(arguments, 3);
+        }
 
         this.job = {
             "conds": parse(cron),
@@ -266,7 +285,9 @@
         };
 
         // Activer éventuellement la tâche.
-        if (status) this.start();
+        if (status) {
+            this.start();
+        }
     }; // Cron()
 
     /**
@@ -281,15 +302,18 @@
      */
     Cron.prototype.start = function () {
         // Si la tâche est déjà active : ne rien faire.
-        if (this.status()) return;
+        if (this.status()) {
+            return;
+        }
 
         // Ajouter la tâche à la liste de tâches actives.
         jobs.push(this.job);
 
         // Si c'est la première tâche à être activée : créer la boucle qui
         // vérifiera chaque minute si des tâches doivent-être exécutées.
-        if (1 === jobs.length)
+        if (1 === jobs.length) {
             intervalID = setInterval(daemon, 60000);
+        }
     }; // start()
 
     /**
@@ -304,14 +328,17 @@
      */
     Cron.prototype.stop = function () {
         // Si la tâche est déjà inactive : ne rien faire.
-        if (!this.status()) return;
+        if (!this.status()) {
+            return;
+        }
 
         // Enlever la tâche de la liste des tâches actives.
         jobs.splice(jobs.indexOf(this.job), 1);
 
         // S'il n'y a plus de tâches actives : arrêter la boucle.
-        if (!jobs.length)
+        if (!jobs.length) {
             clearInterval(intervalID);
+        }
     }; // stop()
 
     /**
