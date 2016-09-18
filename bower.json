@@ -2,10 +2,12 @@
     "name": "scronpt",
     "description":
         "Bibliothèque JavaScript implémentant un programme Unix cron.",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "main": "scronpt.js",
     "license": "Licence Public Rien À Branler",
-    "ignore": [".git", ".metalint", "package.json"],
+    "ignore": [
+        ".git", ".gitignore", ".metalint", "node_modules", "package.json"
+    ],
     "keywords": [
         "scronpt", "javascript", "js", "cron", "crontab", "scheduler"
     ],

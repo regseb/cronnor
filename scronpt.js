@@ -1,5 +1,3 @@
-/* global setInterval, clearInterval, setTimeout, define, module */
-
 /**
  * Bibliothèque JavaScript Scronpt implémentant un programme Unix cron.
  *
@@ -119,7 +117,7 @@
         // Parcourir les cinq champs.
         return fields.map(function (field, i) {
             // Gérer les notations avec un astérisque ("*" ou "*/x").
-            var result = /^\*(?:\/(\d+))?$/.exec(field);
+            var result = (/^\*(?:\/(\d+))?$/).exec(field);
             if (null !== result) {
                 if (undefined === result[1]) { // "*".
                     return null;
@@ -150,7 +148,7 @@
 
             // Gérer les listes.
             return field.split(",").map(function (range) {
-                var result = /^(\d+)(?:-(\d+)(?:\/(\d+))?)?$/.exec(range);
+                var result = (/^(\d+)(?:-(\d+)(?:\/(\d+))?)?$/).exec(range);
                 if (null === result) {
                     throw new Error(ERROR + input);
                 }
@@ -255,8 +253,7 @@
      * @param {!function()} func   - la fonction appelée quand la tâche est
      *                               exécutée.
      * @param {...*}        args   - les paramètres qui seront passés à la
-                                     fonction.
-     * @return {!Object} Retourne la tâche créée.
+     *                               fonction.
      * @throws {Error}      Si la syntaxe de la notation cron est incorrecte.
      * @throws {RangeError} Si un intervalle est invalide (hors limite ou la
      *                      borne supérieure est plus grande que la borne
