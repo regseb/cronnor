@@ -1,141 +1,73 @@
-# Scronpt
+# Cronnor
 
-[![NPM][img-npm]][link-npm]
-[![Bower][img-bower]][link-bower]
-[![Module][img-module]][link-module]
-[![Dependencies][img-dependencies]][link-dependencies]
-[![Code Climate][img-codeclimate]][link-codeclimate]
-[![SemVer][img-semver]][link-semver]
-[![License][img-license]][link-license]
+[![npm][img-npm]][link-npm]
+[![build][img-build]][link-build]
+[![coverage][img-coverage]][link-coverage]
+[![dependencies][img-dependencies]][link-dependencies]
+[![semver][img-semver]][link-semver]
+[![license][img-license]][link-license]
 
-> Bibliothèque JavaScript implémentant un programme Unix cron.
+> Bibliothèque JavaScript implémentant un programme cron.
 
-[Site Internet](//regseb.github.io/scronpt/)
+[Site Internet](https://regseb.github.io/cronnor/)
 
 ## Description
 
-La bibliothèque JavaScript **Scronpt** fourni une classe **`Cron`** pour créer
-des tâches récurentes.
+La bibliothèque JavaScript **Cronnor** fournit une classe **`Cron`** pour créer
+des tâches récurrentes.
+
+```JavaScript
+import { Cron } from "cronnor";
+
+function task() {
+    // Awesome task to be done every working day at 8am.
+};
+
+const cron = new Cron("0 8 * * 1-5", task);
+```
+
+## Installation
+
+```shell
+npm install cronnor
+```
 
 ## API
 
-### Constructeur
+### `Cron(notation, func, [status])`
 
-```JavaScript
-new Cron(notation, [état], fonction, [param1, param2, ...])
-```
+Crée une tâche cronée, où :
 
-où
-
-- `notation` contient la notation *cron* indiquant quand sera appelé la
-  `fonction` ;
-- `état` est un booléen indiquant si la tâche est active : `true` (valeur par
-  défaut), sinon : `false` ;
-- `fonction` est la fonction qui sera appelée à chaque horaire indiqué dans la
-  `notation` ;
-- `param1`, `param2`, `...` sont des paramètres qui seront passés à la
-  `fonction`.
+- `notation` contient la ou les notations *cron* indiquant quand sera appelé la
+  fonction ;
+- `func` est la fonction appelée à chaque horaire indiqué dans la notation ;
+- `status` est un booléen indiquant si la tâche est active : `true` (valeur par
+  défaut), sinon : `false`.
 
 Le constructeur peut lancer une exception :
 
 - `Error` si la syntaxe de la notation *cron* est incorrecte ;
-- `RangeError` si un intervalle est invalide (hors limite ou la borne supérieure
-  est plus grande que la borne inférieure) ;
-- `TypeError` si le constucteur est appellé sans le mot clé `new` ou si des
+- `RangeError` si un intervalle est invalide (hors limite ou quand la borne
+  supérieure est plus grande que la borne inférieure) ;
+- `TypeError` si le constructeur est appelé sans le mot clé `new` ou si des
   paramètres n'ont pas le bon type.
 
-### Méthodes
+### `.status` (lecture seule)
 
-```JavaScript
-Cron.prototype.start()
-```
+Récupérer l'état de la tâche. La propriété contient `true` si la tâche est
+active ; et `false` pour une tâche inactive.
+
+### `.start()`
 
 Activer la tâche. Si la tâche est déjà active : la méthode n'a aucun effet.
 
-```JavaScript
-Cron.prototype.stop()
-```
+### `.stop()`
 
 Désactiver la tâche. Si la tâche est déjà inactive : la méthode n'a aucun effet.
 
-```JavaScript
-Cron.prototype.status()
-```
-
-Récupérer l'état de la tâche. La méthode retourne `true` si la tâche est
-active ; et `false` pour une tâche inactive.
-
-## Téléchargement
-
-Vous pouvez récupérer le script minifié (2 427 octets) en vous rendant sur le
-site Internet de la bibliothèque :
-[regseb.github.io/scronpt](//regseb.github.io/scronpt/).
-
-Si vous utiliser
-[npm](//www.npmjs.com/package/scronpt "Node Packaged Modules") ou
-[bower](http://bower.io/search/?q=scronpt), la bibliothèque est disponible avec
-les lignes de commande suivantes :
-
-```shell
-npm install scronpt
-bower install scronpt
-```
-
-## Utilisation
-
-### AMD
-
-Pour l'utilisation de la bibliothèque avec un chargeur
-[AMD](//github.com/amdjs/amdjs-api "Asynchronous Module Definition") (par
-exemple [RequireJS](http://requirejs.org)) :
-
-```JavaScript
-require(["scronpt"], function (Cron) {
-    // ...
-    var cron = new Cron(/* ... */);
-});
-// Ou :
-define(["scronpt"], function (Cron) {
-    // ...
-    var cron = new Cron(/* ... */);
-});
-```
-
-### CommonJS
-
-Si vous souhaitez utiliser la bibliothèque dans [Node.js](//nodejs.org) (qui
-utilise le protocole CommonJS), voici un exemple :
-
-```JavaScript
-var Cron = require("scronpt");
-// ...
-var cron = new Cron(/* ... */);
-```
-
-### Variable global
-
-Il suffit de télécharger le script et de l'inclure dans la page HTML.
-
-```HTML
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- ... -->
-    <script src="scronpt.js"></script>
-    <!-- ... -->
-    <script>
-      var cron = new Cron(/* ... */);
-    </script>
-  </head>
-  <body>
-    <!-- ... -->
-  </body>
-</html>
-```
-
 ## Notations
 
-Le paramètre `notation` est une chaine de caractères composées de cinq éléments
+Le paramètre `notation` est une chaine de caractères composée de cinq éléments
 séparés par une espace. Les éléments représentent :
 
 1. les minutes : `0` à `59` ;
@@ -160,47 +92,18 @@ Il existe aussi des chaines spéciales :
 - `"@hourly"` : toutes les heures.
 
 Pour plus d'information, vous pouvez consulter le
-[manuel de `crontab`](http://manpages.debian.org/cgi-bin/man.cgi?query=crontab&sektion=5&locale=fr).
+[manuel de *crontab*](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html).
 
-## Exemples
-
-```JavaScript
-// Appeler la fonction poissonDAvril tous les 1er avril à 8h00.
-var cron = new Cron("0 8 1 apr *", poissonDAvril);
-
-// Appeler la fonction alert toutes les demi-heures au travail (entre
-// 9h et 18h) en semaine (du lundi au vendredi).
-new Cron("0,30 9-18 * * 1-5", alert, "Ding ! Dong !");
-
-// Arrêter la tâche du poisson d'avril, ce n'est plus de notre age.
-cron.stop();
-
-// Finalement, il n'y a pas d'age pour s'amuser.
-cron.start();
-```
-
-## Compatibilité
-
-Voici les versions minimales nécessaires pour utiliser la bibliothèque avec les
-principaux navigateurs.
-
- Chrome | Firefox | Internet Explorer | Opera | Safari
-:------:|:-------:|:-----------------:|:-----:|:------:
-   4    |    5    |         9         |  12   |   5
-
-[img-npm]:https://img.shields.io/npm/v/scronpt.svg
-[img-bower]:https://img.shields.io/bower/v/scronpt.svg
-[img-module]:https://img.shields.io/badge/module-UMD-blue.svg
-[img-dependencies]:https://img.shields.io/david/regseb/scronpt.svg
-[img-codeclimate]:https://img.shields.io/codeclimate/github/regseb/scronpt.svg
+[img-npm]:https://img.shields.io/npm/v/cronnor.svg
+[img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
+[img-coverage]:https://img.shields.io/coveralls/github/regseb/cronnor
+[img-dependencies]:https://img.shields.io/david/regseb/cronnor.svg
 [img-semver]:https://img.shields.io/badge/semver-2.0.0-blue.svg
-[img-license]:https://img.shields.io/badge/license-LPRAB-blue.svg
+[img-license]:https://img.shields.io/badge/license-MIT-blue.svg
 
-[link-npm]://npmjs.com/package/scronpt "Node Packaged Modules"
-[link-bower]:http://bower.io/search/?q=scronpt
-[link-module]://github.com/umdjs/umd "Universal Module Definition"
-[link-dependencies]://david-dm.org/regseb/scronpt
-[link-codeclimate]://codeclimate.com/github/regseb/scronpt
-[link-semver]:http://semver.org/lang/fr/spec/v2.0.0.html
-              "Gestion sémantique de version 2.0.0"
-[link-license]:http://sam.zoy.org/lprab/ "Licence Public Rien À Branler"
+[link-npm]:https://www.npmjs.com/package/cronnor
+[link-build]:https://github.com/regseb/cronnor/actions?query=workflow%3ACI
+[link-coverage]:https://coveralls.io/github/regseb/cronnor
+[link-dependencies]:https://david-dm.org/regseb/cronnor
+[link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"
+[link-license]:https://github.com/regseb/cronnor/blob/master/LICENSE

@@ -1,34 +1,66 @@
 {
-    "name": "scronpt",
-    "version": "0.3.1",
-    "description":
-        "Bibliothèque JavaScript implémentant un programme Unix cron.",
+    "name": "cronnor",
+    "version": "0.4.0",
+    "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
     "keywords": [
-        "scronpt", "javascript", "js", "cron", "crontab", "scheduler"
+        "cron",
+        "crontab",
+        "scheduler",
+        "cronnor",
+        "front-end",
+        "backend"
     ],
-    "homepage": "https://regseb.github.io/scronpt/",
+    "homepage": "https://regseb.github.io/cronnor/",
     "bugs": {
-        "url": "https://github.com/regseb/scronpt/issues"
+        "url": "https://github.com/regseb/cronnor/issues"
     },
-    "license": "Licence Public Rien À Branler",
+    "license": "MIT",
     "author": "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb)",
-    "contributors": [],
     "files": [
-        "LICENSE", "package.json", "README.md", "scronpt.js", "scronpt.min.js"
+        "src/",
+        "types/"
     ],
-    "main": "scronpt.js",
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/regseb/scronpt.git"
-    },
+    "main": "src/cron.js",
+    "types": "types/cron.js",
+    "repository": "regseb/cronnor",
+    "funding": "https://www.paypal.me/sebastienregne",
+    "type": "module",
     "scripts": {
-        "lint": "metalint"
+        "lint": "metalint",
+        "tsc:lint": "tsc",
+        "tsc:build": "tsc -p tsconfig.build.json",
+        "test": "c8 mocha test/",
+        "coverage:html": "c8 report --reporter html",
+        "coverage:lcov": "c8 report --reporter lcovonly",
+        "jsdocs": "jsdoc -r -d jsdocs/ src/",
+        "release": "standard-version",
+        "clean": "rm -rf coverage/ jsdocs/ node_modules/"
     },
-    "dependencies": {},
     "devDependencies": {
-        "eslint": "^3.5.0",
-        "jsonlint": "^1.6.2",
-        "markdownlint": "^0.2.0",
-        "metalint": "^0.7.0"
+        "@types/mocha": "^8.0.3",
+        "@types/node": "^10.12.18",
+        "@types/sinon": "^9.0.5",
+        "c8": "^7.3.5",
+        "david": "^12.0.0",
+        "eslint": "^7.16.0",
+        "eslint-plugin-filenames": "^1.3.2",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jsdoc": "^30.7.9",
+        "eslint-plugin-mocha": "^8.0.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-unicorn": "^24.0.0",
+        "jsdoc": "^3.6.6",
+        "jsonlint-mod": "^1.7.6",
+        "markdownlint": "^0.22.0",
+        "metalint": "^0.9.0",
+        "mocha": "^8.2.1",
+        "sinon": "^9.2.2",
+        "standard-version": "^9.0.0",
+        "typescript": "^4.0.2",
+        "yaml-lint": "^1.2.4"
+    },
+    "engines": {
+        "node": ">=14.0.0"
     }
 }
