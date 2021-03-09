@@ -1,20 +1,18 @@
 # Cronnor
 
+Bibliothèque JavaScript implémentant un programme _cron_.
+
 [![npm][img-npm]][link-npm]
+[![jsdelivr][img-jsdelivr]][link-jsdelivr]
 [![build][img-build]][link-build]
 [![coverage][img-coverage]][link-coverage]
 [![dependencies][img-dependencies]][link-dependencies]
 [![semver][img-semver]][link-semver]
-[![license][img-license]][link-license]
-
-> Bibliothèque JavaScript implémentant un programme cron.
-
-[Site Internet](https://regseb.github.io/cronnor/)
 
 ## Description
 
 La bibliothèque JavaScript **Cronnor** fournit une classe **`Cron`** pour créer
-des tâches récurrentes.
+des tâches récurrentes. Elle est disponible pour _Node.js_ et les navigateurs.
 
 ```JavaScript
 import { Cron } from "cronnor";
@@ -24,50 +22,126 @@ function task() {
 };
 
 const cron = new Cron("0 8 * * 1-5", task);
+
+// It's holiday time !
+cron.stop();
 ```
 
 ## Installation
+
+Cronnor est publiée dans [_npm_](https://www.npmjs.com/package/cronnor) :
 
 ```shell
 npm install cronnor
 ```
 
+Elle est aussi accessible directement avec le CDN
+[_jsDelivr_](https://www.jsdelivr.com/package/npm/cronnor) :
+
+```JavaScript
+import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor";
+```
+
 ## API
 
-### `Cron(notation, func, [status])`
+- [`new Cron(cronex, func, [active])`](#new-croncronex-func-active)
+- [`.active`](#active-lecture-seule)
+- [`.bind(thisArg, ...args)`](#bindthisarg-args)
+- [`.unbind()`](#unbind)
+- [`.withArguments(...args)`](#withargumentsargs)
+- [`.run()`](#run)
+- [`.start()`](#start)
+- [`.stop()`](#stop)
+- [`.test([date])`](#testdate)
+- [`.next([start])`](#nextstart)
 
-Crée une tâche cronée, où :
+### `new Cron(cronex, func, [active])`
 
-- `notation` contient la ou les notations *cron* indiquant quand sera appelé la
-  fonction ;
-- `func` est la fonction appelée à chaque horaire indiqué dans la notation ;
-- `status` est un booléen indiquant si la tâche est active : `true` (valeur par
-  défaut), sinon : `false`.
+Crée une tâche _cronée_.
 
-Le constructeur peut lancer une exception :
+- Paramètres :
+  - `cronex` (`string | string[]`): La ou les [expressions
+    _cron_](#expression-cron) indiquant les horaires d'exécution de la tâche.
+  - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
+    expressions _cron_.
+  - `active` (`boolean`) : `true` (par défaut) pour activer la tâche ; sinon
+    `false`.
+- Exceptions :
+  - `Error` : Si la syntaxe d'une expession _cron_ est incorrecte.
+  - `RangeError` : Si un intervalle d'une expression _cron_ est invalide (hors
+    limite ou quand la borne supérieure est plus grande que la borne
+    inférieure).
+  - `TypeError` : Si le constructeur est appelé sans le mot clé `new` ou si un
+    des paramètres n'a pas le bon type.
 
-- `Error` si la syntaxe de la notation *cron* est incorrecte ;
-- `RangeError` si un intervalle est invalide (hors limite ou quand la borne
-  supérieure est plus grande que la borne inférieure) ;
-- `TypeError` si le constructeur est appelé sans le mot clé `new` ou si des
-  paramètres n'ont pas le bon type.
+### `.active` (lecture seule)
 
-### `.status` (lecture seule)
+Récupère l'état de la tâche (active ou non).
 
-Récupérer l'état de la tâche. La propriété contient `true` si la tâche est
-active ; et `false` pour une tâche inactive.
+- Valeur retournée : `true` si la tâche est active ; sinon `false`.
+
+### `.bind(thisArg, ...args)`
+
+Définit le `this` et les paramètres passés à la fonction.
+
+- Paramètres :
+  - `thisArg` (`any`) : Le `this` utilisé pour la fonction.
+  - `args` (`...any`) : Les paramètres passés à la fonction.
+- Valeur retournée : La tâche elle-même.
+
+### `.unbind()`
+
+Remet les valeurs par défaut pour le `this` et les paramètres passés à la
+fonction.
+
+- Valeur retournée : La tâche elle-même.
+
+### `.withArguments(...args)`
+
+Définit les paramètres passés à la fonction.
+
+- Paramètres :
+  - `args` (`...any`) : Les paramètres passés à la fonction.
+- Valeur retournée : La tâche elle-même.
+
+### `.run()`
+
+Exécute manuellement la fonction.
 
 ### `.start()`
 
-Activer la tâche. Si la tâche est déjà active : la méthode n'a aucun effet.
+Active la tâche.
+
+- Valeur retournée : `true` quand la tâche a été activée ; `false` si elle était
+  déjà active.
 
 ### `.stop()`
 
-Désactiver la tâche. Si la tâche est déjà inactive : la méthode n'a aucun effet.
+Désactive la tâche.
 
-## Notations
+- Valeur retournée : `true` quand la tâche a été désactivée ; `false` si elle
+  était déjà inactive.
 
-Le paramètre `notation` est une chaine de caractères composée de cinq éléments
+### `.test([date])`
+
+Teste si une expression _cron_ de la tâche est respectée.
+
+- Paramètre :
+  - `date` (`Date`) : La date qui sera testée (ou l'instant présent par défaut).
+- Valeur retournée : `true` si une expression est respectée ; sinon `false`.
+
+### `.next([start])`
+
+Calcule la prochaine date respectant une expression _cron_ de la tâche.
+
+- Paramètre :
+  - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
+- Valeur retournée : La prochaine date respectant une expression ou `undefined`
+  s'il n'y a pas de prochaine date (quand il n'y a aucune expression _cron_).
+
+## Expression _cron_
+
+Les expressions _cron_ sont des chaines de caractères composées de cinq éléments
 séparés par une espace. Les éléments représentent :
 
 1. les minutes : `0` à `59` ;
@@ -91,19 +165,19 @@ Il existe aussi des chaines spéciales :
 - `"@daily"` ou `"@midnight"` : tous les jours à minuit ;
 - `"@hourly"` : toutes les heures.
 
-Pour plus d'information, vous pouvez consulter le
-[manuel de *crontab*](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html).
+Pour plus d'information, vous pouvez consulter le [manuel de
+_crontab_](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html).
 
-[img-npm]:https://img.shields.io/npm/v/cronnor.svg
+[img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
+[img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
 [img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
 [img-coverage]:https://img.shields.io/coveralls/github/regseb/cronnor
-[img-dependencies]:https://img.shields.io/david/regseb/cronnor.svg
-[img-semver]:https://img.shields.io/badge/semver-2.0.0-blue.svg
-[img-license]:https://img.shields.io/badge/license-MIT-blue.svg
+[img-dependencies]:https://img.shields.io/david/regseb/cronnor
+[img-semver]:https://img.shields.io/badge/semver-2.0.0-blue
 
 [link-npm]:https://www.npmjs.com/package/cronnor
-[link-build]:https://github.com/regseb/cronnor/actions?query=workflow%3ACI
+[link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor
+[link-build]:https://github.com/regseb/cronnor/actions?query=workflow%3ACI+branch%3Amaster
 [link-coverage]:https://coveralls.io/github/regseb/cronnor
 [link-dependencies]:https://david-dm.org/regseb/cronnor
 [link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"
-[link-license]:https://github.com/regseb/cronnor/blob/master/LICENSE

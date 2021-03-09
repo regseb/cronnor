@@ -9,7 +9,7 @@
  */
 
 /**
- * La classe d'un champ d'une expression cron.
+ * La classe d'un champ d'une expression <em>cron</em>.
  *
  * @class Field
  * @public
@@ -17,7 +17,7 @@
 export const Field = class {
 
     /**
-     * Crée un champ d'une expression cron autorisant une seule valeur.
+     * Crée un champ d'une expression <em>cron</em> autorisant une seule valeur.
      *
      * @param {number} value La valeur autorisée pour le champ.
      * @returns {Field} Le champ avec la valeur.
@@ -28,8 +28,8 @@ export const Field = class {
     }
 
     /**
-     * Crée un champ d'une expression cron avec toutes les valeurs autorisées
-     * (sans restriction).
+     * Crée un champ d'une expression <em>cron</em> avec toutes les valeurs
+     * autorisées (sans restriction).
      *
      * @param {number} min La valeur minimale (incluse) autorisée.
      * @param {number} max La valeur maximale (incluse) autorisée.
@@ -45,8 +45,8 @@ export const Field = class {
     }
 
     /**
-     * Crée un champ d'une expression cron avec un intervalle de valeurs
-     * autorisées.
+     * Crée un champ d'une expression <em>cron</em> avec un intervalle de
+     * valeurs autorisées.
      *
      * @param {number} min La valeur minimale (incluse) autorisée.
      * @param {number} max La valeur maximale (incluse) autorisée.
@@ -74,21 +74,22 @@ export const Field = class {
     }
 
     /**
-     * Crée un champ d'une expression cron.
+     * Crée un champ d'une expression <em>cron</em>.
      *
      * @param {number[]} values       La liste des valeurs autorisées pour le
      *                                champ.
      * @param {boolean}  [restricted] <code>true</code> (par défaut) pour un
-     *                                champ était différent de
+     *                                champ qui était différent de
      *                                <code>"*"</code> ; sinon
      *                                <code>false</code>.
-     * @public
+     * @private
      */
     constructor(values, restricted = true) {
         // eslint-disable-next-line padded-blocks
 
         /**
-         * La liste des valeurs autorisées pour le champ.
+         * La liste des valeurs autorisées pour le champ (en enlevant les
+         * doublons et en triant).
          *
          * @type {number[]}
          * @private
@@ -101,7 +102,7 @@ export const Field = class {
          * sinon <code>false</code>.
          *
          * @type {boolean}
-         * @public
+         * @private
          */
         this._restricted = restricted;
     }

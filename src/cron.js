@@ -7,16 +7,16 @@
 import { CronExp } from "./cronexp.js";
 
 /**
- * La valeur maximale du delai accepté par <em>Node.js</em>
- * (<code>2^31 - 1</code>).
+ * La valeur maximale du delai accepté par <em>Node.js</em>.
  *
  * @type {number}
  * @private
+ * @see https://nodejs.org/api/timers.html
  */
 const MAX_DELAY = 2147483647;
 
 /**
- * La classe d'une tâche cronée.
+ * La classe d'une tâche <em>cronée</em>.
  *
  * @class Cron
  * @public
@@ -24,19 +24,22 @@ const MAX_DELAY = 2147483647;
 export const Cron = class {
 
     /**
-     * Crée une tâche cronée.
+     * Crée une tâche <em>cronée</em>.
      *
-     * @param {string|string[]} cronex   La ou les expressions cron indiquant
+     * @param {string|string[]} cronex   La ou les expressions <em>cron</em>
+     *                                   indiquant
      *                                   les horaires d'exécution de la tâche.
      * @param {Function}        func     La fonction appelée à chaque horaire
-     *                                   indiqué dans les expressions cron.
+     *                                   indiqué dans les expressions
+     *                                   <em>cron</em>.
      * @param {boolean}         [active] <code>true</code> (par défaut) pour
      *                                   activer la tâche ; sinon
      *                                   <code>false</code>.
-     * @throws {Error}      Si la syntaxe d'une expession cron est incorrecte.
-     * @throws {RangeError} Si un intervalle d'une expression cron est invalide
-     *                      (hors limite ou quand la borne supérieure est plus
-     *                      grande que la borne inférieure).
+     * @throws {Error}      Si la syntaxe d'une expession <em>cron</em> est
+     *                      incorrecte.
+     * @throws {RangeError} Si un intervalle d'une expression <em>cron</em> est
+     *                      invalide (hors limite ou quand la borne supérieure
+     *                      est plus grande que la borne inférieure).
      * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
      *                      <code>new</code> ou si un des paramètres n'a pas le
      *                      bon type.
@@ -47,8 +50,8 @@ export const Cron = class {
                                                : [cronex];
 
         /**
-         * La liste des expressions cron indiquant les horaires d'exécution de
-         * la tâche.
+         * La liste des expressions <em>cron</em> indiquant les horaires
+         * d'exécution de la tâche.
          *
          * @type {CronExp[]}
          * @private
@@ -57,7 +60,7 @@ export const Cron = class {
 
         /**
          * La fonction appelée à chaque horaire indiqué dans les expressions
-         * cron.
+         * <em>cron</em>.
          *
          * @type {Function}
          * @private
@@ -67,7 +70,7 @@ export const Cron = class {
         /**
          * Le <code>this</code> utilisé pour la fonction.
          *
-         * @type {?*}
+         * @type {any}
          * @private
          */
         this._thisArg = this;
@@ -75,7 +78,7 @@ export const Cron = class {
         /**
          * La liste des paramètres passés à la fonction.
          *
-         * @type {(?*)[]}
+         * @type {any[]}
          * @private
          */
         this._args = [];
@@ -84,7 +87,7 @@ export const Cron = class {
          * L'identifiant du minuteur de la prochaine exécution ; ou
          * <code>null</code> si la tâche est désactivée.
          *
-         * @type {?*}
+         * @type {any}
          * @private
          */
         this._timeoutID = null;
@@ -108,9 +111,9 @@ export const Cron = class {
     /**
      * Définit le <code>this</code> et les paramètres passés à la fonction.
      *
-     * @param {*}    thisArgs Le <code>this</code> utilisé pour la fonction.
-     * @param {...*} args     Les paramètres passés à la fonction.
-     * @returns {Cron} Retourne la tâche elle-même.
+     * @param {any}    thisArg Le <code>this</code> utilisé pour la fonction.
+     * @param {...any} args    Les paramètres passés à la fonction.
+     * @returns {Cron} La tâche elle-même.
      * @public
      */
     bind(thisArg, ...args) {
@@ -120,10 +123,10 @@ export const Cron = class {
     }
 
     /**
-     * Remet les valeurs par défaut pour le <code>this/<code> et les paramètres
+     * Remet les valeurs par défaut pour le <code>this</code> et les paramètres
      * passés à la fonction.
      *
-     * @returns {Cron} Retourne la tâche elle-même.
+     * @returns {Cron} La tâche elle-même.
      * @public
      */
     unbind() {
@@ -135,8 +138,8 @@ export const Cron = class {
     /**
      * Définit les paramètres passés à la fonction.
      *
-     * @param {...*} args Les paramètres passés à la fonction.
-     * @returns {Cron} Retourne la tâche elle-même.
+     * @param {...any} args Les paramètres passés à la fonction.
+     * @returns {Cron} La tâche elle-même.
      * @public
      */
     withArguments(...args) {
@@ -145,7 +148,7 @@ export const Cron = class {
     }
 
     /**
-     * Exécute la fonction.
+     * Exécute manuellement la fonction.
      *
      * @public
      */
@@ -226,7 +229,7 @@ export const Cron = class {
     }
 
     /**
-     * Teste si une expression cron de la tâche est respectée.
+     * Teste si une expression <em>cron</em> de la tâche est respectée.
      *
      * @param {Date} [date] La date qui sera testée (ou l'instant présent par
      *                      défaut).
@@ -239,7 +242,8 @@ export const Cron = class {
     }
 
     /**
-     * Calcule la prochaine date respectant une expression cron de la tâche.
+     * Calcule la prochaine date respectant une expression <em>cron</em> de la
+     * tâche.
      *
      * @param {Date} [start] La date de début (ou l'instant présent par défaut).
      * @returns {Date|undefined} La prochaine date respectant une expression ou

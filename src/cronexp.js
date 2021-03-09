@@ -7,6 +7,11 @@
 import { Field } from "./field.js";
 
 /**
+ * @typedef {Object<string, string>} StringStringObject
+ * @typedef {Object<string, number>} StringNumberObject
+ */
+
+/**
  * Les chaines spéciales avec leur équivalent.
  *
  * @type {StringStringObject}
@@ -69,7 +74,7 @@ const NAMES = [
  * Les valeurs minimales et maximales (incluses) pouvant être saisies dans les
  * cinq champs (pour des valeurs simples ou des intervalles).
  *
- * @type {Object<string, number>[]}
+ * @type {StringNumberObject[]}
  * @private
  */
 const LIMITS = [
@@ -94,15 +99,16 @@ const LIMITS = [
 const MAX_DAYS_IN_MONTHS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 /**
- * Le message d'erreur (suivi de l'expression cron) renvoyé dans l'exception.
+ * Le message d'erreur (suivi de l'expression <em>cron</em>) renvoyé dans
+ * l'exception.
  *
- * @constant {string}
+ * @type {string}
  * @private
  */
 const ERROR = "Syntax error, unrecognized expression: ";
 
 /**
- * La classe d'une expression cron.
+ * La classe d'une expression <em>cron</em>.
  *
  * @class CronExp
  * @public
@@ -110,9 +116,9 @@ const ERROR = "Syntax error, unrecognized expression: ";
 export const CronExp = class {
 
     /**
-     * Crée une expression cron.
+     * Crée une expression <em>cron</em>.
      *
-     * @param {string} pattern Le motif de l'expression cron.
+     * @param {string} pattern Le motif de l'expression <em>cron</em>.
      * @throws {Error}      Si la syntaxe du motif est incorrecte.
      * @throws {RangeError} Si un intervalle est invalide (hors limite ou quand
      *                      la borne supérieure est plus grande que la borne
@@ -215,7 +221,8 @@ export const CronExp = class {
         this._month = conds[3].map((v) => v - 1);
 
         /**
-         * Les valeurs possibles pour le jour de la semaine.
+         * Les valeurs possibles pour le jour de la semaine (en utilisant
+         * toujours <code>0</code> pour le dimanche).
          *
          * @type {Field}
          * @private
@@ -237,6 +244,7 @@ export const CronExp = class {
      *                      défaut).
      * @returns {boolean} <code>true</code> si l'expression est respectée ;
      *                    sinon <code>false</code>.
+     * @public
      */
     test(date = new Date()) {
         // Vérifier que la minute, l'heure et le mois respectent les conditions.
@@ -426,6 +434,7 @@ export const CronExp = class {
      *
      * @param {Date} [start] La date de début (ou l'instant présent par défaut).
      * @returns {Date} La prochaine date respectant l'expression.
+     * @public
      */
     next(start = new Date()) {
         let date = new Date(start.getTime());

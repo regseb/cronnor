@@ -10,7 +10,7 @@
         "front-end",
         "backend"
     ],
-    "homepage": "https://regseb.github.io/cronnor/",
+    "homepage": "https://github.com/regseb/cronnor#readme",
     "bugs": {
         "url": "https://github.com/regseb/cronnor/issues"
     },
@@ -32,7 +32,7 @@
         "test": "c8 mocha test/",
         "coverage:html": "c8 report --reporter html",
         "coverage:lcov": "c8 report --reporter lcovonly",
-        "jsdocs": "jsdoc -r -d jsdocs/ src/",
+        "jsdocs": "jsdoc -r -a all -d jsdocs/ src/",
         "release": "standard-version",
         "clean": "rm -rf coverage/ jsdocs/ node_modules/"
     },
