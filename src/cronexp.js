@@ -163,6 +163,7 @@ export const CronExp = class {
             // Gérer les listes.
             return Field.flat(field.split(",").map((range) => {
                 const subresult =
+                    // eslint-disable-next-line unicorn/no-unsafe-regex
                     (/^(?<min>\d+)(?:-(?<max>\d+)(?:\/(?<step>\d+))?)?$/u)
                                                                    .exec(range);
                 if (undefined === subresult?.groups) {

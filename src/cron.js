@@ -13,6 +13,7 @@ import { CronExp } from "./cronexp.js";
  * @private
  * @see https://nodejs.org/api/timers.html
  */
+// eslint-disable-next-line unicorn/numeric-separators-style
 const MAX_DELAY = 2147483647;
 
 /**
