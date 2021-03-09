@@ -7,6 +7,22 @@
 import { Field } from "./field.js";
 
 /**
+ * Les chaines spéciales avec leur équivalent.
+ *
+ * @type {StringStringObject}
+ * @private
+ */
+const NICKNAMES = {
+    "@yearly":   "0 0 1 1 *",
+    "@annually": "0 0 1 1 *",
+    "@monthly":  "0 0 1 * *",
+    "@weekly":   "0 0 * * 0",
+    "@daily":    "0 0 * * *",
+    "@midnight": "0 0 * * *",
+    "@hourly":   "0 * * * *",
+};
+
+/**
  * Les formes littérales des mois et des jours de la semaine. Les autres champs
  * (minute, heure et jour du mois) n'en ont pas. Ce sont les index des éléments
  * dans le tableau qui sont utilisés pour la correspondance.
@@ -107,20 +123,9 @@ export const CronExp = class {
      * @public
      */
     constructor(pattern) {
-        // Remplacer les chaines spéciales.
-        let deciphered;
-        switch (pattern) {
-            case "@yearly": case "@annually": deciphered = "0 0 1 1 *"; break;
-            case "@monthly":                  deciphered = "0 0 1 * *"; break;
-            case "@weekly":                   deciphered = "0 0 * * 0"; break;
-            case "@daily": case "@midnight":  deciphered = "0 0 * * *"; break;
-            case "@hourly":                   deciphered = "0 * * * *"; break;
-            default:                          deciphered = pattern;
-        }
-
         // Séparer les cinq champs (minute, heure, jour du mois, mois et jour de
         // la semaine).
-        const fields = deciphered.split(/\s+/u);
+        const fields = (NICKNAMES[pattern] ?? pattern).split(/\s+/u);
         if (5 !== fields.length) {
             throw new Error(ERROR + pattern);
         }
@@ -182,7 +187,7 @@ export const CronExp = class {
          * @type {Field}
          * @private
          */
-        this.minutes = conds[0];
+        this._minutes = conds[0];
 
         /**
          * Les valeurs possibles pour les heures.
@@ -190,7 +195,7 @@ export const CronExp = class {
          * @type {Field}
          * @private
          */
-        this.hours = conds[1];
+        this._hours = conds[1];
 
         /**
          * Les valeurs possibles pour le jour du mois.
@@ -198,7 +203,7 @@ export const CronExp = class {
          * @type {Field}
          * @private
          */
-        this.date = conds[2];
+        this._date = conds[2];
 
         /**
          * Les valeurs possibles pour le mois (dont le numéro commence à zéro
@@ -207,7 +212,7 @@ export const CronExp = class {
          * @type {Field}
          * @private
          */
-        this.month = conds[3].map((v) => v - 1);
+        this._month = conds[3].map((v) => v - 1);
 
         /**
          * Les valeurs possibles pour le jour de la semaine.
@@ -215,11 +220,12 @@ export const CronExp = class {
          * @type {Field}
          * @private
          */
-        this.day = conds[4].map((v) => (7 === v ? 0 : v));
+        this._day = conds[4].map((v) => (7 === v ? 0 : v));
 
-        const max = Math.max(...this.month.values()
+        // Récupérer le mois le plus long parmi tous les mois autorisés.
+        const max = Math.max(...this._month.values()
                                           .map((m) => MAX_DAYS_IN_MONTHS[m]));
-        if (max < this.date.min) {
+        if (max < this._date.min) {
             throw new RangeError(ERROR + pattern);
         }
     }
@@ -234,25 +240,25 @@ export const CronExp = class {
      */
     test(date = new Date()) {
         // Vérifier que la minute, l'heure et le mois respectent les conditions.
-        if (!this.minutes.test(date.getMinutes()) ||
-                !this.hours.test(date.getHours()) ||
-                !this.month.test(date.getMonth())) {
+        if (!this._minutes.test(date.getMinutes()) ||
+                !this._hours.test(date.getHours()) ||
+                !this._month.test(date.getMonth())) {
             return false;
         }
 
         // Quand le jour du mois et le jour de la semaine sont renseignés
-        // (différent de l'astérisque), la tâche est exécutée si au moins une
-        // des deux conditions est respectée.
-        if (this.date.restricted && this.day.restricted) {
-            return this.date.test(date.getDate()) ||
-                   this.day.test(date.getDay());
+        // (différent de l'astérisque), vérifier si au moins une des deux
+        // conditions est respectée.
+        if (this._date.restricted && this._day.restricted) {
+            return this._date.test(date.getDate()) ||
+                   this._day.test(date.getDay());
         }
 
         // Sinon : soit le jour du mois, soit le jour de la semaine ou aucun des
         // deux ne sont renseignés. Dans ce cas, vérifier classiquement les deux
         // conditions.
-        return this.date.test(date.getDate()) &&
-               this.day.test(date.getDay());
+        return this._date.test(date.getDate()) &&
+               this._day.test(date.getDay());
     }
 
     /**
@@ -264,15 +270,15 @@ export const CronExp = class {
      * @private
      */
     _nextMinutes(start) {
-        if (this.minutes.test(start.getMinutes())) {
+        if (this._minutes.test(start.getMinutes())) {
             return start;
         }
 
         const date = new Date(start.getTime());
-        const next = this.minutes.next(date.getMinutes());
+        const next = this._minutes.next(date.getMinutes());
         if (undefined === next) {
             date.setHours(date.getHours() + 1);
-            date.setMinutes(this.minutes.min);
+            date.setMinutes(this._minutes.min);
         } else {
             date.setMinutes(next);
         }
@@ -288,16 +294,16 @@ export const CronExp = class {
      * @private
      */
     _nextHours(start) {
-        if (this.hours.test(start.getHours())) {
+        if (this._hours.test(start.getHours())) {
             return start;
         }
 
         const date = new Date(start.getTime());
-        date.setMinutes(this.minutes.min);
-        const next = this.hours.next(date.getHours());
+        date.setMinutes(this._minutes.min);
+        const next = this._hours.next(date.getHours());
         if (undefined === next) {
             date.setDate(date.getDate() + 1);
-            date.setHours(this.hours.min);
+            date.setHours(this._hours.min);
         } else {
             date.setHours(next);
         }
@@ -314,20 +320,20 @@ export const CronExp = class {
      * @private
      */
     _nextDate(start) {
-        if (this.date.test(start.getDate())) {
+        if (this._date.test(start.getDate())) {
             return start;
         }
 
         const date = new Date(start.getTime());
-        date.setHours(this.hours.min);
-        date.setMinutes(this.minutes.min);
-        const next = this.date.next(date.getDate());
+        date.setHours(this._hours.min);
+        date.setMinutes(this._minutes.min);
+        const next = this._date.next(date.getDate());
         if (undefined === next ||
                 next > new Date(date.getFullYear(),
                                 date.getMonth() + 1,
                                 0).getDate()) {
             date.setMonth(date.getMonth() + 1);
-            date.setDate(this.date.min);
+            date.setDate(this._date.min);
         } else {
             date.setDate(next);
         }
@@ -344,17 +350,17 @@ export const CronExp = class {
      * @private
      */
     _nextDay(start) {
-        if (this.day.test(start.getDay())) {
+        if (this._day.test(start.getDay())) {
             return start;
         }
 
         const date = new Date(start.getTime());
-        date.setHours(this.hours.min);
-        date.setMinutes(this.minutes.min);
-        const next = this.day.next(date.getDay());
+        date.setHours(this._hours.min);
+        date.setMinutes(this._minutes.min);
+        const next = this._day.next(date.getDay());
         if (undefined === next) {
             date.setDate(date.getDate() +
-                         (this.day.min + (7 - date.getDay())) % 7);
+                         (this._day.min + (7 - date.getDay())) % 7);
         } else {
             date.setDate(date.getDate() + (next + (7 - date.getDay())) % 7);
         }
@@ -372,11 +378,11 @@ export const CronExp = class {
      */
     _nextDateDay(start) {
         let date = new Date(start.getTime());
-        if (this.date.restricted && !this.day.restricted) {
+        if (this._date.restricted && !this._day.restricted) {
             date = this._nextDate(date);
-        } else if (!this.date.restricted && this.day.restricted) {
+        } else if (!this._date.restricted && this._day.restricted) {
             date = this._nextDay(date);
-        } else if (this.date.restricted && this.day.restricted) {
+        } else if (this._date.restricted && this._day.restricted) {
             const nextDate = this._nextDate(date);
             const nextDay = this._nextDay(date);
             date = nextDate.getTime() < nextDay.getTime() ? nextDate
@@ -394,18 +400,20 @@ export const CronExp = class {
      * @private
      */
     _nextMonth(start) {
-        if (this.month.test(start.getMonth())) {
+        if (this._month.test(start.getMonth())) {
             return start;
         }
 
         const date = new Date(start.getTime());
+        // Mettre temporairement le premier jour du mois et calculer le bon jour
+        // après avoir trouver le bon mois.
         date.setDate(1);
-        date.setHours(this.hours.min);
-        date.setMinutes(this.minutes.min);
-        const next = this.month.next(date.getMonth());
+        date.setHours(this._hours.min);
+        date.setMinutes(this._minutes.min);
+        const next = this._month.next(date.getMonth());
         if (undefined === next) {
             date.setFullYear(date.getFullYear() + 1);
-            date.setMonth(this.month.min);
+            date.setMonth(this._month.min);
         } else {
             date.setMonth(next);
         }

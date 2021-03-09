@@ -70,7 +70,7 @@ export const Cron = class {
          * @type {?*}
          * @private
          */
-        this._thisArgs = this;
+        this._thisArg = this;
 
         /**
          * La liste des paramètres passés à la fonction.
@@ -113,8 +113,8 @@ export const Cron = class {
      * @returns {Cron} Retourne la tâche elle-même.
      * @public
      */
-    bind(thisArgs, ...args) {
-        this._thisArgs = thisArgs;
+    bind(thisArg, ...args) {
+        this._thisArg = thisArg;
         this._args = args;
         return this;
     }
@@ -127,7 +127,7 @@ export const Cron = class {
      * @public
      */
     unbind() {
-        this._thisArgs = this;
+        this._thisArg = this;
         this._args = [];
         return this;
     }
@@ -150,7 +150,7 @@ export const Cron = class {
      * @public
      */
     run() {
-        this._func.bind(this._thisArgs)(...this._args);
+        this._func.bind(this._thisArg)(...this._args);
     }
 
     /**
@@ -159,19 +159,27 @@ export const Cron = class {
      * @private
      */
     _schedule() {
-        const delay = this.next().getTime() - Date.now();
-        if (MAX_DELAY >= delay) {
-            // Planifier la prochaine exécution.
-            this._timeoutID = setTimeout(() => {
-                this._schedule();
-                this.run();
-            }, this.next().getTime() - Date.now());
+        const next = this.next();
+        if (undefined === next) {
+            // Ne pas planifier de prochaine exécution, mais définir une valeur
+            // différente de null pour l'identifiant du minuteur afin d'indiquer
+            // que la tâche est active.
+            this._timeoutID = undefined;
         } else {
-            // Planifier une étape intermédiaire car Node.js n'accepte pas un
-            // grand délai.
-            this._timeoutID = setTimeout(() => {
-                this._schedule();
-            }, MAX_DELAY);
+            const delay = next.getTime() - Date.now();
+            if (MAX_DELAY >= delay) {
+                // Planifier la prochaine exécution.
+                this._timeoutID = setTimeout(() => {
+                    this._schedule();
+                    this.run();
+                }, delay);
+            } else {
+                // Planifier des étapes intermédiaires car Node.js n'accepte pas
+                // un grand délai.
+                this._timeoutID = setTimeout(() => {
+                    this._schedule();
+                }, MAX_DELAY);
+            }
         }
     }
 
@@ -181,7 +189,9 @@ export const Cron = class {
      * @private
      */
     _cancel() {
-        clearTimeout(this._timeoutID);
+        if (undefined !== this._timeoutID) {
+            clearTimeout(this._timeoutID);
+        }
         this._timeoutID = null;
     }
 
@@ -232,12 +242,19 @@ export const Cron = class {
      * Calcule la prochaine date respectant une expression cron de la tâche.
      *
      * @param {Date} [start] La date de début (ou l'instant présent par défaut).
-     * @returns {Date} La prochaine date respectant une expression.
+     * @returns {Date|undefined} La prochaine date respectant une expression ou
+     *                           <code>undefined</code> s'il n'y a pas de
+     *                           prochaine date (quand il n'y a aucune
+     *                           expression <em>cron</em>).
      * @public
      */
     next(start = new Date()) {
-        return this._cronexes.map((c) => c.next(start))
-                             .reduce((m, d) => (m.getTime() < d.getTime() ? m
-                                                                          : d));
+        if (0 === this._cronexes.length) {
+            return undefined;
+        }
+
+        return new Date(Math.min(
+            ...this._cronexes.map((c) => c.next(start).getTime()),
+        ));
     }
 };

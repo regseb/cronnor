@@ -49,56 +49,30 @@ describe("field.js", function () {
             });
         });
 
-        describe("constructor()", function () {
-            it("should accept one value", function () {
-                const field = new Field([0]);
-                assert.deepStrictEqual(field.values(), [0]);
-                assert.ok(field.restricted);
-            });
-
-            it("should sort values", function () {
-                const field = new Field([11, 2, 3333, 444]);
-                assert.deepStrictEqual(field.values(), [2, 11, 444, 3333]);
-                assert.ok(field.restricted);
-            });
-
-            it("should remove duplicate values", function () {
-                const field = new Field([0, 1, 1, 2, 2, 2, 0]);
-                assert.deepStrictEqual(field.values(), [0, 1, 2]);
-                assert.ok(field.restricted);
-            });
-
-            it("should accepte unrestricted", function () {
-                const field = new Field([1, 2, 3], false);
-                assert.deepStrictEqual(field.values(), [1, 2, 3]);
-                assert.ok(!field.restricted);
-            });
-        });
-
         describe("get min()", function () {
             it("should return min", function () {
-                const field = new Field([2, 3, 5]);
+                const field = Field.range(2, 5, 1);
                 assert.deepStrictEqual(field.min, 2);
             });
         });
 
         describe("get max()", function () {
             it("should return max", function () {
-                const field = new Field([1, 1, 2, 3]);
+                const field = Field.all(1, 3);
                 assert.deepStrictEqual(field.max, 3);
             });
         });
 
         describe("values()", function () {
             it("should return values", function () {
-                const field = new Field([57, 58, 59]);
-                assert.deepStrictEqual(field.values(), [57, 58, 59]);
+                const field = Field.range(53, 59, 3);
+                assert.deepStrictEqual(field.values(), [53, 56, 59]);
             });
         });
 
         describe("map()", function () {
             it("should apply function to values", function () {
-                const field1 = new Field([10, 11, 12]);
+                const field1 = Field.range(10, 12, 1);
                 const field2 = field1.map((v) => v - 1);
                 assert.deepStrictEqual(field1.values(), [10, 11, 12]);
                 assert.ok(field1.restricted);
@@ -107,7 +81,7 @@ describe("field.js", function () {
             });
 
             it("should transmit restricted property", function () {
-                const field1 = new Field([1, 2, 3], false);
+                const field1 = Field.all(1, 3);
                 const field2 = field1.map((v) => v * 2);
                 assert.deepStrictEqual(field1.values(), [1, 2, 3]);
                 assert.ok(!field1.restricted);
@@ -118,7 +92,7 @@ describe("field.js", function () {
 
         describe("test()", function () {
             it("should test if value is present", function () {
-                const field = new Field([21, 22, 23]);
+                const field = Field.range(21, 23, 1);
                 assert.ok(!field.test(20));
                 assert.ok(field.test(21));
                 assert.ok(field.test(22));
@@ -129,14 +103,14 @@ describe("field.js", function () {
 
         describe("next()", function () {
             it("should calculate next value", function () {
-                const field = new Field([11, 22, 33, 44]);
+                const field = Field.range(11, 44, 11);
                 assert.strictEqual(field.next(10), 11);
                 assert.strictEqual(field.next(22), 33);
                 assert.strictEqual(field.next(34), 44);
             });
 
             it("should return 'undefined'", function () {
-                const field = new Field([3, 6, 9]);
+                const field = Field.range(3, 9, 3);
                 assert.strictEqual(field.next(9), undefined);
                 assert.strictEqual(field.next(10), undefined);
             });

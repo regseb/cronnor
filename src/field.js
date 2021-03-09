@@ -103,7 +103,19 @@ export const Field = class {
          * @type {boolean}
          * @public
          */
-        this.restricted = restricted;
+        this._restricted = restricted;
+    }
+
+    /**
+     * Retourne la marque indiquant si le champ était différent de
+     * <code>"*"</code>.
+     *
+     * @returns {boolean} <code>true</code> si le champ était différent de
+     *                    <code>"*"</code> ; sinon <code>false</code>.
+     * @public
+     */
+    get restricted() {
+        return this._restricted;
     }
 
     /**
@@ -145,7 +157,7 @@ export const Field = class {
      * @public
      */
     map(callback) {
-        return new Field(this._values.map(callback), this.restricted);
+        return new Field(this._values.map(callback), this._restricted);
     }
 
     /**
