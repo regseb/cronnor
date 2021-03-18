@@ -5,10 +5,6 @@
  */
 
 /**
- * @typedef {function(number, number, number[]): number} NumberToNumberFunction
- */
-
-/**
  * La classe d'un champ d'une expression <em>cron</em>.
  *
  * @class Field
@@ -74,6 +70,24 @@ export const Field = class {
     }
 
     /**
+     * La liste des valeurs autorisées pour le champ (en enlevant les doublons
+     * et en triant).
+     *
+     * @type {number[]}
+     * @private
+     */
+    _values;
+
+    /**
+     * <code>true</code> si le champ était différent de <code>"*"</code> ; sinon
+     * <code>false</code>.
+     *
+     * @type {boolean}
+     * @private
+     */
+    _restricted;
+
+    /**
      * Crée un champ d'une expression <em>cron</em>.
      *
      * @param {number[]} values       La liste des valeurs autorisées pour le
@@ -85,25 +99,10 @@ export const Field = class {
      * @private
      */
     constructor(values, restricted = true) {
-        // eslint-disable-next-line padded-blocks
-
-        /**
-         * La liste des valeurs autorisées pour le champ (en enlevant les
-         * doublons et en triant).
-         *
-         * @type {number[]}
-         * @private
-         */
+        // Enlever les doublons des valeurs et trier les valeurs pour faciliter
+        // les algorithmes.
         this._values = values.filter((v, i, a) => i === a.indexOf(v))
                              .sort((v1, v2) => v1 - v2);
-
-        /**
-         * <code>true</code> si le champ était différent de <code>"*"</code> ;
-         * sinon <code>false</code>.
-         *
-         * @type {boolean}
-         * @private
-         */
         this._restricted = restricted;
     }
 
@@ -152,8 +151,9 @@ export const Field = class {
     /**
      * Applique une fonction sur toutes les valeurs.
      *
-     * @param {NumberToNumberFunction} callback La fonction appelée sur les
-     *                                          valeurs.
+     * @param {function(number, number, number[]): number} callback La fonction
+     *                                                              appelée sur
+     *                                                              les valeurs.
      * @returns {Field} Le nouveau champ avec les valeurs modifiées.
      * @public
      */
@@ -162,7 +162,7 @@ export const Field = class {
     }
 
     /**
-     * Teste si une valeur est dans présent dans la liste des valeurs.
+     * Teste si une valeur est présente dans la liste des valeurs.
      *
      * @param {number} value La valeur qui sera testée.
      * @returns {boolean} <code>true</code> si la valeur est présente ; sinon

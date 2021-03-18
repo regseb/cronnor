@@ -18,17 +18,17 @@
     "author": "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb)",
     "funding": "https://www.paypal.me/sebastienregne",
     "files": [
-        "dist/",
+        "index.js",
         "types/"
     ],
-    "main": "dist/cron.js",
-    "browser": "dist/cron.js",
-    "types": "types/cron.js",
+    "main": "index.js",
+    "browser": "index.js",
+    "types": "types/index.d.ts",
     "repository": "regseb/cronnor",
     "type": "module",
     "scripts": {
         "lint": "metalint",
-        "tsc:lint": "tsc",
+        "lint:tsc": "tsc",
         "test": "c8 mocha test/",
         "coverage:html": "c8 report --reporter html",
         "coverage:lcov": "c8 report --reporter lcovonly",
@@ -40,6 +40,11 @@
         "clean": "node .script/clean.js"
     },
     "devDependencies": {
+        "@babel/core": "^7.13.10",
+        "@babel/eslint-parser": "^7.13.10",
+        "@babel/eslint-plugin": "^7.13.10",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/plugin-syntax-top-level-await": "^7.12.13",
         "@types/mocha": "^8.2.1",
         "@types/node": "^14.14.33",
         "@types/sinon": "^9.0.11",
@@ -59,7 +64,6 @@
         "metalint": "^0.9.0",
         "mocha": "^8.3.1",
         "rollup": "^2.41.2",
-        "rollup-plugin-terser": "^7.0.2",
         "sinon": "^9.2.4",
         "standard-version": "^9.1.1",
         "typescript": "^4.2.3",

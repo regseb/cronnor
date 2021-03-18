@@ -1,10 +1,24 @@
 export default {
     plugins: [
-        "filenames", "import", "jsdoc", "mocha", "node", "promise", "unicorn",
+        "@babel",
+        "filenames",
+        "import",
+        "jsdoc",
+        "mocha",
+        "node",
+        "promise",
+        "unicorn",
     ],
 
+    parser: "@babel/eslint-parser",
     parserOptions: {
-        sourceType: "module",
+        requireConfigFile: false,
+        babelOptions: {
+            plugins: [
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-syntax-top-level-await",
+            ],
+        },
     },
 
     env: {
@@ -337,6 +351,12 @@ export default {
         "symbol-description": 2,
         "template-curly-spacing": 2,
         "yield-star-spacing": 2,
+
+        "@babel/new-cap": 2,
+        "@babel/no-invalid-this": 2,
+        "@babel/no-unused-expressions": 2,
+        "@babel/object-curly-spacing": 0,
+        "@babel/semi": 2,
 
         "filenames/match-regex": [2, "^_?[a-z][0-9a-z]*(-[0-9a-z]+)*$"],
         "filenames/match-exported": [2, "kebab"],

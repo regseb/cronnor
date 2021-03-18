@@ -1,7 +1,9 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 
-fs.rmdirSync("coverage/",     { recursive: true });
-fs.rmdirSync("dist/",         { recursive: true });
-fs.rmdirSync("jsdocs/",       { recursive: true });
-fs.rmdirSync("node_modules/", { recursive: true });
-fs.rmdirSync("types/",        { recursive: true });
+const paths = await fs.readFile(".gitignore");
+paths.toString()
+     .split("\n")
+     .filter((p) => "" !== p)
+     // Enlever la barre oblique commençant le chemin.
+     .map((p) => p.slice(1))
+     .forEach((p) => fs.rm(p, { force: true, recursive: true }));

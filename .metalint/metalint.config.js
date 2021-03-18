@@ -2,7 +2,7 @@ export default {
     patterns: [
         "!/.git/",
         "!/coverage/",
-        "!/dist/",
+        "!/index.js",
         "!/jsdocs/",
         "!/node_modules/",
         "!/types/",

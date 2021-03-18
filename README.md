@@ -69,7 +69,7 @@ Crée une tâche _cronée_.
 - Exceptions :
   - `Error` : Si la syntaxe d'une expession _cron_ est incorrecte.
   - `RangeError` : Si un intervalle d'une expression _cron_ est invalide (hors
-    limite ou quand la borne supérieure est plus grande que la borne
+    limite ou quand la borne supérieure est plus petite que la borne
     inférieure).
   - `TypeError` : Si le constructeur est appelé sans le mot clé `new` ou si un
     des paramètres n'a pas le bon type.
@@ -124,20 +124,22 @@ Désactive la tâche.
 
 ### `.test([date])`
 
-Teste si une expression _cron_ de la tâche est respectée.
+Teste si une date respecte une des expressions _cron_ de la tâche.
 
 - Paramètre :
   - `date` (`Date`) : La date qui sera testée (ou l'instant présent par défaut).
-- Valeur retournée : `true` si une expression est respectée ; sinon `false`.
+- Valeur retournée : `true` si une des expressions est respectée ; sinon
+  `false`.
 
 ### `.next([start])`
 
-Calcule la prochaine date respectant une expression _cron_ de la tâche.
+Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 
 - Paramètre :
   - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
-- Valeur retournée : La prochaine date respectant une expression ou `undefined`
-  s'il n'y a pas de prochaine date (quand il n'y a aucune expression _cron_).
+- Valeur retournée : La prochaine date respectant une des expressions ou
+  `undefined` s'il n'y a pas de prochaine date (quand il y a aucune expression
+  _cron_).
 
 ## Expression _cron_
 
@@ -146,7 +148,7 @@ séparés par une espace. Les éléments représentent :
 
 1. les minutes : `0` à `59` ;
 2. les heures : `0` à `23` ;
-3. le jour du mois : `0` à `31` ;
+3. le jour du mois : `1` à `31` ;
 4. le mois : `1` ou `jan`, `2` ou `feb`, ..., `12` ou `dec` ;
 5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, ..., `6` ou `sat`.
 

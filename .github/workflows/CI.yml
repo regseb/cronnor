@@ -24,7 +24,7 @@ jobs:
         run: npm run lint
 
       - name: Check types
-        run: npm run tsc:lint
+        run: npm run lint:tsc
         if: always()
 
   test:

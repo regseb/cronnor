@@ -7,14 +7,9 @@
 import { Field } from "./field.js";
 
 /**
- * @typedef {Object<string, string>} StringStringObject
- * @typedef {Object<string, number>} StringNumberObject
- */
-
-/**
  * Les chaines spéciales avec leur équivalent.
  *
- * @type {StringStringObject}
+ * @type {Object<string, string>}
  * @private
  */
 const NICKNAMES = {
@@ -70,11 +65,14 @@ const NAMES = [
     ],
 ];
 
+/* eslint-disable jsdoc/check-types -- Utiliser la notation Array<> car l'outil
+ *     JSDoc ne gère pas les tableaux de types complexes déclarés avec [].
+ *     https://github.com/jsdoc/jsdoc/issues/1133 */
 /**
- * Les valeurs minimales et maximales (incluses) pouvant être saisies dans les
- * cinq champs (pour des valeurs simples ou des intervalles).
+ * Les valeurs minimales et maximales (incluses) saisissables dans les cinq
+ * champs (pour des valeurs simples ou des intervalles).
  *
- * @type {StringNumberObject[]}
+ * @type {Array<Object<string, number>>}
  * @private
  */
 const LIMITS = [
@@ -89,6 +87,7 @@ const LIMITS = [
     // Jour de la semaine.
     { min: 0, max: 7 },
 ];
+/* eslint-enable jsdoc/check-types */
 
 /**
  * Le nombre maximum de jours pour chaque mois.
@@ -99,8 +98,8 @@ const LIMITS = [
 const MAX_DAYS_IN_MONTHS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 /**
- * Le message d'erreur (suivi de l'expression <em>cron</em>) renvoyé dans
- * l'exception.
+ * Le message d'erreur (qui sera suivi de l'expression <em>cron</em>) renvoyé
+ * dans l'exception.
  *
  * @type {string}
  * @private
@@ -116,12 +115,56 @@ const ERROR = "Syntax error, unrecognized expression: ";
 export const CronExp = class {
 
     /**
+     * Les valeurs possibles pour les minutes.
+     *
+     * @type {Field}
+     * @private
+     */
+    _minutes;
+
+    /**
+     * Les valeurs possibles pour les heures.
+     *
+     * @type {Field}
+     * @private
+     */
+    _hours;
+
+    /**
+     * Les valeurs possibles pour le jour du mois.
+     *
+     * @type {Field}
+     * @private
+     */
+    _date;
+
+    /**
+     * Les valeurs possibles pour le mois (dont les numéros commencent à zéro
+     * pour utiliser la même numérotation que
+     * <code>Date.prototype.getMonth()</code>).
+     *
+     * @type {Field}
+     * @private
+     */
+    _month;
+
+    /**
+     * Les valeurs possibles pour le jour de la semaine (en utilisant toujours
+     * <code>0</code> pour le dimanche pour utiliser la même numéroration que
+     * <code>Date.prototype.getDay()</code>).
+     *
+     * @type {Field}
+     * @private
+     */
+    _day;
+
+    /**
      * Crée une expression <em>cron</em>.
      *
      * @param {string} pattern Le motif de l'expression <em>cron</em>.
      * @throws {Error}      Si la syntaxe du motif est incorrecte.
      * @throws {RangeError} Si un intervalle est invalide (hors limite ou quand
-     *                      la borne supérieure est plus grande que la borne
+     *                      la borne supérieure est plus petite que la borne
      *                      inférieure).
      * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
      *                      <code>new</code> ou si le motif n'est pas une chaine
@@ -129,8 +172,9 @@ export const CronExp = class {
      * @public
      */
     constructor(pattern) {
-        // Séparer les cinq champs (minute, heure, jour du mois, mois et jour de
-        // la semaine).
+        // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
+        // les cinq champs (minute, heure, jour du mois, mois et jour de la
+        // semaine).
         const fields = (NICKNAMES[pattern] ?? pattern).split(/\s+/u);
         if (5 !== fields.length) {
             throw new Error(ERROR + pattern);
@@ -188,46 +232,12 @@ export const CronExp = class {
             }));
         });
 
-        /**
-         * Les valeurs possibles pour les minutes.
-         *
-         * @type {Field}
-         * @private
-         */
         this._minutes = conds[0];
-
-        /**
-         * Les valeurs possibles pour les heures.
-         *
-         * @type {Field}
-         * @private
-         */
         this._hours = conds[1];
-
-        /**
-         * Les valeurs possibles pour le jour du mois.
-         *
-         * @type {Field}
-         * @private
-         */
         this._date = conds[2];
-
-        /**
-         * Les valeurs possibles pour le mois (dont le numéro commence à zéro
-         * pour janvier).
-         *
-         * @type {Field}
-         * @private
-         */
+        // Faire commencer les mois à zéro pour janvier.
         this._month = conds[3].map((v) => v - 1);
-
-        /**
-         * Les valeurs possibles pour le jour de la semaine (en utilisant
-         * toujours <code>0</code> pour le dimanche).
-         *
-         * @type {Field}
-         * @private
-         */
+        // Toujours utiliser zéro pour le dimanche.
         this._day = conds[4].map((v) => (7 === v ? 0 : v));
 
         // Récupérer le mois le plus long parmi tous les mois autorisés.
@@ -239,7 +249,7 @@ export const CronExp = class {
     }
 
     /**
-     * Teste si l'expression est respectée.
+     * Teste si une date respecte l'expression.
      *
      * @param {Date} [date] La date qui sera testée (ou l'instant présent par
      *                      défaut).

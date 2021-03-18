@@ -13,8 +13,7 @@ import { CronExp } from "./cronexp.js";
  * @private
  * @see https://nodejs.org/api/timers.html
  */
-// eslint-disable-next-line unicorn/numeric-separators-style
-const MAX_DELAY = 2147483647;
+const MAX_DELAY = 2_147_483_647;
 
 /**
  * La classe d'une tâche <em>cronée</em>.
@@ -23,6 +22,52 @@ const MAX_DELAY = 2147483647;
  * @public
  */
 export const Cron = class {
+
+    /**
+     * La liste des expressions <em>cron</em> indiquant les horaires d'exécution
+     * de la tâche.
+     *
+     * @type {CronExp[]}
+     * @private
+     */
+    _cronexes;
+
+    /**
+     * La fonction appelée à chaque horaire indiqué dans les expressions
+     * <em>cron</em>.
+     *
+     * @type {Function}
+     * @private
+     */
+    _func;
+
+    /**
+     * Le <code>this</code> utilisé pour la fonction.
+     *
+     * @type {any}
+     * @private
+     */
+    // eslint-disable-next-line no-invalid-this
+    _thisArg = this;
+
+    /**
+     * La liste des paramètres passés à la fonction.
+     *
+     * @type {any[]}
+     * @private
+     */
+    _args = [];
+
+    /**
+     * L'identifiant du minuteur de la prochaine exécution ; ou
+     * <code>undefined</code> s'il la tâche est active, mais il n'y a pas de
+     * prochaine exécution (car il y a aucune expression <em>cron</em>) ; ou
+     * <code>null</code> si la tâche est désactivée.
+     *
+     * @type {any}
+     * @private
+     */
+    _timeoutID = null;
 
     /**
      * Crée une tâche <em>cronée</em>.
@@ -40,7 +85,7 @@ export const Cron = class {
      *                      incorrecte.
      * @throws {RangeError} Si un intervalle d'une expression <em>cron</em> est
      *                      invalide (hors limite ou quand la borne supérieure
-     *                      est plus grande que la borne inférieure).
+     *                      est plus petite que la borne inférieure).
      * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
      *                      <code>new</code> ou si un des paramètres n'a pas le
      *                      bon type.
@@ -49,49 +94,8 @@ export const Cron = class {
     constructor(cronex, func, active = true) {
         const cronexes = Array.isArray(cronex) ? cronex
                                                : [cronex];
-
-        /**
-         * La liste des expressions <em>cron</em> indiquant les horaires
-         * d'exécution de la tâche.
-         *
-         * @type {CronExp[]}
-         * @private
-         */
-        this._cronexes = cronexes.map((n) => new CronExp(n));
-
-        /**
-         * La fonction appelée à chaque horaire indiqué dans les expressions
-         * <em>cron</em>.
-         *
-         * @type {Function}
-         * @private
-         */
+        this._cronexes = cronexes.map((p) => new CronExp(p));
         this._func = func;
-
-        /**
-         * Le <code>this</code> utilisé pour la fonction.
-         *
-         * @type {any}
-         * @private
-         */
-        this._thisArg = this;
-
-        /**
-         * La liste des paramètres passés à la fonction.
-         *
-         * @type {any[]}
-         * @private
-         */
-        this._args = [];
-
-        /**
-         * L'identifiant du minuteur de la prochaine exécution ; ou
-         * <code>null</code> si la tâche est désactivée.
-         *
-         * @type {any}
-         * @private
-         */
-        this._timeoutID = null;
 
         if (active) {
             this._schedule();
@@ -230,12 +234,12 @@ export const Cron = class {
     }
 
     /**
-     * Teste si une expression <em>cron</em> de la tâche est respectée.
+     * Teste si une date respecte une des expressions <em>cron</em> de la tâche.
      *
      * @param {Date} [date] La date qui sera testée (ou l'instant présent par
      *                      défaut).
-     * @returns {boolean} <code>true</code> si une expression est respectée ;
-     *                    sinon <code>false</code>.
+     * @returns {boolean} <code>true</code> si une des expressions est
+     *                    respectée ; sinon <code>false</code>.
      * @public
      */
     test(date = new Date()) {
@@ -243,13 +247,13 @@ export const Cron = class {
     }
 
     /**
-     * Calcule la prochaine date respectant une expression <em>cron</em> de la
-     * tâche.
+     * Calcule la prochaine date respectant une des expressions <em>cron</em> de
+     * la tâche.
      *
      * @param {Date} [start] La date de début (ou l'instant présent par défaut).
-     * @returns {Date|undefined} La prochaine date respectant une expression ou
-     *                           <code>undefined</code> s'il n'y a pas de
-     *                           prochaine date (quand il n'y a aucune
+     * @returns {Date|undefined} La prochaine date respectant une des
+     *                           expressions ou <code>undefined</code> s'il n'y
+     *                           a pas de prochaine date (quand il y a aucune
      *                           expression <em>cron</em>).
      * @public
      */

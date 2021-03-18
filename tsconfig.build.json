@@ -22,6 +22,6 @@
         "emitDeclarationOnly": true
     },
     "include": [
-        "src/cron.js"
+        "index.js"
     ]
 }
