@@ -1,7 +1,7 @@
 {
     "name": "cronnor",
     "version": "1.1.1",
-    "description": "Bibliothèque JavaScript implémentant un programme Unix cron.",
+    "description": "Bibliothèque JavaScript implémentant un programme cron.",
     "keywords": [
         "cron",
         "crontab",

@@ -60,8 +60,9 @@ import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor";
 Crée une tâche _cronée_.
 
 - Paramètres :
-  - `cronex` (`string | string[]`): La ou les [expressions
+  - `cronex` (`string` ou `string[]`) : La ou les [expressions
     _cron_](#expression-cron) indiquant les horaires d'exécution de la tâche.
+    Avec un tableau vide, la tâche ne sera jamais exécutée.
   - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
     expressions _cron_.
   - `active` (`boolean`) : `true` (par défaut) pour activer la tâche ; sinon
@@ -179,7 +180,7 @@ _crontab_](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.ht
 
 [link-npm]:https://www.npmjs.com/package/cronnor
 [link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor
-[link-build]:https://github.com/regseb/cronnor/actions?query=workflow%3ACI+branch%3Amaster
+[link-build]:https://github.com/regseb/castkodi/actions/workflows/ci.yml?query=branch%3Amaster
 [link-coverage]:https://coveralls.io/github/regseb/cronnor
 [link-dependencies]:https://david-dm.org/regseb/cronnor
 [link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"

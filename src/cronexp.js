@@ -110,7 +110,6 @@ const ERROR = "Syntax error, unrecognized expression: ";
  * La classe d'une expression <em>cron</em>.
  *
  * @class CronExp
- * @public
  */
 export const CronExp = class {
 
@@ -169,7 +168,6 @@ export const CronExp = class {
      * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
      *                      <code>new</code> ou si le motif n'est pas une chaine
      *                      de caractères.
-     * @public
      */
     constructor(pattern) {
         // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
@@ -251,11 +249,10 @@ export const CronExp = class {
     /**
      * Teste si une date respecte l'expression.
      *
-     * @param {Date} [date] La date qui sera testée (ou l'instant présent par
-     *                      défaut).
+     * @param {Date} [date=new Date()] La date qui sera testée (ou l'instant
+     *                                 présent par défaut).
      * @returns {boolean} <code>true</code> si l'expression est respectée ;
      *                    sinon <code>false</code>.
-     * @public
      */
     test(date = new Date()) {
         // Vérifier que la minute, l'heure et le mois respectent les conditions.
@@ -281,8 +278,8 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
-     * condition des minutes.
+     * Calcule la prochaine date (ou garde la date de début si les minutes
+     * respectent la condition) en vérifiant seulement la condition des minutes.
      *
      * @param {Date} start La date de début.
      * @returns {Date} La prochaine date vérifiant la condition des minutes.
@@ -305,8 +302,8 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
-     * condition des heures.
+     * Calcule la prochaine date (ou garde la date de début si les heures
+     * respectent la condition) en vérifiant seulement la condition des heures.
      *
      * @param {Date} start La date de début.
      * @returns {Date} La prochaine date vérifiant la condition des heures.
@@ -330,8 +327,9 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
-     * condition du jour du mois.
+     * Calcule la prochaine date (ou garde la date de début si le jour du mois
+     * respecte la condition) en vérifiant seulement la condition du jour du
+     * mois.
      *
      * @param {Date} start La date de début.
      * @returns {Date} La prochaine date vérifiant la condition du jour du
@@ -360,8 +358,9 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
-     * condition du jour de la semaine.
+     * Calcule la prochaine date (ou garde la date de début si le jour de la
+     * semaine respecte la condition) en vérifiant seulement la condition du
+     * jour de la semaine.
      *
      * @param {Date} start La date de début.
      * @returns {Date} La prochaine date vérifiant la condition du jour de la
@@ -387,7 +386,8 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
+     * Calcule la prochaine date (ou garde la date de début si le jour du mois
+     * ou de la semaine respecte la condition) en vérifiant seulement la
      * condition du jour du mois ou de la semaine.
      *
      * @param {Date} start La date de début.
@@ -411,8 +411,8 @@ export const CronExp = class {
     }
 
     /**
-     * Calcule la prochaine date (ou la date de début) en vérifiant seulement la
-     * condition du mois.
+     * Calcule la prochaine date (ou garde la date de début si le mois respecte
+     * la condition) en vérifiant seulement la condition du mois.
      *
      * @param {Date} start La date de début.
      * @returns {Date} La prochaine date vérifiant la condition du mois.
@@ -443,9 +443,9 @@ export const CronExp = class {
     /**
      * Calcule la prochaine date respectant l'expression.
      *
-     * @param {Date} [start] La date de début (ou l'instant présent par défaut).
+     * @param {Date} [start=new Date()] La date de début (ou l'instant présent
+     *                                  par défaut).
      * @returns {Date} La prochaine date respectant l'expression.
-     * @public
      */
     next(start = new Date()) {
         let date = new Date(start.getTime());

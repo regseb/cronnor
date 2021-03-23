@@ -8,7 +8,6 @@
  * La classe d'un champ d'une expression <em>cron</em>.
  *
  * @class Field
- * @public
  */
 export const Field = class {
 
@@ -17,7 +16,6 @@ export const Field = class {
      *
      * @param {number} value La valeur autorisée pour le champ.
      * @returns {Field} Le champ avec la valeur.
-     * @public
      */
     static of(value) {
         return new Field([value]);
@@ -30,7 +28,6 @@ export const Field = class {
      * @param {number} min La valeur minimale (incluse) autorisée.
      * @param {number} max La valeur maximale (incluse) autorisée.
      * @returns {Field} Le champ avec toutes les valeurs (sans restriction).
-     * @public
      */
     static all(min, max) {
         const values = [];
@@ -48,7 +45,6 @@ export const Field = class {
      * @param {number} max La valeur maximale (incluse) autorisée.
      * @param {number} step Le pas entre les valeurs.
      * @returns {Field} Le champ avec l'intervalle de valeurs.
-     * @public
      */
     static range(min, max, step) {
         const values = [];
@@ -63,7 +59,6 @@ export const Field = class {
      *
      * @param {Field[]} fields La liste des champs qui seront regroupés.
      * @returns {Field} Le champ avec toutes les valeurs.
-     * @public
      */
     static flat(fields) {
         return new Field(fields.flatMap((f) => f._values));
@@ -90,12 +85,12 @@ export const Field = class {
     /**
      * Crée un champ d'une expression <em>cron</em>.
      *
-     * @param {number[]} values       La liste des valeurs autorisées pour le
-     *                                champ.
-     * @param {boolean}  [restricted] <code>true</code> (par défaut) pour un
-     *                                champ qui était différent de
-     *                                <code>"*"</code> ; sinon
-     *                                <code>false</code>.
+     * @param {number[]} values            La liste des valeurs autorisées pour
+     *                                     le champ.
+     * @param {boolean}  [restricted=true] <code>true</code> (par défaut) pour
+     *                                     un champ qui était différent de
+     *                                     <code>"*"</code> ; sinon
+     *                                     <code>false</code>.
      * @private
      */
     constructor(values, restricted = true) {
@@ -112,7 +107,6 @@ export const Field = class {
      *
      * @returns {boolean} <code>true</code> si le champ était différent de
      *                    <code>"*"</code> ; sinon <code>false</code>.
-     * @public
      */
     get restricted() {
         return this._restricted;
@@ -122,7 +116,6 @@ export const Field = class {
      * Retourne la valeur minimale.
      *
      * @returns {number} La valeur minimale.
-     * @public
      */
     get min() {
         return this._values[0];
@@ -132,7 +125,6 @@ export const Field = class {
      * Retourne la valeur maximale.
      *
      * @returns {number} La valeur maximale.
-     * @public
      */
     get max() {
         return this._values[this._values.length - 1];
@@ -142,7 +134,6 @@ export const Field = class {
      * Retourne la liste des valeurs autorisées pour le champ.
      *
      * @returns {number[]} La liste des valeurs.
-     * @public
      */
     values() {
         return this._values;
@@ -155,7 +146,6 @@ export const Field = class {
      *                                                              appelée sur
      *                                                              les valeurs.
      * @returns {Field} Le nouveau champ avec les valeurs modifiées.
-     * @public
      */
     map(callback) {
         return new Field(this._values.map(callback), this._restricted);
@@ -167,7 +157,6 @@ export const Field = class {
      * @param {number} value La valeur qui sera testée.
      * @returns {boolean} <code>true</code> si la valeur est présente ; sinon
      *                    <code>false</code>.
-     * @public
      */
     test(value) {
         return this._values.includes(value);
@@ -180,7 +169,6 @@ export const Field = class {
      * @returns {number|undefined} La prochaine valeur ; ou
      *                             <code>undefined</code> si la valeur initiale
      *                             est supérieure à la valeur maximale.
-     * @public
      */
     next(value) {
         return this._values.find((v) => value < v);

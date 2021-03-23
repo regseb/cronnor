@@ -19,7 +19,6 @@ const MAX_DELAY = 2_147_483_647;
  * La classe d'une tâche <em>cronée</em>.
  *
  * @class Cron
- * @public
  */
 export const Cron = class {
 
@@ -72,15 +71,17 @@ export const Cron = class {
     /**
      * Crée une tâche <em>cronée</em>.
      *
-     * @param {string|string[]} cronex   La ou les expressions <em>cron</em>
-     *                                   indiquant
-     *                                   les horaires d'exécution de la tâche.
-     * @param {Function}        func     La fonction appelée à chaque horaire
-     *                                   indiqué dans les expressions
-     *                                   <em>cron</em>.
-     * @param {boolean}         [active] <code>true</code> (par défaut) pour
-     *                                   activer la tâche ; sinon
-     *                                   <code>false</code>.
+     * @param {string|string[]} cronex        La ou les expressions
+     *                                        <em>cron</em> indiquant les
+     *                                        horaires d'exécution de la tâche.
+     *                                        Avec un tableau vide, la tâche ne
+     *                                        sera jamais exécutée.
+     * @param {Function}        func          La fonction appelée à chaque
+     *                                        horaire indiqué dans les
+     *                                        expressions <em>cron</em>.
+     * @param {boolean}         [active=true] <code>true</code> (par défaut)
+     *                                        pour activer la tâche ; sinon
+     *                                        <code>false</code>.
      * @throws {Error}      Si la syntaxe d'une expession <em>cron</em> est
      *                      incorrecte.
      * @throws {RangeError} Si un intervalle d'une expression <em>cron</em> est
@@ -89,7 +90,6 @@ export const Cron = class {
      * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
      *                      <code>new</code> ou si un des paramètres n'a pas le
      *                      bon type.
-     * @public
      */
     constructor(cronex, func, active = true) {
         const cronexes = Array.isArray(cronex) ? cronex
@@ -107,7 +107,6 @@ export const Cron = class {
      *
      * @returns {boolean} <code>true</code> si la tâche est active ; sinon
      *                    <code>false</code>.
-     * @public
      */
     get active() {
         return null !== this._timeoutID;
@@ -119,7 +118,6 @@ export const Cron = class {
      * @param {any}    thisArg Le <code>this</code> utilisé pour la fonction.
      * @param {...any} args    Les paramètres passés à la fonction.
      * @returns {Cron} La tâche elle-même.
-     * @public
      */
     bind(thisArg, ...args) {
         this._thisArg = thisArg;
@@ -132,7 +130,6 @@ export const Cron = class {
      * passés à la fonction.
      *
      * @returns {Cron} La tâche elle-même.
-     * @public
      */
     unbind() {
         this._thisArg = this;
@@ -145,7 +142,6 @@ export const Cron = class {
      *
      * @param {...any} args Les paramètres passés à la fonction.
      * @returns {Cron} La tâche elle-même.
-     * @public
      */
     withArguments(...args) {
         this._args = args;
@@ -154,8 +150,6 @@ export const Cron = class {
 
     /**
      * Exécute manuellement la fonction.
-     *
-     * @public
      */
     run() {
         this._func.bind(this._thisArg)(...this._args);
@@ -208,7 +202,6 @@ export const Cron = class {
      *
      * @returns {boolean} <code>true</code> quand la tâche a été activée ;
      *                    <code>false</code> si elle était déjà active.
-     * @public
      */
     start() {
         if (this.active) {
@@ -223,7 +216,6 @@ export const Cron = class {
      *
      * @returns {boolean} <code>true</code> quand la tâche a été désactivée ;
      *                    <code>false</code> si elle était déjà inactive.
-     * @public
      */
     stop() {
         if (!this.active) {
@@ -236,11 +228,10 @@ export const Cron = class {
     /**
      * Teste si une date respecte une des expressions <em>cron</em> de la tâche.
      *
-     * @param {Date} [date] La date qui sera testée (ou l'instant présent par
-     *                      défaut).
+     * @param {Date} [date=new Date()] La date qui sera testée (ou l'instant
+     *                                 présent par défaut).
      * @returns {boolean} <code>true</code> si une des expressions est
      *                    respectée ; sinon <code>false</code>.
-     * @public
      */
     test(date = new Date()) {
         return this._cronexes.some((c) => c.test(date));
@@ -250,12 +241,12 @@ export const Cron = class {
      * Calcule la prochaine date respectant une des expressions <em>cron</em> de
      * la tâche.
      *
-     * @param {Date} [start] La date de début (ou l'instant présent par défaut).
+     * @param {Date} [start=new Date()] La date de début (ou l'instant présent
+     *                                  par défaut).
      * @returns {Date|undefined} La prochaine date respectant une des
      *                           expressions ou <code>undefined</code> s'il n'y
      *                           a pas de prochaine date (quand il y a aucune
      *                           expression <em>cron</em>).
-     * @public
      */
     next(start = new Date()) {
         if (0 === this._cronexes.length) {
