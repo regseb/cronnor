@@ -1,7 +1,5 @@
 export default {
     env: {
-        node: true,
-        es2020: true,
         mocha: true,
     },
 
@@ -14,8 +12,6 @@ export default {
         "max-statements": 0,
 
         "prefer-arrow-callback": 0,
-
-        "import/no-nodejs-modules": 0,
 
         "mocha/handle-done-callback": 2,
         "mocha/max-top-level-suites": 2,

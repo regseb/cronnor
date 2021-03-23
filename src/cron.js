@@ -169,6 +169,7 @@ export const Cron = class {
             this._timeoutID = undefined;
         } else {
             const delay = next.getTime() - Date.now();
+            // eslint-disable-next-line unicorn/prefer-ternary
             if (MAX_DELAY >= delay) {
                 // Planifier la prochaine exécution.
                 this._timeoutID = setTimeout(() => {

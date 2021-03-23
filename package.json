@@ -19,11 +19,8 @@
     "funding": "https://www.paypal.me/sebastienregne",
     "files": [
         "index.js",
-        "types/"
+        "index.d.ts"
     ],
-    "main": "index.js",
-    "browser": "index.js",
-    "types": "types/index.d.ts",
     "repository": "regseb/cronnor",
     "type": "module",
     "scripts": {
@@ -33,8 +30,8 @@
         "coverage:html": "c8 report --reporter html",
         "coverage:lcov": "c8 report --reporter lcovonly",
         "jsdocs": "jsdoc -r -a all -d jsdocs/ src/",
-        "bundle": "node .script/bundle",
-        "declare": "tsc -p tsconfig.build.json",
+        "bundle": "rollup src/cron.js --file index.js",
+        "declare": "tsc index.js --declaration --allowJs --emitDeclarationOnly",
         "prepare": "npm run bundle && npm run declare",
         "release": "standard-version",
         "clean": "node .script/clean.js"
@@ -45,7 +42,7 @@
         "@babel/eslint-plugin": "^7.13.10",
         "@babel/plugin-proposal-class-properties": "^7.13.0",
         "@babel/plugin-syntax-top-level-await": "^7.12.13",
-        "@types/mocha": "^8.2.1",
+        "@types/mocha": "^8.2.2",
         "@types/node": "^14.14.35",
         "@types/sinon": "^9.0.11",
         "c8": "^7.6.0",
@@ -57,14 +54,14 @@
         "eslint-plugin-mocha": "^8.1.0",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.3.1",
-        "eslint-plugin-unicorn": "^28.0.2",
+        "eslint-plugin-unicorn": "^29.0.0",
         "jsdoc": "^3.6.6",
         "jsonlint-mod": "^1.7.6",
         "markdownlint": "^0.23.1",
         "metalint": "^0.9.0",
         "mocha": "^8.3.2",
-        "rollup": "^2.41.5",
-        "sinon": "^9.2.4",
+        "rollup": "^2.42.3",
+        "sinon": "^10.0.0",
         "standard-version": "^9.1.1",
         "typescript": "^4.2.3",
         "yaml-lint": "^1.2.4"

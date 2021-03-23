@@ -2,6 +2,7 @@
     "compilerOptions": {
         "allowJs": true,
         "checkJs": true,
+        "module": "ESNext",
         "noEmit": true,
         "target": "ESNext",
 
@@ -19,6 +20,6 @@
         "noStrictGenericChecks": true
     },
     "include": [
-        "src/", "test/"
+        ".metalint/", ".script/", "src/", "test/"
     ]
 }

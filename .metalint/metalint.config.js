@@ -2,18 +2,16 @@ export default {
     patterns: [
         "!/.git/",
         "!/coverage/",
+        "!/index.d.ts",
         "!/index.js",
         "!/jsdocs/",
         "!/node_modules/",
-        "!/types/",
         "**",
     ],
     checkers: [
         {
             patterns: "/src/**/*.js",
-            linters: {
-                eslint: ["eslint.config.js", "eslint_node.config.js"],
-            },
+            linters: "eslint",
         }, {
             patterns: "/test/**/*.js",
             linters: {

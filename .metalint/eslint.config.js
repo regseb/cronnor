@@ -22,6 +22,7 @@ export default {
     },
 
     env: {
+        "shared-node-browser": true,
         es2021: true,
     },
 
@@ -277,6 +278,9 @@ export default {
         "no-tabs": 2,
         "no-ternary": 0,
         "no-trailing-spaces": 2,
+        // Autoriser les underscores pour pouvoir indiquer qu'une propriété est
+        // privée (en attendant l'implémentation des propriétés privées avec #).
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1562054
         "no-underscore-dangle": 0,
         "no-unneeded-ternary": 2,
         "no-whitespace-before-property": 2,
@@ -392,7 +396,7 @@ export default {
         "import/first": 2,
         "import/exports-last": 0,
         "import/no-duplicates": 2,
-        "import/no-namespace": 2,
+        "import/no-namespace": 0,
         "import/extensions": [2, "ignorePackages"],
         "import/order": 2,
         "import/newline-after-import": 2,
