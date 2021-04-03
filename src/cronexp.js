@@ -240,7 +240,7 @@ export const CronExp = class {
 
         // Récupérer le mois le plus long parmi tous les mois autorisés.
         const max = Math.max(...this._month.values()
-                                          .map((m) => MAX_DAYS_IN_MONTHS[m]));
+                                           .map((m) => MAX_DAYS_IN_MONTHS[m]));
         if (max < this._date.min) {
             throw new RangeError(ERROR + pattern);
         }
