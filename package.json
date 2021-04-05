@@ -28,7 +28,7 @@
         "lint:type": "tsc",
         "test": "stryker run",
         "jsdocs": "jsdoc -r -a all -d jsdocs/ src/",
-        "bundle": "rollup src/cron.js --file index.js",
+        "bundle": "rollup src/index.js --file index.js",
         "declare": "tsc index.js --declaration --allowJs --emitDeclarationOnly",
         "prepare": "npm run bundle && npm run declare",
         "release": "standard-version",

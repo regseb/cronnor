@@ -39,23 +39,28 @@ Elle est aussi accessible directement avec le CDN
 [_jsDelivr_](https://www.jsdelivr.com/package/npm/cronnor) :
 
 ```JavaScript
-import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor";
+import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor@v1";
 ```
 
 ## API
 
 - [`new Cron(cronex, func, [active])`](#new-croncronex-func-active)
-- [`.active`](#active-lecture-seule)
-- [`.bind(thisArg, ...args)`](#bindthisarg-args)
-- [`.unbind()`](#unbind)
-- [`.withArguments(...args)`](#withargumentsargs)
-- [`.run()`](#run)
-- [`.start()`](#start)
-- [`.stop()`](#stop)
-- [`.test([date])`](#testdate)
-- [`.next([start])`](#nextstart)
+  - [`Cron.active`](#cronactive-lecture-seule)
+  - [`Cron.bind(thisArg, ...args)`](#cronbindthisarg-args)
+  - [`Cron.unbind()`](#cronunbind)
+  - [`Cron.withArguments(...args)`](#cronwithargumentsargs)
+  - [`Cron.run()`](#cronrun)
+  - [`Cron.start()`](#cronstart)
+  - [`Cron.stop()`](#cronstop)
+  - [`Cron.test([date])`](#crontestdate)
+  - [`Cron.next([start])`](#cronnextstart)
+- [`new CronExp(pattern)`](#new-cronexppattern)
+  - [`CronExp.test([date])`](#cronexptestdate)
+  - [`CronExp.next([start])`](#cronexpnextstart)
 
-### `new Cron(cronex, func, [active])`
+### Cron
+
+#### `new Cron(cronex, func, [active])`
 
 Crée une tâche _cronée_.
 
@@ -75,13 +80,13 @@ Crée une tâche _cronée_.
   - `TypeError` : Si le constructeur est appelé sans le mot clé `new` ou si un
     des paramètres n'a pas le bon type.
 
-### `.active` (lecture seule)
+#### `Cron.active` (lecture seule)
 
 Récupère l'état de la tâche (active ou non).
 
 - Valeur retournée : `true` si la tâche est active ; sinon `false`.
 
-### `.bind(thisArg, ...args)`
+#### `Cron.bind(thisArg, ...args)`
 
 Définit le `this` et les paramètres passés à la fonction.
 
@@ -90,14 +95,14 @@ Définit le `this` et les paramètres passés à la fonction.
   - `args` (`...any`) : Les paramètres passés à la fonction.
 - Valeur retournée : La tâche elle-même.
 
-### `.unbind()`
+#### `Cron.unbind()`
 
 Remet les valeurs par défaut pour le `this` et les paramètres passés à la
 fonction.
 
 - Valeur retournée : La tâche elle-même.
 
-### `.withArguments(...args)`
+#### `Cron.withArguments(...args)`
 
 Définit les paramètres passés à la fonction.
 
@@ -105,25 +110,25 @@ Définit les paramètres passés à la fonction.
   - `args` (`...any`) : Les paramètres passés à la fonction.
 - Valeur retournée : La tâche elle-même.
 
-### `.run()`
+#### `Cron.run()`
 
 Exécute manuellement la fonction.
 
-### `.start()`
+#### `Cron.start()`
 
 Active la tâche.
 
 - Valeur retournée : `true` quand la tâche a été activée ; `false` si elle était
   déjà active.
 
-### `.stop()`
+#### `Cron.stop()`
 
 Désactive la tâche.
 
 - Valeur retournée : `true` quand la tâche a été désactivée ; `false` si elle
   était déjà inactive.
 
-### `.test([date])`
+#### `Cron.test([date])`
 
 Teste si une date respecte une des expressions _cron_ de la tâche.
 
@@ -132,7 +137,7 @@ Teste si une date respecte une des expressions _cron_ de la tâche.
 - Valeur retournée : `true` si une des expressions est respectée ; sinon
   `false`.
 
-### `.next([start])`
+#### `Cron.next([start])`
 
 Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 
@@ -141,6 +146,37 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 - Valeur retournée : La prochaine date respectant une des expressions ou
   `undefined` s'il n'y a pas de prochaine date (quand il y a aucune expression
   _cron_).
+
+### CronExp
+
+#### `new CronExp(pattern)`
+
+Crée une expression _cron_.
+
+- Paramètre :
+  - `pattern` (`string`) : Le motif de l'expression _cron_
+- Exceptions :
+  - `Error` : Si la syntaxe du motif est incorrecte.
+  - `RangeError` : Si un intervalle est invalide (hors limite ou quand la borne
+    supérieure est plus petite que la borne inférieure).
+  - `TypeError` : Si le constructeur est appelé sans le mot clé `new` ou si le
+    motif n'est pas une chaine de caractères.
+
+#### `CronExp.test([date])`
+
+Teste si une date respecte l'expression.
+
+- Paramètre :
+  - `date` (`Date`) : La date qui sera testée (ou l'instant présent par défaut).
+- Valeur retournée : `true` si l'expression est respectée ; sinon `false`.
+
+#### `CronExp.next([date])`
+
+Calcule la prochaine date respectant l'expression.
+
+- Paramètre :
+  - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
+- Valeur retournée : La prochaine date respectant l'expression.
 
 ## Expression _cron_
 

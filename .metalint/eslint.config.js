@@ -273,7 +273,6 @@ export default {
             "JSXText",
             "ExportDefaultDeclaration",
             "ExportAllDeclaration",
-            "ExportSpecifier",
         ],
         "no-tabs": 2,
         "no-ternary": 0,
