@@ -83,12 +83,30 @@ describe("cronexp.js", function () {
             });
 
             it("should reject when too many fields", function () {
-                assert.throws(() => new CronExp("* * * * * *"), Error);
+                assert.throws(() => new CronExp("* * * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * * * *",
+                });
             });
 
             it("should reject when not enough fields", function () {
-                assert.throws(() => new CronExp("* * * *"), Error);
+                assert.throws(() => new CronExp("* * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression: * * * *",
+                });
             });
+
+            it("should support many spaces", function () {
+                const cronex = new CronExp("* *  *   *    *");
+                assert.ok(cronex.test(new Date("2000-01-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-01T01:01")));
+                assert.ok(cronex.test(new Date("2000-01-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+            });
+
 
             it(`should support "*"`, function () {
                 const cronex = new CronExp("* * * * *");
@@ -98,6 +116,74 @@ describe("cronexp.js", function () {
                 assert.ok(cronex.test(new Date("2000-01-02T00:00")));
                 assert.ok(cronex.test(new Date("2000-02-01T00:00")));
                 assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+            });
+
+            it(`should reject prefix "a*/x"`, function () {
+                assert.throws(() => new CronExp("foo*/1 * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " foo*/1 * * * *",
+                });
+                assert.throws(() => new CronExp("* bar*/1 * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * bar*/1 * * *",
+                });
+                assert.throws(() => new CronExp("* * baz*/1 * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * * baz*/1 * *",
+                });
+                assert.throws(() => new CronExp("* * * qux*/1 *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * * * qux*/1 *",
+                });
+                assert.throws(() => new CronExp("* * * * quux*/0"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                             " * * * * quux*/0",
+                });
+                assert.throws(() => new CronExp("foo*/1 bar*/1 baz*/1 qux*/1" +
+                                                " quux*/1"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                         " foo*/1 bar*/1 baz*/1 qux*/1 quux*/1",
+                });
+            });
+
+            it(`should reject suffix "*/xa"`, function () {
+                assert.throws(() => new CronExp("*/1foo * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " */1foo * * * *",
+                });
+                assert.throws(() => new CronExp("* */1bar * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * */1bar * * *",
+                });
+                assert.throws(() => new CronExp("* * */1baz * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * * */1baz * *",
+                });
+                assert.throws(() => new CronExp("* * * */1qux *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * * * */1qux *",
+                });
+                assert.throws(() => new CronExp("* * * * */0quux"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                             " * * * * */0quux",
+                });
+                assert.throws(() => new CronExp("*/1foo */1bar */1baz */1qux" +
+                                                " */1quux"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                         " */1foo */1bar */1baz */1qux */1quux",
+                });
             });
 
             it(`should support "*/x"`, function () {
@@ -115,14 +201,52 @@ describe("cronexp.js", function () {
                 assert.ok(!cronex.test(new Date("2001-01-08T00:00")));
             });
 
+            it(`should support "*/xx"`, function () {
+                const cronex = new CronExp("*/10 */11 */12 */13 */14");
+                assert.ok(cronex.test(new Date("2000-01-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-01T00:10")));
+                assert.ok(cronex.test(new Date("2000-01-01T11:00")));
+                assert.ok(cronex.test(new Date("2000-01-13T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+                assert.ok(!cronex.test(new Date("1999-12-31T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-01T00:01")));
+                assert.ok(!cronex.test(new Date("2000-01-01T10:00")));
+                assert.ok(!cronex.test(new Date("2000-01-12T00:00")));
+                assert.ok(!cronex.test(new Date("2000-12-01T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-01T00:01")));
+            });
+
             it(`should reject "*/0"`, function () {
-                assert.throws(() => new CronExp("*/0 * * * *"), RangeError);
-                assert.throws(() => new CronExp("* */0 * * *"), RangeError);
-                assert.throws(() => new CronExp("* * */0 * *"), RangeError);
-                assert.throws(() => new CronExp("* * * */0 *"), RangeError);
-                assert.throws(() => new CronExp("* * * * */0"), RangeError);
-                assert.throws(() => new CronExp("*/0 */0 */0 */0 */0"),
-                              RangeError);
+                assert.throws(() => new CronExp("*/0 * * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " */0 * * * *",
+                });
+                assert.throws(() => new CronExp("* */0 * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * */0 * * *",
+                });
+                assert.throws(() => new CronExp("* * */0 * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * */0 * *",
+                });
+                assert.throws(() => new CronExp("* * * */0 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * */0 *",
+                });
+                assert.throws(() => new CronExp("* * * * */0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * * */0",
+                });
+                assert.throws(() => new CronExp("*/0 */0 */0 */0 */0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                         " */0 */0 */0 */0 */0",
+                });
             });
 
             it(`should support "jan"`, function () {
@@ -393,48 +517,216 @@ describe("cronexp.js", function () {
             });
 
             it("should reject invalid input", function () {
-                assert.throws(() => new CronExp("foo * * * *"), Error);
-                assert.throws(() => new CronExp("* foo * * *"), Error);
-                assert.throws(() => new CronExp("* * foo * *"), Error);
-                assert.throws(() => new CronExp("* * * foo *"), Error);
-                assert.throws(() => new CronExp("* * * * foo"), Error);
-                assert.throws(() => new CronExp("foo bar baz qux quux"), Error);
+                assert.throws(() => new CronExp("foo * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " foo * * * *",
+                });
+                assert.throws(() => new CronExp("* foo * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * foo * * *",
+                });
+                assert.throws(() => new CronExp("* * foo * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * foo * *",
+                });
+                assert.throws(() => new CronExp("* * * foo *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * foo *",
+                });
+                assert.throws(() => new CronExp("* * * * foo"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * * foo",
+                });
+                assert.throws(() => new CronExp("foo bar baz qux quux"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                        " foo bar baz qux quux",
+                });
+            });
+
+            it(`should reject prefix "ax"`, function () {
+                assert.throws(() => new CronExp("foo0 * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " foo0 * * * *",
+                });
+                assert.throws(() => new CronExp("* bar0 * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * bar0 * * *",
+                });
+                assert.throws(() => new CronExp("* * baz1 * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * baz1 * *",
+                });
+                assert.throws(() => new CronExp("* * * qux1 *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * * qux1 *",
+                });
+                assert.throws(() => new CronExp("* * * * quux0"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * * * quux0",
+                });
+                assert.throws(() => new CronExp("foo0 bar0 baz1 qux1 quux0"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                   " foo0 bar0 baz1 qux1 quux0",
+                });
+            });
+
+            it(`should reject suffix "ax"`, function () {
+                assert.throws(() => new CronExp("0foo * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " 0foo * * * *",
+                });
+                assert.throws(() => new CronExp("* 0bar * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * 0bar * * *",
+                });
+                assert.throws(() => new CronExp("* * 1baz * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * 1baz * *",
+                });
+                assert.throws(() => new CronExp("* * * 1qux *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * * 1qux *",
+                });
+                assert.throws(() => new CronExp("* * * * 0quux"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * * * 0quux",
+                });
+                assert.throws(() => new CronExp("0foo 0bar 1baz 1qux 0quux"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                   " 0foo 0bar 1baz 1qux 0quux",
+                });
             });
 
             it("should reject input under limit", function () {
-                assert.throws(() => new CronExp("* * 0 * *"), RangeError);
-                assert.throws(() => new CronExp("* * * 0 *"), RangeError);
-                assert.throws(() => new CronExp("* * 0 0 *"), RangeError);
+                assert.throws(() => new CronExp("* * 0 * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression: * * 0 * *",
+                });
+                assert.throws(() => new CronExp("* * * 0 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression: * * * 0 *",
+                });
+                assert.throws(() => new CronExp("* * 0 0 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression: * * 0 0 *",
+                });
             });
 
             it("should reject input over limit", function () {
-                assert.throws(() => new CronExp("60 * * * *"), RangeError);
-                assert.throws(() => new CronExp("* 60 * * *"), RangeError);
-                assert.throws(() => new CronExp("* * 32 * *"), RangeError);
-                assert.throws(() => new CronExp("* * * 13 *"), RangeError);
-                assert.throws(() => new CronExp("* * * * 8"), RangeError);
-                assert.throws(() => new CronExp("60 60 32 13 8"), RangeError);
+                assert.throws(() => new CronExp("60 * * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                  " 60 * * * *",
+                });
+                assert.throws(() => new CronExp("* 60 * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                  " * 60 * * *",
+                });
+                assert.throws(() => new CronExp("* * 32 * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                  " * * 32 * *",
+                });
+                assert.throws(() => new CronExp("* * * 13 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                  " * * * 13 *",
+                });
+                assert.throws(() => new CronExp("* * * * 8"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression: * * * * 8",
+                });
+                assert.throws(() => new CronExp("60 60 32 13 8"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " 60 60 32 13 8",
+                });
             });
 
             it("should reject min over max", function () {
-                assert.throws(() => new CronExp("1-0 * * * *"), RangeError);
-                assert.throws(() => new CronExp("* 3-2 * * *"), RangeError);
-                assert.throws(() => new CronExp("* * 7-4 * *"), RangeError);
-                assert.throws(() => new CronExp("* * * 12-8 *"), RangeError);
-                assert.throws(() => new CronExp("* * * * 7-0"), RangeError);
-                assert.throws(() => new CronExp("1-0 3-2 7-4 12-8 7-0"),
-                              RangeError);
+                assert.throws(() => new CronExp("1-0 * * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " 1-0 * * * *",
+                });
+                assert.throws(() => new CronExp("* 3-2 * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * 3-2 * * *",
+                });
+                assert.throws(() => new CronExp("* * 7-4 * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * 7-4 * *",
+                });
+                assert.throws(() => new CronExp("* * * 12-8 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * * 12-8 *",
+                });
+                assert.throws(() => new CronExp("* * * * 7-0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * * 7-0",
+                });
+                assert.throws(() => new CronExp("1-0 3-2 7-4 12-8 7-0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                        " 1-0 3-2 7-4 12-8 7-0",
+                });
             });
 
             it("should reject step equal zero", function () {
-                assert.throws(() => new CronExp("0-1/0 * * * *"), RangeError);
-                assert.throws(() => new CronExp("* 2-3/0 * * *"), RangeError);
-                assert.throws(() => new CronExp("* * 4-7/0 * *"), RangeError);
-                assert.throws(() => new CronExp("* * * 8-12/0 *"), RangeError);
-                assert.throws(() => new CronExp("* * * * 0-7/0"), RangeError);
-                assert.throws(() => new CronExp("1-0/0 2-3/0 4-7/0 8-12/0" +
-                                                " 0-7/0"),
-                              RangeError);
+                assert.throws(() => new CronExp("0-1/0 * * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " 0-1/0 * * * *",
+                });
+                assert.throws(() => new CronExp("* 2-3/0 * * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * 2-3/0 * * *",
+                });
+                assert.throws(() => new CronExp("* * 4-7/0 * *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * 4-7/0 * *",
+                });
+                assert.throws(() => new CronExp("* * * 8-12/0 *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                              " * * * 8-12/0 *",
+                });
+                assert.throws(() => new CronExp("* * * * 0-7/0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * * * 0-7/0",
+                });
+                assert.throws(() => new CronExp("0-1/0 2-3/0 4-7/0 8-12/0" +
+                                                " 0-7/0"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                              " 0-1/0 2-3/0 4-7/0 8-12/0 0-7/0",
+                });
             });
 
             it(`should support "x-y"`, function () {
@@ -479,8 +771,28 @@ describe("cronexp.js", function () {
                 assert.ok(!cronex.test(new Date("2001-11-04T02:00")));
             });
 
+            it(`should support "x-y/zz"`, function () {
+                const cronex = new CronExp("0-59/10 0-23/11 1-31/12 1-12/11 *");
+                assert.ok(cronex.test(new Date("2000-01-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-01T00:10")));
+                assert.ok(cronex.test(new Date("2000-01-01T11:00")));
+                assert.ok(cronex.test(new Date("2000-01-13T00:00")));
+                assert.ok(cronex.test(new Date("2000-12-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+                assert.ok(!cronex.test(new Date("1999-12-01T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-01T00:01")));
+                assert.ok(!cronex.test(new Date("2000-01-01T10:00")));
+                assert.ok(!cronex.test(new Date("2000-01-12T00:00")));
+                assert.ok(!cronex.test(new Date("2000-11-01T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-01T00:01")));
+            });
+
             it("should reject min date over max days in month", function () {
-                assert.throws(() => new CronExp("* * 31 feb *"), RangeError);
+                assert.throws(() => new CronExp("* * 31 feb *"), {
+                    name:    "RangeError",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                " * * 31 feb *",
+                });
             });
         });
 
@@ -594,6 +906,13 @@ describe("cronexp.js", function () {
                 assert.deepStrictEqual(next, new Date("2000-01-03T00:00"));
             });
 
+            it("should get next date (which is the last date of the month)",
+                                                                   function () {
+                const cronex = new CronExp("* * 31 * *");
+                const next = cronex.next(new Date("2000-01-01T00:00"));
+                assert.deepStrictEqual(next, new Date("2000-01-31T00:00"));
+            });
+
             it("should get next date with change month", function () {
                 let cronex = new CronExp("* * 3 * *");
                 let next = cronex.next(new Date("2000-01-04T00:00"));
@@ -614,6 +933,13 @@ describe("cronexp.js", function () {
                 const cronex = new CronExp("* * * * 2");
                 const next = cronex.next(new Date("2000-01-02T00:00"));
                 assert.deepStrictEqual(next, new Date("2000-01-04T00:00"));
+            });
+
+            it("should get next day (without being the first day)",
+                                                                   function () {
+                const cronex = new CronExp("* * * * 1,3");
+                const next = cronex.next(new Date("2000-01-04T00:00"));
+                assert.deepStrictEqual(next, new Date("2000-01-05T00:00"));
             });
 
             it("should get next day with change week", function () {

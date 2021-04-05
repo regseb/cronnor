@@ -1,6 +1,7 @@
 export default {
     patterns: [
         "!/.git/",
+        "!/.stryker-tmp/",
         "!/coverage/",
         "!/index.d.ts",
         "!/index.js",

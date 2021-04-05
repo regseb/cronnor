@@ -4,6 +4,41 @@ import { Cron } from "../src/cron.js";
 
 describe("cron.js", function () {
     describe("Cron", function () {
+        describe("constructor()", function () {
+            it("should use default values", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+
+                const cron = new Cron("1 0 1 1 *", fake);
+                assert.strictEqual(cron.active, true);
+
+                // Incrémenter le temps pour le setTimeout().
+                clock.next();
+
+                assert.strictEqual(fake.callCount, 1);
+                assert.deepStrictEqual(fake.firstCall.thisValue, cron);
+                assert.deepStrictEqual(fake.firstCall.args, []);
+
+                cron.stop();
+                clock.restore();
+            });
+
+            it("should not enable task", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+
+                const cron = new Cron("1 0 1 1 *", fake, false);
+                assert.strictEqual(cron.active, false);
+
+                // Incrémenter le temps pour le setTimeout().
+                clock.next();
+
+                assert.strictEqual(fake.callCount, 0);
+
+                clock.restore();
+            });
+        });
+
         describe("get active()", function () {
             it("should return 'true' when task is actived", function () {
                 const cron = new Cron("0 0 1 1 *", () => {});
@@ -146,7 +181,8 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron([], fake, false);
-                cron.start();
+                const changed = cron.start();
+                assert.strictEqual(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -163,7 +199,8 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake, false);
-                cron.start();
+                const changed = cron.start();
+                assert.strictEqual(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -180,8 +217,10 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake, false);
-                cron.start();
-                cron.start();
+                let changed = cron.start();
+                assert.strictEqual(changed, true);
+                changed = cron.start();
+                assert.strictEqual(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -199,9 +238,11 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron1 = new Cron("1 0 1 1 *", fake1, false);
-                cron1.start();
+                const changed1 = cron1.start();
+                assert.strictEqual(changed1, true);
                 const cron2 = new Cron("1 0 1 1 *", fake2, false);
-                cron2.start();
+                const changed2 = cron2.start();
+                assert.strictEqual(changed2, true);
 
                 // Incrémenter le temps pour les setTimeout().
                 clock.next();
@@ -217,16 +258,55 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
+            it("should set exactly one interval", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01" +
+                                                           "T00:00:36.353"));
+
+                const cron = new Cron("32,33 20 25 1 *", fake, false);
+                const changed = cron.start();
+                assert.strictEqual(changed, true);
+
+                // Incrémenter deux fois le temps pour le setTimeout().
+                clock.next();
+
+                assert.ok(cron.active);
+                assert.strictEqual(fake.callCount, 1);
+
+                cron.stop();
+                clock.restore();
+            });
+
             it("should add intermediate steps", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01" +
+                                                           "T00:00:36.352"));
+
+                const cron = new Cron("32,33 20 25 1 *", fake, false);
+                const changed = cron.start();
+                assert.strictEqual(changed, true);
+
+                // Incrémenter deux fois le temps pour le setTimeout().
+                clock.next();
+                clock.next();
+
+                assert.ok(cron.active);
+                assert.strictEqual(fake.callCount, 1);
+
+                cron.stop();
+                clock.restore();
+            });
+
+            it("should add many intermediate steps", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
-                // Tester au 26 car le délai maximum supporté par Node.js est
-                // d'environ 25 jours.
-                const cron = new Cron("0 0 26 1 *", fake, false);
-                cron.start();
+                const cron = new Cron("0,1 0 28 2 *", fake, false);
+                const changed = cron.start();
+                assert.strictEqual(changed, true);
 
-                // Incrémenter deux fois le temps pour le setTimeout().
+                // Incrémenter trois fois le temps pour le setTimeout().
+                clock.next();
                 clock.next();
                 clock.next();
 
@@ -244,7 +324,8 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron([], fake);
-                cron.stop();
+                const changed = cron.stop();
+                assert.strictEqual(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -260,7 +341,8 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake);
-                cron.stop();
+                const changed = cron.stop();
+                assert.strictEqual(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -276,8 +358,10 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake);
-                cron.stop();
-                cron.stop();
+                let changed = cron.stop();
+                assert.strictEqual(changed, true);
+                changed = cron.stop();
+                assert.strictEqual(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
@@ -294,9 +378,11 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron1 = new Cron("1 0 1 1 *", fake1);
-                cron1.stop();
+                const changed1 = cron1.stop();
+                assert.strictEqual(changed1, true);
                 const cron2 = new Cron("1 0 1 1 *", fake2);
-                cron2.stop();
+                const changed2 = cron2.stop();
+                assert.strictEqual(changed2, true);
 
                 // Incrémenter le temps pour les setTimeout().
                 clock.next();

@@ -1,0 +1,5 @@
+{
+    "commandRunner": { "command": "mocha" },
+    "logLevel": "warn",
+    "reporters": ["dots", "clear-text", "dashboard"]
+}

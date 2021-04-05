@@ -22,12 +22,15 @@ const NICKNAMES = {
     "@hourly":   "0 * * * *",
 };
 
+/* eslint-disable jsdoc/check-types -- Utiliser la notation Array<> car l'outil
+ *     JSDoc ne gère pas les tableaux de types complexes déclarés avec [].
+ *     https://github.com/jsdoc/jsdoc/issues/1133 */
 /**
  * Les formes littérales des mois et des jours de la semaine. Les autres champs
  * (minute, heure et jour du mois) n'en ont pas. Ce sont les index des éléments
  * dans le tableau qui sont utilisés pour la correspondance.
  *
- * @type {string[][]}
+ * @type {Array<Array<?string>>}
  * @private
  */
 const NAMES = [
@@ -39,7 +42,9 @@ const NAMES = [
     [],
     // Mois.
     [
-        "",
+        // Commencer par une valeur nulle pour que le mois de janvier soit à
+        // l'index 1.
+        null,
         "jan",
         "feb",
         "mar",
@@ -64,6 +69,7 @@ const NAMES = [
         "sat",
     ],
 ];
+/* eslint-enable jsdoc/check-types */
 
 /* eslint-disable jsdoc/check-types -- Utiliser la notation Array<> car l'outil
  *     JSDoc ne gère pas les tableaux de types complexes déclarés avec [].
@@ -375,13 +381,8 @@ export const CronExp = class {
         const date = new Date(start.getTime());
         date.setHours(this._hours.min);
         date.setMinutes(this._minutes.min);
-        const next = this._day.next(date.getDay());
-        if (undefined === next) {
-            date.setDate(date.getDate() +
-                         (this._day.min + (7 - date.getDay())) % 7);
-        } else {
-            date.setDate(date.getDate() + (next + (7 - date.getDay())) % 7);
-        }
+        const next = this._day.next(date.getDay()) ?? this._day.min;
+        date.setDate(date.getDate() + (next + (7 - date.getDay())) % 7);
         return date;
     }
 
@@ -396,18 +397,18 @@ export const CronExp = class {
      * @private
      */
     _nextDateDay(start) {
-        let date = new Date(start.getTime());
-        if (this._date.restricted && !this._day.restricted) {
-            date = this._nextDate(date);
-        } else if (!this._date.restricted && this._day.restricted) {
-            date = this._nextDay(date);
-        } else if (this._date.restricted && this._day.restricted) {
-            const nextDate = this._nextDate(date);
-            const nextDay = this._nextDay(date);
-            date = nextDate.getTime() < nextDay.getTime() ? nextDate
-                                                          : nextDay;
-        }
-        return date;
+        const nextDate = this._nextDate(start);
+        const nextDay = this._nextDay(start);
+        // Si le jour du mois et de la semaine sont renseignés (différent de
+        // l'astérisque), prendre la prochaine date la plus proche (qui est
+        // l'équivalent de prendre la prochaine date vérifiant au moins une des
+        // deux conditions).
+        // Sinon, prendre la prochaine date la plus éloignée (qui est
+        // l'équivalent de prendre la prochaine date vérifiant les deux
+        // conditions).
+        return this._date.restricted && this._day.restricted
+                    ? new Date(Math.min(nextDate.getTime(), nextDay.getTime()))
+                    : new Date(Math.max(nextDate.getTime(), nextDay.getTime()));
     }
 
     /**

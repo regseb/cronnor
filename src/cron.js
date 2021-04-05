@@ -192,9 +192,7 @@ export const Cron = class {
      * @private
      */
     _cancel() {
-        if (undefined !== this._timeoutID) {
-            clearTimeout(this._timeoutID);
-        }
+        clearTimeout(this._timeoutID);
         this._timeoutID = null;
     }
 

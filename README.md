@@ -174,13 +174,13 @@ _crontab_](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.ht
 [img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
 [img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
 [img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
-[img-coverage]:https://img.shields.io/coveralls/github/regseb/cronnor
+[img-coverage]:https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmaster
 [img-dependencies]:https://img.shields.io/david/regseb/cronnor
 [img-semver]:https://img.shields.io/badge/semver-2.0.0-blue
 
 [link-npm]:https://www.npmjs.com/package/cronnor
 [link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor
 [link-build]:https://github.com/regseb/castkodi/actions/workflows/ci.yml?query=branch%3Amaster
-[link-coverage]:https://coveralls.io/github/regseb/cronnor
+[link-coverage]:https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/master
 [link-dependencies]:https://david-dm.org/regseb/cronnor
 [link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"
