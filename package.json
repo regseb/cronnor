@@ -21,6 +21,7 @@
         "index.js",
         "index.d.ts"
     ],
+    "main": "index.js",
     "repository": "regseb/cronnor",
     "type": "module",
     "scripts": {
