@@ -15,7 +15,7 @@ La bibliothèque JavaScript **Cronnor** fournit une classe **`Cron`** pour crée
 des tâches récurrentes. Elle est disponible pour _Node.js_ et les navigateurs.
 
 ```JavaScript
-import { Cron } from "cronnor";
+import Cron from "cronnor";
 
 function task() {
     // Awesome task to be done every working day at 8am.
@@ -39,7 +39,7 @@ Elle est aussi accessible directement avec le CDN
 [_jsDelivr_](https://www.jsdelivr.com/package/npm/cronnor) :
 
 ```JavaScript
-import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor@v1";
+import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
 ```
 
 ## API

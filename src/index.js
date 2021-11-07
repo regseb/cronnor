@@ -4,5 +4,6 @@
  * @license MIT
  */
 
-export { Cron }    from "./cron.js";
+export { Cron as default } from "./cron.js";
+export { Cron } from "./cron.js";
 export { CronExp } from "./cronexp.js";
