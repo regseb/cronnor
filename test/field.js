@@ -3,14 +3,6 @@ import { Field } from "../src/field.js";
 
 describe("field.js", function () {
     describe("Field", function () {
-        describe("of()", function () {
-            it("should create field with one value", function () {
-                const field = Field.of(1);
-                assert.deepStrictEqual(field.values(), [1]);
-                assert.ok(field.restricted);
-            });
-        });
-
         describe("all()", function () {
             it("should create field with all values", function () {
                 const field = Field.all(0, 6);

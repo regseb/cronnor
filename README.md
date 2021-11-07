@@ -21,7 +21,7 @@ function task() {
     // Awesome task to be done every working day at 8am.
 };
 
-const cron = new Cron("0 8 * * 1-5", task);
+const cron = new Cron("0 8 * * mon-fri", task);
 
 // It's holiday time !
 cron.stop();

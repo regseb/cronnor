@@ -393,6 +393,58 @@ describe("cronexp.js", function () {
                 assert.ok(!cronex.test(new Date("2001-01-01T00:00")));
             });
 
+            it("should support month name in min range", function () {
+                const cronex = new CronExp("* * * jan-2 *");
+                assert.ok(cronex.test(new Date("2000-01-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-29T23:59")));
+                assert.ok(cronex.test(new Date("2000-01-01T00:01")));
+                assert.ok(cronex.test(new Date("2000-01-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+                assert.ok(!cronex.test(new Date("1999-12-31T23:59")));
+                assert.ok(!cronex.test(new Date("2000-03-01T00:00")));
+            });
+
+            it("should support month name in max range", function () {
+                const cronex = new CronExp("* * * 10-dec *");
+                assert.ok(cronex.test(new Date("2000-10-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-12-31T23:59")));
+                assert.ok(cronex.test(new Date("2000-10-01T00:01")));
+                assert.ok(cronex.test(new Date("2000-10-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-10-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-12-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-10-01T00:00")));
+                assert.ok(!cronex.test(new Date("2000-09-30T23:59")));
+                assert.ok(!cronex.test(new Date("2001-01-01T00:00")));
+            });
+
+            it(`should support month name in range with step"`, function () {
+                const cronex = new CronExp("* * * mar-jun/2 *");
+                assert.ok(cronex.test(new Date("2000-03-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-05-30T23:59")));
+                assert.ok(cronex.test(new Date("2000-03-01T00:01")));
+                assert.ok(cronex.test(new Date("2000-03-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-03-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-05-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-03-01T00:00")));
+                assert.ok(!cronex.test(new Date("2000-02-29T23:59")));
+                assert.ok(!cronex.test(new Date("2000-04-01T00:00")));
+            });
+
+            it(`should support month name in uppercase"`, function () {
+                const cronex = new CronExp("* * * JUL-SEP *");
+                assert.ok(cronex.test(new Date("2000-07-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-09-30T23:59")));
+                assert.ok(cronex.test(new Date("2000-07-01T00:01")));
+                assert.ok(cronex.test(new Date("2000-07-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-07-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-08-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-07-01T00:00")));
+                assert.ok(!cronex.test(new Date("2000-06-30T23:59")));
+                assert.ok(!cronex.test(new Date("2000-10-01T00:00")));
+            });
+
             it(`should support "sun"`, function () {
                 const cronex = new CronExp("* * * * sun");
                 assert.ok(cronex.test(new Date("2000-01-02T00:00")));
@@ -496,6 +548,67 @@ describe("cronexp.js", function () {
                 assert.ok(!cronex.test(new Date("2000-01-09T00:00")));
                 assert.ok(!cronex.test(new Date("2000-02-08T00:00")));
                 assert.ok(!cronex.test(new Date("2001-01-08T00:00")));
+            });
+
+            it("should support day of week name in min range", function () {
+                const cronex = new CronExp("* * * * sun-1");
+                assert.ok(cronex.test(new Date("2000-01-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-03T23:59")));
+                assert.ok(cronex.test(new Date("2000-01-02T00:01")));
+                assert.ok(cronex.test(new Date("2000-01-02T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-03T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-06T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-01T00:00")));
+                assert.ok(!cronex.test(new Date("2000-01-01T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-04T00:00")));
+                assert.ok(!cronex.test(new Date("2000-02-02T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-02T00:00")));
+            });
+
+            it("should support day of week name in max range", function () {
+                const cronex = new CronExp("* * * * 6-sun");
+                assert.ok(cronex.test(new Date("2000-01-01T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-02T23:59")));
+                assert.ok(cronex.test(new Date("2000-01-01T00:01")));
+                assert.ok(cronex.test(new Date("2000-01-01T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-02T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-05T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-06T00:00")));
+                assert.ok(!cronex.test(new Date("1999-12-31T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-03T00:00")));
+                assert.ok(!cronex.test(new Date("2000-02-01T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-01T00:00")));
+            });
+
+            it("should support day of week name in range with step",
+                                                                   function () {
+                const cronex = new CronExp("* * * * tue-wed/2");
+                assert.ok(cronex.test(new Date("2000-01-04T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-04T23:59")));
+                assert.ok(cronex.test(new Date("2000-01-04T00:01")));
+                assert.ok(cronex.test(new Date("2000-01-04T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-11T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-01T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-02T00:00")));
+                assert.ok(!cronex.test(new Date("2000-01-03T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-05T00:00")));
+                assert.ok(!cronex.test(new Date("2000-02-04T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-04T00:00")));
+            });
+
+            it("should support day of week name in uppercase", function () {
+                const cronex = new CronExp("* * * * THU-FRI/3");
+                assert.ok(cronex.test(new Date("2000-01-06T00:00")));
+                assert.ok(cronex.test(new Date("2000-01-06T23:59")));
+                assert.ok(cronex.test(new Date("2000-01-06T00:01")));
+                assert.ok(cronex.test(new Date("2000-01-06T01:00")));
+                assert.ok(cronex.test(new Date("2000-01-13T00:00")));
+                assert.ok(cronex.test(new Date("2000-02-03T00:00")));
+                assert.ok(cronex.test(new Date("2001-01-04T00:00")));
+                assert.ok(!cronex.test(new Date("2000-01-05T23:59")));
+                assert.ok(!cronex.test(new Date("2000-01-07T00:00")));
+                assert.ok(!cronex.test(new Date("2000-02-06T00:00")));
+                assert.ok(!cronex.test(new Date("2001-01-06T00:00")));
             });
 
             it(`should support "x,y"`, function () {
@@ -659,6 +772,62 @@ describe("cronexp.js", function () {
                     name:    "RangeError",
                     message: "Syntax error, unrecognized expression:" +
                                                                " 60 60 32 13 8",
+                });
+            });
+
+            it("should reject input min to long", function () {
+                assert.throws(() => new CronExp("100 * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " 100 * * * *",
+                });
+                assert.throws(() => new CronExp("* 100 * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * 100 * * *",
+                });
+                assert.throws(() => new CronExp("* * 100 * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * 100 * *",
+                });
+                assert.throws(() => new CronExp("* * * 100 *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * 100 *",
+                });
+                assert.throws(() => new CronExp("* * * * 100"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                                 " * * * * 100",
+                });
+            });
+
+            it("should reject input max to long", function () {
+                assert.throws(() => new CronExp("0-100 * * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " 0-100 * * * *",
+                });
+                assert.throws(() => new CronExp("* 0-100 * * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * 0-100 * * *",
+                });
+                assert.throws(() => new CronExp("* * 1-100 * *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * 1-100 * *",
+                });
+                assert.throws(() => new CronExp("* * * 1-100 *"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * * 1-100 *",
+                });
+                assert.throws(() => new CronExp("* * * * 0-100"), {
+                    name:    "Error",
+                    message: "Syntax error, unrecognized expression:" +
+                                                               " * * * * 0-100",
                 });
             });
 

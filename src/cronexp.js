@@ -22,58 +22,69 @@ const NICKNAMES = {
     "@hourly":   "0 * * * *",
 };
 
-/* eslint-disable jsdoc/check-types -- Utiliser la notation Array<> car l'outil
- *     JSDoc ne gère pas les tableaux de types complexes déclarés avec [].
- *     https://github.com/jsdoc/jsdoc/issues/1133 */
 /**
- * Les formes littérales des mois et des jours de la semaine. Les autres champs
- * (minute, heure et jour du mois) n'en ont pas. Ce sont les index des éléments
- * dans le tableau qui sont utilisés pour la correspondance.
+ * Les formes littérales des mois et des jours de la semaine avec leur
+ * équivalent numérique. Les autres champs (minutes, heures et jour du mois)
+ * n'en ont pas.
  *
- * @type {Array<Array<?string>>}
- * @private
+ * @type {Object<string, number>[]}
  */
 const NAMES = [
-    // Minute.
-    [],
-    // Heure.
-    [],
+    // Minutes.
+    {},
+    // Heures.
+    {},
     // Jour du mois.
-    [],
+    {},
     // Mois.
-    [
-        // Commencer par une valeur nulle pour que le mois de janvier soit à
-        // l'index 1.
-        null,
-        "jan",
-        "feb",
-        "mar",
-        "apr",
-        "may",
-        "jun",
-        "jul",
-        "aug",
-        "sep",
-        "oct",
-        "nov",
-        "dec",
-    ],
+    {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+    },
     // Jour de la semaine.
-    [
-        "sun",
-        "mon",
-        "tue",
-        "wed",
-        "thu",
-        "fri",
-        "sat",
-    ],
+    {
+        sun: 0,
+        mon: 1,
+        tue: 2,
+        wed: 3,
+        thu: 4,
+        fri: 5,
+        sat: 6,
+    },
 ];
-/* eslint-enable jsdoc/check-types */
 
-/* eslint-disable jsdoc/check-types -- Utiliser la notation Array<> car l'outil
- *     JSDoc ne gère pas les tableaux de types complexes déclarés avec [].
- *     https://github.com/jsdoc/jsdoc/issues/1133 */
+/**
+ * Les formes littérales des mois et des jours de la semaine avec leur
+ * équivalent numérique dans le cas où ils sont utilisés dans la valeur maximale
+ * d'un intervalle.
+ *
+ * @type {Object<string, number>[]}
+ */
+const NAMES_MAX = NAMES.map((n) => ("sun" in n ? { ...n, sun: 7 }
+                                               : { ...n }));
+
+/**
+ * Les expressions rationnelles pour découper un intervalle.
+ *
+ * @type {RegExp[]}
+ */
+const RANGE_REGEXES = NAMES.map((n) => new RegExp(
+    `^(?<min>\\d{1,2}|${Object.keys(n).join("|")})` +
+        `(?:-(?<max>\\d{1,2}|${Object.keys(n).join("|")})` +
+        "(?:/(?<step>\\d+))?)?$",
+    "u",
+));
+
 /**
  * Les valeurs minimales et maximales (incluses) saisissables dans les cinq
  * champs (pour des valeurs simples ou des intervalles).
@@ -177,9 +188,10 @@ export const CronExp = class {
      */
     constructor(pattern) {
         // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
-        // les cinq champs (minute, heure, jour du mois, mois et jour de la
+        // les cinq champs (minutes, heures, jour du mois, mois et jour de la
         // semaine).
-        const fields = (NICKNAMES[pattern] ?? pattern).split(/\s+/u);
+        const fields = (NICKNAMES[pattern] ?? pattern).toLowerCase()
+                                                      .split(/\s+/u);
         if (5 !== fields.length) {
             throw new Error(ERROR + pattern);
         }
@@ -201,27 +213,19 @@ export const CronExp = class {
                 return Field.range(LIMITS[index].min, LIMITS[index].max, step);
             }
 
-            // Gérer le nom des mois ("jan", "feb", ...) et des jours de la
-            // semaine ("sun", "mon", ...).
-            const value = NAMES[index].indexOf(field.toLowerCase());
-            if (-1 !== value) {
-                return Field.of(value);
-            }
-
             // Gérer les listes.
             return Field.flat(field.split(",").map((range) => {
-                const subresult =
-                    // eslint-disable-next-line unicorn/no-unsafe-regex
-                    (/^(?<min>\d+)(?:-(?<max>\d+)(?:\/(?<step>\d+))?)?$/u)
-                                                                   .exec(range);
+                const subresult = RANGE_REGEXES[index].exec(range);
                 if (undefined === subresult?.groups) {
                     throw new Error(ERROR + pattern);
                 }
 
-                const min  = Number.parseInt(subresult.groups.min, 10);
-                const max  = undefined === subresult.groups.max
+                const min = NAMES[index][subresult.groups.min] ??
+                            Number.parseInt(subresult.groups.min, 10);
+                const max = undefined === subresult.groups.max
                                     ? min
-                                    : Number.parseInt(subresult.groups.max, 10);
+                                    : NAMES_MAX[index][subresult.groups.max] ??
+                                      Number.parseInt(subresult.groups.max, 10);
                 const step = undefined === subresult.groups.step
                                    ? 1
                                    : Number.parseInt(subresult.groups.step, 10);

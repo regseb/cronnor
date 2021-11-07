@@ -12,16 +12,6 @@
 export const Field = class {
 
     /**
-     * Crée un champ d'une expression <em>cron</em> autorisant une seule valeur.
-     *
-     * @param {number} value La valeur autorisée pour le champ.
-     * @returns {Field} Le champ avec la valeur.
-     */
-    static of(value) {
-        return new Field([value]);
-    }
-
-    /**
      * Crée un champ d'une expression <em>cron</em> avec toutes les valeurs
      * autorisées (sans restriction).
      *
