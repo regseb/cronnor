@@ -45,7 +45,7 @@ import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor@v1";
 ## API
 
 - [`new Cron(cronex, func, [active])`](#new-croncronex-func-active)
-  - [`Cron.active`](#cronactive-lecture-seule)
+  - [`Cron.active`](#cronactive)
   - [`Cron.bind(thisArg, ...args)`](#cronbindthisarg-args)
   - [`Cron.unbind()`](#cronunbind)
   - [`Cron.withArguments(...args)`](#cronwithargumentsargs)
@@ -81,11 +81,9 @@ Crée une tâche _cronée_.
   - `TypeError` : Si le constructeur est appelé sans le mot clé `new` ou si un
     des paramètres n'a pas le bon type.
 
-#### `Cron.active` (lecture seule)
+#### `Cron.active`
 
-Récupère l'état de la tâche (active ou non).
-
-- Valeur retournée : `true` si la tâche est active ; sinon `false`.
+Est l'état de la tâche (active ou non).
 
 #### `Cron.bind(thisArg, ...args)`
 

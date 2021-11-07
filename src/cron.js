@@ -109,7 +109,21 @@ export const Cron = class {
      *                    <code>false</code>.
      */
     get active() {
-        return null !== this._timeoutID;
+        return null !== this.#timeoutID;
+    }
+
+    /**
+     * Définit l'état de la tâche.
+     *
+     * @param {boolean} value <code>true</code> pour activer la tâche ; sinon
+     *                        <code>false</code>.
+     */
+    set active(value) {
+        if (value) {
+            this.start();
+        } else {
+            this.stop();
+        }
     }
 
     /**

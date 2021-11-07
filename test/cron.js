@@ -58,6 +58,45 @@ describe("cron.js", function () {
             });
         });
 
+        describe("set active()", function () {
+            it("should activate with 'true'", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+
+                const cron = new Cron("1 0 1 1 *", fake, false);
+                // eslint-disable-next-line no-multi-assign
+                const active = cron.active = true;
+                assert.strictEqual(active, true);
+
+                // Incrémenter le temps pour le setTimeout().
+                clock.next();
+
+                assert.strictEqual(cron.active, true);
+                assert.strictEqual(fake.callCount, 1);
+
+                cron.stop();
+                clock.restore();
+            });
+
+            it("should deactivate with 'false'", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+
+                const cron = new Cron("1 0 1 1 *", fake);
+                // eslint-disable-next-line no-multi-assign
+                const active = cron.active = false;
+                assert.strictEqual(active, false);
+
+                // Incrémenter le temps pour le setTimeout().
+                clock.next();
+
+                assert.strictEqual(cron.active, false);
+                assert.strictEqual(fake.callCount, 0);
+
+                clock.restore();
+            });
+        });
+
         describe("bind()", function () {
             it("should pass thisArg", function () {
                 const fake = sinon.fake();
