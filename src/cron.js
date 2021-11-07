@@ -7,7 +7,7 @@
 import { CronExp } from "./cronexp.js";
 
 /**
- * La valeur maximale du delai accepté par <em>Node.js</em>.
+ * La valeur maximale du délai accepté par <em>Node.js</em>.
  *
  * @type {number}
  * @private
@@ -59,8 +59,8 @@ export const Cron = class {
 
     /**
      * L'identifiant du minuteur de la prochaine exécution ; ou
-     * <code>undefined</code> s'il la tâche est active, mais il n'y a pas de
-     * prochaine exécution (car il y a aucune expression <em>cron</em>) ; ou
+     * <code>undefined</code> si la tâche est active, mais qu'il n'y a pas de
+     * prochaine exécution (car il n'y a aucune expression <em>cron</em>) ; ou
      * <code>null</code> si la tâche est désactivée.
      *
      * @type {any}
@@ -71,17 +71,16 @@ export const Cron = class {
     /**
      * Crée une tâche <em>cronée</em>.
      *
-     * @param {string|string[]} cronex        La ou les expressions
-     *                                        <em>cron</em> indiquant les
-     *                                        horaires d'exécution de la tâche.
-     *                                        Avec un tableau vide, la tâche ne
-     *                                        sera jamais exécutée.
-     * @param {Function}        func          La fonction appelée à chaque
-     *                                        horaire indiqué dans les
-     *                                        expressions <em>cron</em>.
-     * @param {boolean}         [active=true] <code>true</code> (par défaut)
-     *                                        pour activer la tâche ; sinon
-     *                                        <code>false</code>.
+     * @param {string|string[]} cronex   La ou les expressions <em>cron</em>
+     *                                   indiquant les horaires d'exécution de
+     *                                   la tâche. Avec un tableau vide, la
+     *                                   tâche ne sera jamais exécutée.
+     * @param {Function}        func     La fonction appelée à chaque horaire
+     *                                   indiqué dans les expressions
+     *                                   <em>cron</em>.
+     * @param {boolean}         [active] <code>true</code> (par défaut) pour
+     *                                   activer la tâche ; sinon
+     *                                   <code>false</code>.
      * @throws {Error}      Si la syntaxe d'une expession <em>cron</em> est
      *                      incorrecte.
      * @throws {RangeError} Si un intervalle d'une expression <em>cron</em> est
@@ -251,8 +250,8 @@ export const Cron = class {
     /**
      * Teste si une date respecte une des expressions <em>cron</em> de la tâche.
      *
-     * @param {Date} [date=new Date()] La date qui sera testée (ou l'instant
-     *                                 présent par défaut).
+     * @param {Date} [date] La date qui sera testée (ou l'instant présent par
+     *                      défaut).
      * @returns {boolean} <code>true</code> si une des expressions est
      *                    respectée ; sinon <code>false</code>.
      */
@@ -264,11 +263,10 @@ export const Cron = class {
      * Calcule la prochaine date respectant une des expressions <em>cron</em> de
      * la tâche.
      *
-     * @param {Date} [start=new Date()] La date de début (ou l'instant présent
-     *                                  par défaut).
+     * @param {Date} [start] La date de début (ou l'instant présent par défaut).
      * @returns {Date|undefined} La prochaine date respectant une des
      *                           expressions ou <code>undefined</code> s'il n'y
-     *                           a pas de prochaine date (quand il y a aucune
+     *                           a pas de prochaine date (car il n'y a aucune
      *                           expression <em>cron</em>).
      */
     next(start = new Date()) {

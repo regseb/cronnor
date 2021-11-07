@@ -93,9 +93,9 @@ const RANGE_REGEXES = NAMES.map((n) => new RegExp(
  * @private
  */
 const LIMITS = [
-    // Minute.
+    // Minutes.
     { min: 0, max: 59 },
-    // Heure.
+    // Heures.
     { min: 0, max: 23 },
     // Jour du mois.
     { min: 1, max: 31 },
@@ -156,7 +156,7 @@ export const CronExp = class {
 
     /**
      * Les valeurs possibles pour le mois (dont les numéros commencent à zéro
-     * pour utiliser la même numérotation que
+     * afin d'utiliser la même numérotation que
      * <code>Date.prototype.getMonth()</code>).
      *
      * @type {Field}
@@ -166,7 +166,7 @@ export const CronExp = class {
 
     /**
      * Les valeurs possibles pour le jour de la semaine (en utilisant toujours
-     * <code>0</code> pour le dimanche pour utiliser la même numéroration que
+     * <code>0</code> pour le dimanche afin d'utiliser la même numéroration que
      * <code>Date.prototype.getDay()</code>).
      *
      * @type {Field}
@@ -259,8 +259,8 @@ export const CronExp = class {
     /**
      * Teste si une date respecte l'expression.
      *
-     * @param {Date} [date=new Date()] La date qui sera testée (ou l'instant
-     *                                 présent par défaut).
+     * @param {Date} [date] La date qui sera testée (ou l'instant présent par
+     *                      défaut).
      * @returns {boolean} <code>true</code> si l'expression est respectée ;
      *                    sinon <code>false</code>.
      */
@@ -342,9 +342,7 @@ export const CronExp = class {
      * mois.
      *
      * @param {Date} start La date de début.
-     * @returns {Date} La prochaine date vérifiant la condition du jour du
-     *                 mois.
-     * @private
+     * @returns {Date} La prochaine date vérifiant la condition du jour du mois.
      */
     _nextDate(start) {
         if (this._date.test(start.getDate())) {
@@ -396,9 +394,8 @@ export const CronExp = class {
      * condition du jour du mois ou de la semaine.
      *
      * @param {Date} start La date de début.
-     * @returns {Date} La prochaine date vérifiant la condition du jour du
-     *                 mois ou de la semaine.
-     * @private
+     * @returns {Date} La prochaine date vérifiant la condition du jour du mois
+     *                 ou de la semaine.
      */
     _nextDateDay(start) {
         const nextDate = this._nextDate(start);
@@ -448,8 +445,7 @@ export const CronExp = class {
     /**
      * Calcule la prochaine date respectant l'expression.
      *
-     * @param {Date} [start=new Date()] La date de début (ou l'instant présent
-     *                                  par défaut).
+     * @param {Date} [start] La date de début (ou l'instant présent par défaut).
      * @returns {Date} La prochaine date respectant l'expression.
      */
     next(start = new Date()) {

@@ -23,7 +23,7 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
-            it("should not enable task", function () {
+            it("should not activate task", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -238,7 +238,7 @@ describe("cron.js", function () {
         });
 
         describe("start()", function () {
-            it("should enable task when no cronexp", function () {
+            it("should activate task when no cronexp", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -256,7 +256,7 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
-            it("should enable task", function () {
+            it("should activate task", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -274,7 +274,7 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
-            it("should ignore call when task is enabled", function () {
+            it("should ignore call when task is active", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -381,7 +381,7 @@ describe("cron.js", function () {
         });
 
         describe("stop()", function () {
-            it("should disable task when no cronexp", function () {
+            it("should deactivate task when no cronexp", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -398,7 +398,7 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
-            it("should disable task", function () {
+            it("should deactivate task", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
@@ -415,7 +415,7 @@ describe("cron.js", function () {
                 clock.restore();
             });
 
-            it("should ignore call when task is disabled", function () {
+            it("should ignore call when task is deactive", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 

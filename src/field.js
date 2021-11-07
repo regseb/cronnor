@@ -31,8 +31,8 @@ export const Field = class {
      * Crée un champ d'une expression <em>cron</em> avec un intervalle de
      * valeurs autorisées.
      *
-     * @param {number} min La valeur minimale (incluse) autorisée.
-     * @param {number} max La valeur maximale (incluse) autorisée.
+     * @param {number} min  La valeur minimale (incluse) autorisée.
+     * @param {number} max  La valeur maximale (incluse) autorisée.
      * @param {number} step Le pas entre les valeurs.
      * @returns {Field} Le champ avec l'intervalle de valeurs.
      */
@@ -55,8 +55,7 @@ export const Field = class {
     }
 
     /**
-     * La liste des valeurs autorisées pour le champ (en enlevant les doublons
-     * et en triant).
+     * La liste des valeurs autorisées pour le champ (sans doublons et triée).
      *
      * @type {number[]}
      * @private
@@ -75,13 +74,12 @@ export const Field = class {
     /**
      * Crée un champ d'une expression <em>cron</em>.
      *
-     * @param {number[]} values            La liste des valeurs autorisées pour
-     *                                     le champ.
-     * @param {boolean}  [restricted=true] <code>true</code> (par défaut) pour
-     *                                     un champ qui était différent de
-     *                                     <code>"*"</code> ; sinon
-     *                                     <code>false</code>.
-     * @private
+     * @param {number[]} values       La liste des valeurs autorisées pour le
+     *                                champ.
+     * @param {boolean}  [restricted] <code>true</code> (par défaut) pour un
+     *                                champ qui était différent de
+     *                                <code>"*"</code> ; sinon
+     *                                <code>false</code>.
      */
     constructor(values, restricted = true) {
         // Enlever les doublons des valeurs et trier les valeurs pour faciliter

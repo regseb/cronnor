@@ -11,8 +11,9 @@ Bibliothèque JavaScript implémentant un programme _cron_.
 
 ## Description
 
-La bibliothèque JavaScript **Cronnor** fournit une classe **`Cron`** pour créer
-des tâches récurrentes. Elle est disponible pour _Node.js_ et les navigateurs.
+**Cronnor** est une bibliothèque moderne fournissant une classe **`Cron`** pour
+créer des tâches récurrentes. Elle est disponible pour Node.js, Deno et les
+navigateurs.
 
 ```JavaScript
 import Cron from "cronnor";
@@ -23,7 +24,7 @@ function task() {
 
 const cron = new Cron("0 8 * * mon-fri", task);
 
-// It's holiday time !
+// It's holiday time!
 cron.stop();
 ```
 
@@ -31,7 +32,7 @@ cron.stop();
 
 ### Node.js
 
-Cronnor est publiée dans [_npm_][link-npm].
+Cronnor est publiée dans [npm][link-npm].
 
 ```JavaScript
 import Cron from "cronnor";
@@ -47,9 +48,9 @@ import Cron from "https://deno.land/x/cronnor/mod.js";
 
 ### Navigateurs
 
-Elle est aussi accessible directement avec le CDN [_jsDelivr_][link-jsdelivr]
-(ou [_Skypack_](https://www.skypack.dev/view/cronnor),
-[_UNPKG_](https://unpkg.com/cronnor/)) :
+Elle est aussi accessible directement avec le CDN [jsDelivr][link-jsdelivr] (ou
+[Skypack](https://www.skypack.dev/view/cronnor),
+[UNPKG](https://unpkg.com/cronnor/)) :
 
 ```JavaScript
 import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
@@ -162,7 +163,7 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 - Paramètre :
   - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
 - Valeur retournée : La prochaine date respectant une des expressions ou
-  `undefined` s'il n'y a pas de prochaine date (quand il y a aucune expression
+  `undefined` s'il n'y a pas de prochaine date (car il n'y a aucune expression
   _cron_).
 
 ### CronExp
@@ -216,14 +217,14 @@ Pour chaque élément, des compositions sont possibles :
 
 Il existe aussi des chaines spéciales :
 
-- `"@yearly"` ou `"@annually"` : tous les ans, le 1er janvier ;
-- `"@monthly"` : le 1er jour de chaque mois ;
-- `"@weekly"` : une fois par semaine, le dimanche ;
-- `"@daily"` ou `"@midnight"` : tous les jours à minuit ;
-- `"@hourly"` : toutes les heures.
+- `"@yearly"` ou `"@annually"` : tous les ans, le 1er janvier (`"0 0 1 1 *"`) ;
+- `"@monthly"` : le 1er jour de chaque mois (`"0 0 1 * *"`) ;
+- `"@weekly"` : une fois par semaine, le dimanche (`"0 0 * * 0"`) ;
+- `"@daily"` ou `"@midnight"` : tous les jours à minuit (`"0 0 * * *"`) ;
+- `"@hourly"` : toutes les heures (`"0 * * * *"`).
 
 Pour plus d'information, vous pouvez consulter le [manuel de
-_crontab_](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html).
+_crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
 [img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
 [img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
