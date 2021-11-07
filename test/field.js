@@ -1,4 +1,4 @@
-import assert    from "assert";
+import assert from "node:assert";
 import { Field } from "../src/field.js";
 
 describe("field.js", function () {
@@ -7,7 +7,7 @@ describe("field.js", function () {
             it("should create field with all values", function () {
                 const field = Field.all(0, 6);
                 assert.deepStrictEqual(field.values(), [0, 1, 2, 3, 4, 5, 6]);
-                assert.ok(!field.restricted);
+                assert.strictEqual(field.restricted, false);
             });
         });
 
@@ -15,29 +15,29 @@ describe("field.js", function () {
             it("should create field with interval", function () {
                 let field = Field.range(0, 3, 1);
                 assert.deepStrictEqual(field.values(), [0, 1, 2, 3]);
-                assert.ok(field.restricted);
+                assert.strictEqual(field.restricted, true);
 
                 field = Field.range(0, 10, 2);
                 assert.deepStrictEqual(field.values(), [0, 2, 4, 6, 8, 10]);
-                assert.ok(field.restricted);
+                assert.strictEqual(field.restricted, true);
 
                 field = Field.range(0, 5, 3);
                 assert.deepStrictEqual(field.values(), [0, 3]);
-                assert.ok(field.restricted);
+                assert.strictEqual(field.restricted, true);
 
                 field = Field.range(0, 2, 4);
                 assert.deepStrictEqual(field.values(), [0]);
-                assert.ok(field.restricted);
+                assert.strictEqual(field.restricted, true);
             });
         });
 
         describe("flat()", function () {
             it("should flat fields", function () {
-                const field = Field.flat([Field.of(1),
-                                          Field.of(2),
+                const field = Field.flat([Field.range(1, 1, 1),
+                                          Field.range(2, 2, 1),
                                           Field.range(0, 4, 2)]);
                 assert.deepStrictEqual(field.values(), [0, 1, 2, 4]);
-                assert.ok(field.restricted);
+                assert.strictEqual(field.restricted, true);
             });
         });
 
@@ -67,18 +67,18 @@ describe("field.js", function () {
                 const field1 = Field.range(10, 12, 1);
                 const field2 = field1.map((v) => v - 1);
                 assert.deepStrictEqual(field1.values(), [10, 11, 12]);
-                assert.ok(field1.restricted);
+                assert.strictEqual(field1.restricted, true);
                 assert.deepStrictEqual(field2.values(), [9, 10, 11]);
-                assert.ok(field2.restricted);
+                assert.strictEqual(field2.restricted, true);
             });
 
             it("should transmit restricted property", function () {
                 const field1 = Field.all(1, 3);
                 const field2 = field1.map((v) => v * 2);
                 assert.deepStrictEqual(field1.values(), [1, 2, 3]);
-                assert.ok(!field1.restricted);
+                assert.strictEqual(field1.restricted, false);
                 assert.deepStrictEqual(field2.values(), [2, 4, 6]);
-                assert.ok(!field2.restricted);
+                assert.strictEqual(field2.restricted, false);
             });
         });
 

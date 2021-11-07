@@ -2,11 +2,11 @@ export default {
     patterns: [
         "!/.git/",
         "!/.stryker-tmp/",
-        "!/coverage/",
         "!/index.d.ts",
         "!/index.js",
         "!/jsdocs/",
         "!/node_modules/",
+        "!*.swp",
         "**",
     ],
     checkers: [
@@ -41,9 +41,6 @@ export default {
         }, {
             patterns: "*.yml",
             linters: { "yaml-lint": null },
-        }, {
-            patterns: "/package.json",
-            linters: "david",
         },
     ],
 };

@@ -10,7 +10,6 @@ import { CronExp } from "./cronexp.js";
  * La valeur maximale du délai accepté par <em>Node.js</em>.
  *
  * @type {number}
- * @private
  * @see https://nodejs.org/api/timers.html
  */
 const MAX_DELAY = 2_147_483_647;
@@ -27,35 +26,31 @@ export const Cron = class {
      * de la tâche.
      *
      * @type {CronExp[]}
-     * @private
      */
-    _cronexes;
+    #cronexes;
 
     /**
      * La fonction appelée à chaque horaire indiqué dans les expressions
      * <em>cron</em>.
      *
      * @type {Function}
-     * @private
      */
-    _func;
+    #func;
 
     /**
      * Le <code>this</code> utilisé pour la fonction.
      *
      * @type {any}
-     * @private
      */
     // eslint-disable-next-line no-invalid-this
-    _thisArg = this;
+    #thisArg = this;
 
     /**
      * La liste des paramètres passés à la fonction.
      *
      * @type {any[]}
-     * @private
      */
-    _args = [];
+    #args = [];
 
     /**
      * L'identifiant du minuteur de la prochaine exécution ; ou
@@ -64,9 +59,8 @@ export const Cron = class {
      * <code>null</code> si la tâche est désactivée.
      *
      * @type {any}
-     * @private
      */
-    _timeoutID = null;
+    #timeoutID = null;
 
     /**
      * Crée une tâche <em>cronée</em>.
@@ -93,11 +87,11 @@ export const Cron = class {
     constructor(cronex, func, active = true) {
         const cronexes = Array.isArray(cronex) ? cronex
                                                : [cronex];
-        this._cronexes = cronexes.map((p) => new CronExp(p));
-        this._func = func;
+        this.#cronexes = cronexes.map((p) => new CronExp(p));
+        this.#func = func;
 
         if (active) {
-            this._schedule();
+            this.#schedule();
         }
     }
 
@@ -133,8 +127,8 @@ export const Cron = class {
      * @returns {Cron} La tâche elle-même.
      */
     bind(thisArg, ...args) {
-        this._thisArg = thisArg;
-        this._args = args;
+        this.#thisArg = thisArg;
+        this.#args = args;
         return this;
     }
 
@@ -145,8 +139,8 @@ export const Cron = class {
      * @returns {Cron} La tâche elle-même.
      */
     unbind() {
-        this._thisArg = this;
-        this._args = [];
+        this.#thisArg = this;
+        this.#args = [];
         return this;
     }
 
@@ -157,7 +151,7 @@ export const Cron = class {
      * @returns {Cron} La tâche elle-même.
      */
     withArguments(...args) {
-        this._args = args;
+        this.#args = args;
         return this;
     }
 
@@ -175,35 +169,32 @@ export const Cron = class {
      * Exécute manuellement la fonction.
      */
     run() {
-        this._func.bind(this._thisArg)(...this._args);
+        this.#func.bind(this.#thisArg)(...this.#args);
     }
 
     /**
      * Programme la prochaine exécution.
-     *
-     * @private
      */
-    _schedule() {
+    #schedule() {
         const next = this.next();
         if (undefined === next) {
             // Ne pas planifier de prochaine exécution, mais définir une valeur
             // différente de null pour l'identifiant du minuteur afin d'indiquer
             // que la tâche est active.
-            this._timeoutID = undefined;
+            this.#timeoutID = undefined;
         } else {
             const delay = next.getTime() - Date.now();
-            // eslint-disable-next-line unicorn/prefer-ternary
             if (MAX_DELAY >= delay) {
                 // Planifier la prochaine exécution.
-                this._timeoutID = setTimeout(() => {
-                    this._schedule();
+                this.#timeoutID = setTimeout(() => {
+                    this.#schedule();
                     this.run();
                 }, delay);
             } else {
                 // Planifier des étapes intermédiaires car Node.js n'accepte pas
                 // un grand délai.
-                this._timeoutID = setTimeout(() => {
-                    this._schedule();
+                this.#timeoutID = setTimeout(() => {
+                    this.#schedule();
                 }, MAX_DELAY);
             }
         }
@@ -211,12 +202,10 @@ export const Cron = class {
 
     /**
      * Annule les prochaines exécutions.
-     *
-     * @private
      */
-    _cancel() {
-        clearTimeout(this._timeoutID);
-        this._timeoutID = null;
+    #cancel() {
+        clearTimeout(this.#timeoutID);
+        this.#timeoutID = null;
     }
 
     /**
@@ -229,7 +218,7 @@ export const Cron = class {
         if (this.active) {
             return false;
         }
-        this._schedule();
+        this.#schedule();
         return true;
     }
 
@@ -243,7 +232,7 @@ export const Cron = class {
         if (!this.active) {
             return false;
         }
-        this._cancel();
+        this.#cancel();
         return true;
     }
 
@@ -256,7 +245,7 @@ export const Cron = class {
      *                    respectée ; sinon <code>false</code>.
      */
     test(date = new Date()) {
-        return this._cronexes.some((c) => c.test(date));
+        return this.#cronexes.some((c) => c.test(date));
     }
 
     /**
@@ -270,12 +259,12 @@ export const Cron = class {
      *                           expression <em>cron</em>).
      */
     next(start = new Date()) {
-        if (0 === this._cronexes.length) {
+        if (0 === this.#cronexes.length) {
             return undefined;
         }
 
         return new Date(Math.min(
-            ...this._cronexes.map((c) => c.next(start).getTime()),
+            ...this.#cronexes.map((c) => c.next(start).getTime()),
         ));
     }
 };

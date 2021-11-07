@@ -11,11 +11,11 @@ describe("index.js", function () {
 
     describe("cronnor", function () {
         it("should export Cron", function () {
-            assert.ok("Cron" in cronnor);
+            assert.strictEqual(cronnor.Cron.name, "Cron");
         });
 
         it("should export CronExp", function () {
-            assert.ok("CronExp" in cronnor);
+            assert.strictEqual(cronnor.CronExp.name, "CronExp");
         });
     });
 });

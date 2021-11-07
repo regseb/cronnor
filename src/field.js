@@ -51,25 +51,23 @@ export const Field = class {
      * @returns {Field} Le champ avec toutes les valeurs.
      */
     static flat(fields) {
-        return new Field(fields.flatMap((f) => f._values));
+        return new Field(fields.flatMap((f) => f.#values));
     }
 
     /**
      * La liste des valeurs autorisées pour le champ (sans doublons et triée).
      *
      * @type {number[]}
-     * @private
      */
-    _values;
+    #values;
 
     /**
      * <code>true</code> si le champ était différent de <code>"*"</code> ; sinon
      * <code>false</code>.
      *
      * @type {boolean}
-     * @private
      */
-    _restricted;
+    #restricted;
 
     /**
      * Crée un champ d'une expression <em>cron</em>.
@@ -84,9 +82,9 @@ export const Field = class {
     constructor(values, restricted = true) {
         // Enlever les doublons des valeurs et trier les valeurs pour faciliter
         // les algorithmes.
-        this._values = values.filter((v, i, a) => i === a.indexOf(v))
+        this.#values = values.filter((v, i, a) => i === a.indexOf(v))
                              .sort((v1, v2) => v1 - v2);
-        this._restricted = restricted;
+        this.#restricted = restricted;
     }
 
     /**
@@ -97,7 +95,7 @@ export const Field = class {
      *                    <code>"*"</code> ; sinon <code>false</code>.
      */
     get restricted() {
-        return this._restricted;
+        return this.#restricted;
     }
 
     /**
@@ -106,7 +104,7 @@ export const Field = class {
      * @returns {number} La valeur minimale.
      */
     get min() {
-        return this._values[0];
+        return this.#values[0];
     }
 
     /**
@@ -115,7 +113,7 @@ export const Field = class {
      * @returns {number} La valeur maximale.
      */
     get max() {
-        return this._values[this._values.length - 1];
+        return this.#values[this.#values.length - 1];
     }
 
     /**
@@ -124,7 +122,7 @@ export const Field = class {
      * @returns {number[]} La liste des valeurs.
      */
     values() {
-        return this._values;
+        return this.#values;
     }
 
     /**
@@ -136,7 +134,7 @@ export const Field = class {
      * @returns {Field} Le nouveau champ avec les valeurs modifiées.
      */
     map(callback) {
-        return new Field(this._values.map(callback), this._restricted);
+        return new Field(this.#values.map(callback), this.#restricted);
     }
 
     /**
@@ -147,7 +145,7 @@ export const Field = class {
      *                    <code>false</code>.
      */
     test(value) {
-        return this._values.includes(value);
+        return this.#values.includes(value);
     }
 
     /**
@@ -159,6 +157,6 @@ export const Field = class {
      *                             est supérieure à la valeur maximale.
      */
     next(value) {
-        return this._values.find((v) => value < v);
+        return this.#values.find((v) => value < v);
     }
 };

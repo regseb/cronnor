@@ -6,7 +6,6 @@ Bibliothèque JavaScript implémentant un programme _cron_.
 [![jsdelivr][img-jsdelivr]][link-jsdelivr]
 [![build][img-build]][link-build]
 [![coverage][img-coverage]][link-coverage]
-[![dependencies][img-dependencies]][link-dependencies]
 [![semver][img-semver]][link-semver]
 
 ## Description
@@ -229,13 +228,11 @@ _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 [img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
 [img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
 [img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
-[img-dependencies]:https://img.shields.io/david/regseb/cronnor
 [img-coverage]:https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain
 [img-semver]:https://img.shields.io/badge/semver-2.0.0-blue
 
 [link-npm]:https://www.npmjs.com/package/cronnor
 [link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor
-[link-dependencies]:https://david-dm.org/regseb/cronnor
 [link-build]:https://github.com/regseb/castkodi/actions/workflows/ci.yml?query=branch%3Amain
 [link-coverage]:https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/main
 [link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"

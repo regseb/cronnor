@@ -1,4 +1,4 @@
-import assert      from "assert";
+import assert from "node:assert";
 import { CronExp } from "../src/cronexp.js";
 
 describe("cronexp.js", function () {

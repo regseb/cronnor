@@ -1,5 +1,5 @@
-import assert   from "assert";
-import sinon    from "sinon";
+import assert from "node:assert";
+import sinon from "sinon";
 import { Cron } from "../src/cron.js";
 
 describe("cron.js", function () {
@@ -42,19 +42,19 @@ describe("cron.js", function () {
         describe("get active()", function () {
             it("should return 'true' when task is actived", function () {
                 const cron = new Cron("0 0 1 1 *", () => {});
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 cron.stop();
             });
 
             it("should return 'false' when task is deactived", function () {
                 const cron = new Cron("0 0 1 1 *", () => {}, false);
-                assert.ok(!cron.active);
+                assert.strictEqual(cron.active, false);
             });
 
             it("should return 'true' when task is actived with no cronexp",
                                                                    function () {
                 const cron = new Cron([], () => {});
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
             });
         });
 
@@ -249,7 +249,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 0);
 
                 cron.stop();
@@ -267,7 +267,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 1);
 
                 cron.stop();
@@ -287,7 +287,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 1);
 
                 cron.stop();
@@ -310,8 +310,8 @@ describe("cron.js", function () {
                 clock.next();
                 clock.next();
 
-                assert.ok(cron1.active);
-                assert.ok(cron2.active);
+                assert.strictEqual(cron1.active, true);
+                assert.strictEqual(cron2.active, true);
                 assert.strictEqual(fake1.callCount, 1);
                 assert.strictEqual(fake2.callCount, 1);
 
@@ -332,7 +332,7 @@ describe("cron.js", function () {
                 // Incrémenter deux fois le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 1);
 
                 cron.stop();
@@ -352,7 +352,7 @@ describe("cron.js", function () {
                 clock.next();
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 1);
 
                 cron.stop();
@@ -372,7 +372,7 @@ describe("cron.js", function () {
                 clock.next();
                 clock.next();
 
-                assert.ok(cron.active);
+                assert.strictEqual(cron.active, true);
                 assert.strictEqual(fake.callCount, 1);
 
                 cron.stop();
@@ -392,7 +392,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(!cron.active);
+                assert.strictEqual(cron.active, false);
                 assert.strictEqual(fake.callCount, 0);
 
                 clock.restore();
@@ -409,7 +409,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(!cron.active);
+                assert.strictEqual(cron.active, false);
                 assert.strictEqual(fake.callCount, 0);
 
                 clock.restore();
@@ -428,7 +428,7 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.ok(!cron.active);
+                assert.strictEqual(cron.active, false);
                 assert.strictEqual(fake.callCount, 0);
 
                 clock.restore();
@@ -450,8 +450,8 @@ describe("cron.js", function () {
                 clock.next();
                 clock.next();
 
-                assert.ok(!cron1.active);
-                assert.ok(!cron2.active);
+                assert.strictEqual(cron1.active, false);
+                assert.strictEqual(cron2.active, false);
                 assert.strictEqual(fake1.callCount, 0);
                 assert.strictEqual(fake2.callCount, 0);
 
