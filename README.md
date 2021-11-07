@@ -29,14 +29,27 @@ cron.stop();
 
 ## Installation
 
-Cronnor est publiée dans [_npm_](https://www.npmjs.com/package/cronnor) :
+### Node.js
 
-```shell
-npm install cronnor
+Cronnor est publiée dans [_npm_][link-npm].
+
+```JavaScript
+import Cron from "cronnor";
 ```
 
-Elle est aussi accessible directement avec le CDN
-[_jsDelivr_](https://www.jsdelivr.com/package/npm/cronnor) :
+### Deno
+
+La bibliothèque est disponible dans [Deno](https://deno.land/x/cronnor).
+
+```JavaScript
+import Cron from "https://deno.land/x/cronnor/mod.js";
+```
+
+### Navigateurs
+
+Elle est aussi accessible directement avec le CDN [_jsDelivr_][link-jsdelivr]
+(ou [_Skypack_](https://www.skypack.dev/view/cronnor),
+[_UNPKG_](https://unpkg.com/cronnor/)) :
 
 ```JavaScript
 import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
