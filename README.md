@@ -49,6 +49,7 @@ import { Cron } from "https://cdn.jsdelivr.net/npm/cronnor@v1";
   - [`Cron.bind(thisArg, ...args)`](#cronbindthisarg-args)
   - [`Cron.unbind()`](#cronunbind)
   - [`Cron.withArguments(...args)`](#cronwithargumentsargs)
+  - [`Cron.withoutArguments()`](#cronwitoutharguments)
   - [`Cron.run()`](#cronrun)
   - [`Cron.start()`](#cronstart)
   - [`Cron.stop()`](#cronstop)
@@ -108,6 +109,12 @@ Définit les paramètres passés à la fonction.
 
 - Paramètres :
   - `args` (`...any`) : Les paramètres passés à la fonction.
+- Valeur retournée : La tâche elle-même.
+
+#### `Cron.withoutArguments()`
+
+Enlève les paramètres passés à la fonction.
+
 - Valeur retournée : La tâche elle-même.
 
 #### `Cron.run()`

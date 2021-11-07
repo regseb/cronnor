@@ -149,6 +149,16 @@ export const Cron = class {
     }
 
     /**
+     * Enlève les paramètres passés à la fonction.
+     *
+     * @returns {Cron} La tâche elle-même.
+     */
+    withoutArguments() {
+        this.#args = [];
+        return this;
+    }
+
+    /**
      * Exécute manuellement la fonction.
      */
     run() {

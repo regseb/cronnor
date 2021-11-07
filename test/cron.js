@@ -165,6 +165,29 @@ describe("cron.js", function () {
             });
         });
 
+        describe("withoutArguments()", function () {
+            it("should reset arguments", function () {
+                const fake = sinon.fake();
+                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+
+                const cron = new Cron("1 0 1 1 *", fake, false);
+                cron.bind("foo", "bar", "baz");
+                const clone = cron.withoutArguments();
+                assert.deepStrictEqual(clone, cron);
+                cron.start();
+
+                // Incrémenter le temps pour le setTimeout().
+                clock.next();
+
+                assert.strictEqual(fake.callCount, 1);
+                assert.deepStrictEqual(fake.firstCall.thisValue, "foo");
+                assert.deepStrictEqual(fake.firstCall.args, []);
+
+                cron.stop();
+                clock.restore();
+            });
+        });
+
         describe("run()", function () {
             it("should call function", function () {
                 const fake = sinon.fake();
