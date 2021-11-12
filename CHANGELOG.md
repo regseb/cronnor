@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/regseb/cronnor/compare/v1.2.1...v1.3.0) (2021-11-12)
+
+
+### Features
+
+* Ajouter une méthode pour enlever les paramètres. ([e666878](https://github.com/regseb/cronnor/commit/e666878d85d9360907eeaac6468f5088cb99aaaa))
+* Exporter Cron par défaut. ([c9adf65](https://github.com/regseb/cronnor/commit/c9adf658de1bf402ba282879125be563d2286d84))
+* Permettre d'activer une tâche avec ".active". ([88b5450](https://github.com/regseb/cronnor/commit/88b545032f7d6224aeb7c98189212cb0190afa65))
+* Publier Cronnor pour Deno. ([a0ba684](https://github.com/regseb/cronnor/commit/a0ba684bd6e38ca7b252c041fc78bfe08877518d))
+
+
+### Bug Fixes
+
+* Autoriser les noms dans les intervalles. ([8529b85](https://github.com/regseb/cronnor/commit/8529b85a1cc76b11c7d3c80bccf03ab1f0a53b9a))
+
 ### [1.2.1](https://github.com/regseb/cronnor/compare/v1.2.0...v1.2.1) (2021-04-10)
 
 
