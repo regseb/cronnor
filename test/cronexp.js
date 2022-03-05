@@ -963,6 +963,16 @@ describe("cronexp.js", function () {
                                                                 " * * 31 feb *",
                 });
             });
+
+            it(`should reject when is invoked without "new"`, function () {
+                // @ts-ignore
+                // eslint-disable-next-line new-cap
+                assert.throws(() => CronExp("* * * * *"), {
+                    name:    "TypeError",
+                    message: "Class constructor CronExp cannot be invoked" +
+                                                               " without 'new'",
+                });
+            });
         });
 
         describe("test()", function () {
