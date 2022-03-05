@@ -1,12 +1,16 @@
 # Cronnor
 
-Bibliothèque JavaScript implémentant un programme _cron_.
+<!-- Utiliser du HTML pour faire flotter l'image à droite. -->
+<!-- markdownlint-disable-next-line no-inline-html-->
+<img src="asset/logo.svg" align="right" alt="Logo de Cronnor">
 
 [![npm][img-npm]][link-npm]
 [![jsdelivr][img-jsdelivr]][link-jsdelivr]
 [![build][img-build]][link-build]
 [![coverage][img-coverage]][link-coverage]
 [![semver][img-semver]][link-semver]
+
+> Bibliothèque JavaScript implémentant un programme _cron_.
 
 ## Description
 
@@ -84,8 +88,13 @@ Crée une tâche _cronée_.
     Avec un tableau vide, la tâche ne sera jamais exécutée.
   - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
     expressions _cron_.
-  - `active` (`boolean`) : `true` (par défaut) pour activer la tâche ; sinon
-    `false`.
+  - `options` (`Object`) : Les options de la tâche _cronnée_.
+    - `active` (`boolean`) : `true` (par défaut) pour activer la tâche ; sinon
+      `false`.
+    - `thisArg` (`any`) : Le `this` utilisé pour la fonction (la tâche _cronée_
+      par défaut).
+    - `args` (`any[]`) : Les paramètres passés à la fonction (aucun paramètre
+      par défaut).
 - Exceptions :
   - `Error` : Si la syntaxe d'une expession _cron_ est incorrecte.
   - `RangeError` : Si un intervalle d'une expression _cron_ est invalide (hors
@@ -204,12 +213,12 @@ séparés par une espace. Les éléments représentent :
 1. les minutes : `0` à `59` ;
 2. les heures : `0` à `23` ;
 3. le jour du mois : `1` à `31` ;
-4. le mois : `1` ou `jan`, `2` ou `feb`, ..., `12` ou `dec` ;
-5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, ..., `6` ou `sat`.
+4. le mois : `1` ou `jan`, `2` ou `feb`, …, `12` ou `dec` ;
+5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, …, `6` ou `sat`.
 
 Pour chaque élément, des compositions sont possibles :
 
-- `*` : couvrir toutes les unités (`0`, `1`, `2`, ...) ;
+- `*` : couvrir toutes les unités (`0`, `1`, `2`, …) ;
 - `-` : définir un intervalle (`1-3` corresponds aux unités `1`, `2` et `3`) ;
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
 - `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
@@ -225,6 +234,8 @@ Il existe aussi des chaines spéciales :
 Pour plus d'information, vous pouvez consulter le [manuel de
 _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
+<!-- Ne pas ajouter les logos car la couleur du logo de npm n'est pas
+     personnalisable. https://github.com/badges/shields/issues/6208 -->
 [img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
 [img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
 [img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
@@ -233,6 +244,6 @@ _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
 [link-npm]:https://www.npmjs.com/package/cronnor
 [link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor
-[link-build]:https://github.com/regseb/castkodi/actions/workflows/ci.yml?query=branch%3Amain
+[link-build]:https://github.com/regseb/cronnor/actions/workflows/ci.yml?query=branch%3Amain
 [link-coverage]:https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/main
 [link-semver]:https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"
