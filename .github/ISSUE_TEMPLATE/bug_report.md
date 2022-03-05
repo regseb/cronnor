@@ -25,8 +25,8 @@ Steps to reproduce the behavior:
 
 ### Environment
 
-- Gout extension version<!-- e.g. 0.9.1 -->:
-- Platform version<!-- e.g. Chrome 94.0.4606.81, Node.js 16.13.0 -->:
+- Cronnor version<!-- e.g. 2.0.0 -->:
+- Platform version<!-- e.g. Chrome 101.0.4951.64, Node.js v16.15.0 -->:
 
 ### Additional context
 
