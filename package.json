@@ -20,21 +20,20 @@
     "funding": "https://www.paypal.me/sebastienregne",
     "files": [
         "index.js",
-        "index.d.ts"
+        "types/"
     ],
     "main": "index.js",
-    "types": "index.d.ts",
+    "types": "types/index.d.ts",
     "repository": "regseb/cronnor",
     "type": "module",
     "scripts": {
         "lint": "metalint",
-        "lint:types": "tsc",
         "test": "stryker run",
         "test:mocha": "mocha",
-        "jsdocs": "typedoc --tsconfig tsconfig_typedoc.json --out jsdocs/ src/",
         "bundle": "rollup src/index.js --file index.js",
-        "declare": "tsc index.js --declaration --allowJs --emitDeclarationOnly",
-        "prepare": "npm run bundle && npm run declare",
+        "lint:types": "tsc --project .tsconfig_lint.json",
+        "jsdocs": "typedoc --tsconfig .tsconfig_jsdocs.json --out jsdocs/ src/",
+        "prepare": "tsc --project .tsconfig_types.json",
         "release": "standard-version",
         "clean": "node .script/clean.js"
     },

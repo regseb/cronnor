@@ -2,10 +2,10 @@ export default {
     patterns: [
         "!/.git/",
         "!/.stryker-tmp/",
-        "!/index.d.ts",
         "!/index.js",
         "!/jsdocs/",
         "!/node_modules/",
+        "!/types/",
         "!*.swp",
         "**",
     ],
