@@ -17,5 +17,9 @@ describe("index.js", function () {
         it("should export CronExp", function () {
             assert.strictEqual(cronnor.CronExp.name, "CronExp");
         });
+
+        it("should export At", function () {
+            assert.strictEqual(cronnor.At.name, "At");
+        });
     });
 });

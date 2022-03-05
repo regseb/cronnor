@@ -7,9 +7,9 @@
 /**
  * La classe d'un champ d'une expression <em>cron</em>.
  *
- * @class Field
+ * @class
  */
-export const Field = class {
+export default class Field {
 
     /**
      * Crée un champ d'une expression <em>cron</em> avec toutes les valeurs
@@ -159,4 +159,4 @@ export const Field = class {
     next(value) {
         return this.#values.find((v) => value < v);
     }
-};
+}

@@ -61,12 +61,8 @@ import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
 
 ## API
 
-- [`new Cron(cronex, func, [active])`](#new-croncronex-func-active)
+- [`new Cron(cronex, func, [options])`](#new-croncronex-func-options)
   - [`Cron.active`](#cronactive)
-  - [`Cron.bind(thisArg, ...args)`](#cronbindthisarg-args)
-  - [`Cron.unbind()`](#cronunbind)
-  - [`Cron.withArguments(...args)`](#cronwithargumentsargs)
-  - [`Cron.withoutArguments()`](#cronwitoutharguments)
   - [`Cron.run()`](#cronrun)
   - [`Cron.start()`](#cronstart)
   - [`Cron.stop()`](#cronstop)
@@ -75,17 +71,19 @@ import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
 - [`new CronExp(pattern)`](#new-cronexppattern)
   - [`CronExp.test([date])`](#cronexptestdate)
   - [`CronExp.next([start])`](#cronexpnextstart)
+- [`new At(date, func, [options])`](#new-atdate-func-options)
+  - [`At.run()`](#atrun)
+  - [`At.abort()`](#atabort)
 
 ### Cron
 
-#### `new Cron(cronex, func, [active])`
+#### `new Cron(cronex, func, [options])`
 
 Crée une tâche _cronée_.
 
 - Paramètres :
   - `cronex` (`string` ou `string[]`) : La ou les [expressions
     _cron_](#expression-cron) indiquant les horaires d'exécution de la tâche.
-    Avec un tableau vide, la tâche ne sera jamais exécutée.
   - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
     expressions _cron_.
   - `options` (`Object`) : Les options de la tâche _cronnée_.
@@ -96,7 +94,7 @@ Crée une tâche _cronée_.
     - `args` (`any[]`) : Les paramètres passés à la fonction (aucun paramètre
       par défaut).
 - Exceptions :
-  - `Error` : Si la syntaxe d'une expession _cron_ est incorrecte.
+  - `Error` : Si la syntaxe d'une expression _cron_ est incorrecte.
   - `RangeError` : Si un intervalle d'une expression _cron_ est invalide (hors
     limite ou quand la borne supérieure est plus petite que la borne
     inférieure).
@@ -106,36 +104,6 @@ Crée une tâche _cronée_.
 #### `Cron.active`
 
 Est l'état de la tâche (active ou non).
-
-#### `Cron.bind(thisArg, ...args)`
-
-Définit le `this` et les paramètres passés à la fonction.
-
-- Paramètres :
-  - `thisArg` (`any`) : Le `this` utilisé pour la fonction.
-  - `args` (`...any`) : Les paramètres passés à la fonction.
-- Valeur retournée : La tâche elle-même.
-
-#### `Cron.unbind()`
-
-Remet les valeurs par défaut pour le `this` et les paramètres passés à la
-fonction.
-
-- Valeur retournée : La tâche elle-même.
-
-#### `Cron.withArguments(...args)`
-
-Définit les paramètres passés à la fonction.
-
-- Paramètres :
-  - `args` (`...any`) : Les paramètres passés à la fonction.
-- Valeur retournée : La tâche elle-même.
-
-#### `Cron.withoutArguments()`
-
-Enlève les paramètres passés à la fonction.
-
-- Valeur retournée : La tâche elle-même.
 
 #### `Cron.run()`
 
@@ -170,9 +138,7 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 
 - Paramètre :
   - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
-- Valeur retournée : La prochaine date respectant une des expressions ou
-  `undefined` s'il n'y a pas de prochaine date (car il n'y a aucune expression
-  _cron_).
+- Valeur retournée : La prochaine date respectant une des expressions.
 
 ### CronExp
 
@@ -197,13 +163,38 @@ Teste si une date respecte l'expression.
   - `date` (`Date`) : La date qui sera testée (ou l'instant présent par défaut).
 - Valeur retournée : `true` si l'expression est respectée ; sinon `false`.
 
-#### `CronExp.next([date])`
+#### `CronExp.next([start])`
 
 Calcule la prochaine date respectant l'expression.
 
 - Paramètre :
   - `start` (`Date`) : La date de début (ou l'instant présent par défaut).
 - Valeur retournée : La prochaine date respectant l'expression.
+
+### At
+
+#### `new At(date, func, [options])`
+
+Crée une tâche planifiée.
+
+- Paramètres :
+  - `date` (`Date`) : La date de planification de la tâche.
+  - `func` (`Function`) : La fonction appelée à la date planifiée.
+  - `options` (`Object`) : Les options de la planification de la tâche.
+    - `thisArg` (`any`) : Le `this` utilisé pour la fonction (la tâche planifiée
+      par défaut).
+    - `args` (`any[]`) : Les paramètres passés à la fonction (aucun paramètre
+      par défaut).
+- Exceptions :
+  - `TypeError` : Si le constructeur est appelé sans le mot clé `new`.
+
+#### `At.run()`
+
+Exécute manuellement la fonction.
+
+#### `At.abort()`
+
+Annule la planification.
 
 ## Expression _cron_
 

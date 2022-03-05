@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { Field } from "./field.js";
+import Field from "./field.js";
 
 /**
  * Les chaines spéciales avec leur équivalent.
@@ -121,9 +121,9 @@ const ERROR = "Syntax error, unrecognized expression: ";
 /**
  * La classe d'une expression <em>cron</em>.
  *
- * @class CronExp
+ * @class
  */
-export const CronExp = class {
+export default class CronExp {
 
     /**
      * Les valeurs possibles pour les minutes.
@@ -447,4 +447,4 @@ export const CronExp = class {
         date = this.#nextMonth(date);
         return date;
     }
-};
+}

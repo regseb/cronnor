@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { Field } from "../src/field.js";
+import Field from "../src/field.js";
 
 describe("field.js", function () {
     describe("Field", function () {

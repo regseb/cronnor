@@ -4,22 +4,15 @@
  * @license MIT
  */
 
-import { CronExp } from "./cronexp.js";
-
-/**
- * La valeur maximale du délai accepté par <em>Node.js</em>.
- *
- * @type {number}
- * @see https://nodejs.org/api/timers.html
- */
-const MAX_DELAY = 2_147_483_647;
+import CronExp from "./cronexp.js";
+import At from "./at.js";
 
 /**
  * La classe d'une tâche <em>cronée</em>.
  *
- * @class Cron
+ * @class
  */
-export const Cron = class {
+export default class Cron {
 
     /**
      * La liste des expressions <em>cron</em> indiquant les horaires d'exécution
@@ -38,44 +31,35 @@ export const Cron = class {
     #func;
 
     /**
-     * Le <code>this</code> utilisé pour la fonction.
+     * La planification de la prochaine exécution ; ou <code>undefined</code> si
+     * la tâche est désactivée.
      *
-     * @type {any}
+     * @type {At|undefined}
      */
-    // eslint-disable-next-line no-invalid-this
-    #thisArg = this;
-
-    /**
-     * La liste des paramètres passés à la fonction.
-     *
-     * @type {any[]}
-     */
-    #args = [];
-
-    /**
-     * L'identifiant du minuteur de la prochaine exécution ; ou
-     * <code>undefined</code> si la tâche est active, mais qu'il n'y a pas de
-     * prochaine exécution (car il n'y a aucune expression <em>cron</em>) ; ou
-     * <code>null</code> si la tâche est désactivée.
-     *
-     * @type {any}
-     */
-    #timeoutID = null;
+    #at;
 
     /**
      * Crée une tâche <em>cronée</em>.
      *
-     * @param {string|string[]} cronex   La ou les expressions <em>cron</em>
-     *                                   indiquant les horaires d'exécution de
-     *                                   la tâche. Avec un tableau vide, la
-     *                                   tâche ne sera jamais exécutée.
-     * @param {Function}        func     La fonction appelée à chaque horaire
-     *                                   indiqué dans les expressions
-     *                                   <em>cron</em>.
-     * @param {boolean}         [active] <code>true</code> (par défaut) pour
-     *                                   activer la tâche ; sinon
-     *                                   <code>false</code>.
-     * @throws {Error}      Si la syntaxe d'une expession <em>cron</em> est
+     * @param {string|string[]} cronex            La ou les expressions
+     *                                            <em>cron</em> indiquant les
+     *                                            horaires d'exécution de la
+     *                                            tâche.
+     * @param {Function}        func              La fonction appelée à chaque
+     *                                            horaire indiqué dans les
+     *                                            expressions <em>cron</em>.
+     * @param {Object}          [options]         Les options de la tâche
+     *                                            <em>cronée</em>.
+     * @param {boolean}         [options.active]  <code>true</code> (par défaut)
+     *                                            pour activer la tâche ; sinon
+     *                                            <code>false</code>.
+     * @param {any}             [options.thisArg] Le <code>this</code> utilisé
+     *                                            pour la fonction (la tâche
+     *                                            <em>cronée</em> par défaut).
+     * @param {any[]}           [options.args]    Les paramètres passés à la
+     *                                            fonction (aucun paramètre par
+     *                                            défaut).
+     * @throws {Error}      Si la syntaxe d'une expression <em>cron</em> est
      *                      incorrecte.
      * @throws {RangeError} Si un intervalle d'une expression <em>cron</em> est
      *                      invalide (hors limite ou quand la borne supérieure
@@ -84,13 +68,14 @@ export const Cron = class {
      *                      <code>new</code> ou si un des paramètres n'a pas le
      *                      bon type.
      */
-    constructor(cronex, func, active = true) {
+    constructor(cronex, func, options) {
         const cronexes = Array.isArray(cronex) ? cronex
                                                : [cronex];
         this.#cronexes = cronexes.map((p) => new CronExp(p));
-        this.#func = func;
+        this.#func = func.bind(options?.thisArg ?? this,
+                               ...options?.args ?? []);
 
-        if (active) {
+        if (options?.active ?? true) {
             this.#schedule();
         }
     }
@@ -102,7 +87,7 @@ export const Cron = class {
      *                    <code>false</code>.
      */
     get active() {
-        return null !== this.#timeoutID;
+        return undefined !== this.#at;
     }
 
     /**
@@ -120,92 +105,20 @@ export const Cron = class {
     }
 
     /**
-     * Définit le <code>this</code> et les paramètres passés à la fonction.
-     *
-     * @param {any}    thisArg Le <code>this</code> utilisé pour la fonction.
-     * @param {...any} args    Les paramètres passés à la fonction.
-     * @returns {Cron} La tâche elle-même.
-     */
-    bind(thisArg, ...args) {
-        this.#thisArg = thisArg;
-        this.#args = args;
-        return this;
-    }
-
-    /**
-     * Remet les valeurs par défaut pour le <code>this</code> et les paramètres
-     * passés à la fonction.
-     *
-     * @returns {Cron} La tâche elle-même.
-     */
-    unbind() {
-        this.#thisArg = this;
-        this.#args = [];
-        return this;
-    }
-
-    /**
-     * Définit les paramètres passés à la fonction.
-     *
-     * @param {...any} args Les paramètres passés à la fonction.
-     * @returns {Cron} La tâche elle-même.
-     */
-    withArguments(...args) {
-        this.#args = args;
-        return this;
-    }
-
-    /**
-     * Enlève les paramètres passés à la fonction.
-     *
-     * @returns {Cron} La tâche elle-même.
-     */
-    withoutArguments() {
-        this.#args = [];
-        return this;
-    }
-
-    /**
      * Exécute manuellement la fonction.
      */
     run() {
-        this.#func.bind(this.#thisArg)(...this.#args);
+        this.#func();
     }
 
     /**
      * Programme la prochaine exécution.
      */
     #schedule() {
-        const next = this.next();
-        if (undefined === next) {
-            // Ne pas planifier de prochaine exécution, mais définir une valeur
-            // différente de null pour l'identifiant du minuteur afin d'indiquer
-            // que la tâche est active.
-            this.#timeoutID = undefined;
-        } else {
-            const delay = next.getTime() - Date.now();
-            if (MAX_DELAY >= delay) {
-                // Planifier la prochaine exécution.
-                this.#timeoutID = setTimeout(() => {
-                    this.#schedule();
-                    this.run();
-                }, delay);
-            } else {
-                // Planifier des étapes intermédiaires car Node.js n'accepte pas
-                // un grand délai.
-                this.#timeoutID = setTimeout(() => {
-                    this.#schedule();
-                }, MAX_DELAY);
-            }
-        }
-    }
-
-    /**
-     * Annule les prochaines exécutions.
-     */
-    #cancel() {
-        clearTimeout(this.#timeoutID);
-        this.#timeoutID = null;
+        this.#at = new At(this.next(), () => {
+            this.#schedule();
+            this.run();
+        });
     }
 
     /**
@@ -215,7 +128,7 @@ export const Cron = class {
      *                    <code>false</code> si elle était déjà active.
      */
     start() {
-        if (this.active) {
+        if (undefined !== this.#at) {
             return false;
         }
         this.#schedule();
@@ -229,10 +142,11 @@ export const Cron = class {
      *                    <code>false</code> si elle était déjà inactive.
      */
     stop() {
-        if (!this.active) {
+        if (undefined === this.#at) {
             return false;
         }
-        this.#cancel();
+        this.#at.abort();
+        this.#at = undefined;
         return true;
     }
 
@@ -253,18 +167,11 @@ export const Cron = class {
      * la tâche.
      *
      * @param {Date} [start] La date de début (ou l'instant présent par défaut).
-     * @returns {Date|undefined} La prochaine date respectant une des
-     *                           expressions ou <code>undefined</code> s'il n'y
-     *                           a pas de prochaine date (car il n'y a aucune
-     *                           expression <em>cron</em>).
+     * @returns {Date} La prochaine date respectant une des expressions.
      */
     next(start = new Date()) {
-        if (0 === this.#cronexes.length) {
-            return undefined;
-        }
-
         return new Date(Math.min(
             ...this.#cronexes.map((c) => c.next(start).getTime()),
         ));
     }
-};
+}
