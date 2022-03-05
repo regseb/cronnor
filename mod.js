@@ -1,8 +1,9 @@
 /**
- * @author Sébastien Règne
  * @license MIT
+ * @author Sébastien Règne
  */
 
 // Créer un point d'entrée pour Deno.
 
-export "./src/index.js";
+export { default } from "./src/index.js";
+export * from "./src/index.js";

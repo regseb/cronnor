@@ -11,7 +11,7 @@ export default {
     ],
     checkers: [
         {
-            patterns: "/src/**/*.js",
+            patterns: ["/src/**/*.js", "/mod.js"],
             linters: "eslint",
         }, {
             patterns: "/test/**/*.js",
