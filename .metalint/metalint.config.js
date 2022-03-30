@@ -2,7 +2,6 @@ export default {
     patterns: [
         "!/.git/",
         "!/.stryker-tmp/",
-        "!/index.js",
         "!/jsdocs/",
         "!/node_modules/",
         "!/types/",

@@ -19,10 +19,10 @@
     "author": "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb)",
     "funding": "https://www.paypal.me/sebastienregne",
     "files": [
-        "index.js",
+        "src/",
         "types/"
     ],
-    "main": "index.js",
+    "main": "src/index.js",
     "types": "types/index.d.ts",
     "repository": "regseb/cronnor",
     "type": "module",
@@ -30,7 +30,6 @@
         "lint": "metalint",
         "test": "stryker run",
         "test:mocha": "mocha",
-        "bundle": "rollup src/index.js --file index.js",
         "lint:types": "tsc --project .tsconfig_lint.json",
         "jsdocs": "typedoc --tsconfig .tsconfig_jsdocs.json --out jsdocs/ src/",
         "prepare": "tsc --project .tsconfig_types.json",
