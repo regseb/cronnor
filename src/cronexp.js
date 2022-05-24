@@ -1,7 +1,7 @@
 /**
  * @module
- * @author Sébastien Règne
  * @license MIT
+ * @author Sébastien Règne
  */
 
 import Field from "./field.js";

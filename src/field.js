@@ -1,7 +1,7 @@
 /**
  * @module
- * @author Sébastien Règne
  * @license MIT
+ * @author Sébastien Règne
  */
 
 /**
@@ -80,8 +80,8 @@ export default class Field {
      *                                <code>false</code>.
      */
     constructor(values, restricted = true) {
-        // Enlever les doublons des valeurs et trier les valeurs pour faciliter
-        // les algorithmes.
+        // Enlever les doublons et trier les valeurs pour faciliter les
+        // algorithmes.
         this.#values = values.filter((v, i, a) => i === a.indexOf(v))
                              .sort((v1, v2) => v1 - v2);
         this.#restricted = restricted;

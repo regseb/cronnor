@@ -1,5 +1,4 @@
 import assert from "node:assert";
-// eslint-disable-next-line import/no-named-as-default
 import Cron, * as cronnor from "../src/index.js";
 
 describe("index.js", function () {

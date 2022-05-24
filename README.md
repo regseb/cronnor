@@ -56,7 +56,7 @@ Elle est aussi accessible directement avec le CDN [jsDelivr][link-jsdelivr] (ou
 [UNPKG](https://unpkg.com/cronnor/)) :
 
 ```JavaScript
-import Cron from "https://cdn.jsdelivr.net/npm/cronnor@1";
+import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
 ```
 
 ## API

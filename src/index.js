@@ -1,7 +1,7 @@
 /**
  * @module cronnor
- * @author Sébastien Règne
  * @license MIT
+ * @author Sébastien Règne
  */
 
 export { default } from "./cron.js";
