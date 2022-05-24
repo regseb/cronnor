@@ -1,9 +1,9 @@
 export default {
     patterns: [
         "!/.git/",
-        "!/.stryker-tmp/",
         "!/jsdocs/",
         "!/node_modules/",
+        "!/.stryker-tmp/",
         "!/types/",
         "!*.swp",
         "**",
@@ -27,7 +27,7 @@ export default {
                 eslint: ["eslint.config.js", "eslint_node.config.js"],
             },
         }, {
-            patterns: "/.metalint/**/*.js",
+            patterns: ["/.metalint/**/*.js", "/.stryker.conf.js"],
             linters: {
                 eslint: ["eslint.config.js", "eslint_config.config.js"],
             },

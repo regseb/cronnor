@@ -1,4 +1,4 @@
-/.stryker-tmp/
 /jsdocs/
 /node_modules/
+/.stryker-tmp/
 /types/

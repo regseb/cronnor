@@ -28,17 +28,16 @@
     "type": "module",
     "scripts": {
         "lint": "metalint",
-        "test": "stryker run",
-        "test:mocha": "mocha",
         "lint:types": "tsc --project .tsconfig_lint.json",
+        "test": "npm run test:coverage",
+        "test:unit": "mocha",
+        "test:coverage": "stryker run",
         "jsdocs": "typedoc --tsconfig .tsconfig_jsdocs.json --out jsdocs/ src/",
         "prepare": "tsc --project .tsconfig_types.json",
         "release": "standard-version",
         "clean": "node .script/clean.js"
     },
     "devDependencies": {
-        "@stryker-mutator/core": "^5.4.1",
-        "@stryker-mutator/mocha-runner": "^5.4.1",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.11.7",
         "@types/sinon": "^10.0.6",
@@ -60,6 +59,8 @@
         "typedoc": "^0.22.8",
         "typescript": "^4.4.4",
         "yaml-lint": "^1.2.4"
+        "@stryker-mutator/core": "6.0.2",
+        "@stryker-mutator/mocha-runner": "6.0.2",
     },
     "engines": {
         "node": ">=16.0.0"

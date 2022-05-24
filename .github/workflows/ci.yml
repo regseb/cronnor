@@ -49,8 +49,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Run unit tests
+      run: npm run test:unit
 
   coverage:
     runs-on: ubuntu-latest
@@ -68,8 +68,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Send coverage
-      run: npm test
+    - name: Run mutation tests and send coverage
+      run: npm run test:coverage
       env:
         STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
