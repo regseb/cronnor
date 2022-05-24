@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.0](https://github.com/regseb/cronnor/compare/v1.3.0...v2.0.0) (2022-05-24)
+
+
+### Bug Fixes
+
+* Corriger les exports pour Deno. ([4a01ac0](https://github.com/regseb/cronnor/commit/4a01ac0f69e434ba98e5b8119b2840b8d0d708e7))
+
 ## [1.3.0](https://github.com/regseb/cronnor/compare/v1.2.1...v1.3.0) (2021-11-12)
 
 
