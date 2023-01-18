@@ -23,6 +23,13 @@
         "types/"
     ],
     "main": "src/index.js",
+    "exports": {
+        ".": "./src/index.js",
+        "./cron.js": "./src/cron.js",
+        "./cronexp.js": "./src/cronexp.js",
+        "./at.js": "./src/at.js",
+        "./package.json": "./package.json"
+    },
     "types": "types/index.d.ts",
     "repository": "regseb/cronnor",
     "type": "module",
