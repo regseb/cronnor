@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/regseb/cronnor/compare/v2.0.0...v2.1.0) (2023-01-18)
+
+
+### Features
+
+* Exporter les fichiers séparément. ([c7cc8f3](https://github.com/regseb/cronnor/commit/c7cc8f3b1e73e7c9c4516a9668e625dabd2e0dc3))
+
 ### [2.0.0](https://github.com/regseb/cronnor/compare/v1.3.0...v2.0.0) (2022-05-24)
 
 
