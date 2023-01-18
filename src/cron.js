@@ -4,8 +4,8 @@
  * @author Sébastien Règne
  */
 
-import CronExp from "./cronexp.js";
 import At from "./at.js";
+import CronExp from "./cronexp.js";
 
 /**
  * La classe d'une tâche <em>cronée</em>.
@@ -20,7 +20,7 @@ export default class Cron {
      *
      * @type {CronExp[]}
      */
-    #cronexes;
+    #cronexps;
 
     /**
      * La fonction appelée à chaque horaire indiqué dans les expressions
@@ -69,9 +69,9 @@ export default class Cron {
      *                      bon type.
      */
     constructor(cronex, func, options) {
-        const cronexes = Array.isArray(cronex) ? cronex
-                                               : [cronex];
-        this.#cronexes = cronexes.map((p) => new CronExp(p));
+        this.#cronexps = Array.isArray(cronex)
+                       ? cronex.map((c) => new CronExp(c))
+                       : [new CronExp(cronex)];
         this.#func = func.bind(options?.thisArg ?? this,
                                ...options?.args ?? []);
 
@@ -159,7 +159,7 @@ export default class Cron {
      *                    respectée ; sinon <code>false</code>.
      */
     test(date = new Date()) {
-        return this.#cronexes.some((c) => c.test(date));
+        return this.#cronexps.some((c) => c.test(date));
     }
 
     /**
@@ -171,7 +171,7 @@ export default class Cron {
      */
     next(start = new Date()) {
         return new Date(Math.min(
-            ...this.#cronexes.map((c) => c.next(start).getTime()),
+            ...this.#cronexps.map((c) => c.next(start).getTime()),
         ));
     }
 }

@@ -2,7 +2,7 @@
 
 <!-- Utiliser du HTML pour faire flotter l'image à droite. -->
 <!-- markdownlint-disable-next-line no-inline-html-->
-<img src="asset/logo.svg" align="right" alt="Logo de Cronnor">
+<img src="asset/logo.svg" align="right" alt="">
 
 [![npm][img-npm]][link-npm]
 [![jsdelivr][img-jsdelivr]][link-jsdelivr]
@@ -52,11 +52,12 @@ import Cron from "https://deno.land/x/cronnor/mod.js";
 ### Navigateurs
 
 Elle est aussi accessible directement avec le CDN [jsDelivr][link-jsdelivr] (ou
-[Skypack](https://www.skypack.dev/view/cronnor),
-[UNPKG](https://unpkg.com/cronnor/)) :
+[UNPKG](https://unpkg.com/cronnor/), [esm.sh](https://esm.sh/cronnor)) :
 
 ```JavaScript
-import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
+import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2/+esm";
+// import Cron from "https://unpkg.com/cronnor@2";
+// import Cron from "https://esm.sh/cronnor@2";
 ```
 
 ## API
@@ -103,7 +104,10 @@ Crée une tâche _cronée_.
 
 #### `Cron.active`
 
-Est l'état de la tâche (active ou non).
+Récupère ou définit l'état de la tâche (active ou non) :
+
+- `true` si la tâche est active ou pour l'activer.
+- `false` si elle est inactive ou pour la désactiver.
 
 #### `Cron.run()`
 
@@ -225,13 +229,13 @@ Il existe aussi des chaines spéciales :
 Pour plus d'information, vous pouvez consulter le [manuel de
 _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
-<!-- Ne pas ajouter les logos car la couleur du logo de npm n'est pas
-     personnalisable. https://github.com/badges/shields/issues/6208 -->
-[img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm
-[img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor
-[img-build]:https://img.shields.io/github/workflow/status/regseb/cronnor/CI
+[img-npm]:https://img.shields.io/npm/dm/cronnor?label=npm&logo=npm&logoColor=white
+[img-jsdelivr]:https://img.shields.io/jsdelivr/npm/hm/cronnor?logo=jsdelivr&logoColor=white
+[img-build]:https://img.shields.io/github/actions/workflow/status/regseb/cronnor/ci.yml?branch=main&logo=github&logoColor=white
+<!-- Attendre que le logo de Stryker soit accepté.
+     https://github.com/simple-icons/simple-icons/pull/7388 -->
 [img-coverage]:https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain
-[img-semver]:https://img.shields.io/badge/semver-2.0.0-blue
+[img-semver]:https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&logoColor=white
 
 [link-npm]:https://www.npmjs.com/package/cronnor
 [link-jsdelivr]:https://www.jsdelivr.com/package/npm/cronnor

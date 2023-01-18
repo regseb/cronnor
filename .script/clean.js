@@ -1,8 +1,13 @@
+/**
+ * @module
+ * @license MIT
+ * @author Sébastien Règne
+ */
+
 import fs from "node:fs/promises";
 
-const paths = await fs.readFile(".gitignore");
-paths.toString()
-     .split("\n")
+const paths = await fs.readFile(".gitignore", "utf8");
+paths.split("\n")
      .filter((p) => "" !== p)
      // Enlever la barre oblique commençant le chemin.
      .map((p) => p.slice(1))

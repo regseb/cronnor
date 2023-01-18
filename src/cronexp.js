@@ -195,7 +195,7 @@ export default class CronExp {
             // Gérer les motifs "*/x".
             const result = (/^\*\/(?<step>\d+)$/u).exec(field);
             if (undefined !== result?.groups) {
-                const step = Number.parseInt(result.groups.step, 10);
+                const step = Number(result.groups.step);
                 if (0 === step) {
                     throw new RangeError(ERROR + pattern);
                 }
@@ -211,14 +211,14 @@ export default class CronExp {
                 }
 
                 const min = NAMES[index][subresult.groups.min] ??
-                            Number.parseInt(subresult.groups.min, 10);
+                            Number(subresult.groups.min);
                 const max = undefined === subresult.groups.max
-                                    ? min
-                                    : NAMES_MAX[index][subresult.groups.max] ??
-                                      Number.parseInt(subresult.groups.max, 10);
+                          ? min
+                          : NAMES_MAX[index][subresult.groups.max] ??
+                            Number(subresult.groups.max);
                 const step = undefined === subresult.groups.step
-                                   ? 1
-                                   : Number.parseInt(subresult.groups.step, 10);
+                           ? 1
+                           : Number(subresult.groups.step);
 
                 // Vérifier que les valeurs sont dans les intervalles.
                 if (min < LIMITS[index].min || LIMITS[index].max < max ||
@@ -397,8 +397,8 @@ export default class CronExp {
         // l'équivalent de prendre la prochaine date vérifiant les deux
         // conditions dont au moins une n'a aucune contrainte).
         return this.#date.restricted && this.#day.restricted
-                    ? new Date(Math.min(nextDate.getTime(), nextDay.getTime()))
-                    : new Date(Math.max(nextDate.getTime(), nextDay.getTime()));
+            ? new Date(Math.min(nextDate.getTime(), nextDay.getTime()))
+            : new Date(Math.max(nextDate.getTime(), nextDay.getTime()));
     }
 
     /**

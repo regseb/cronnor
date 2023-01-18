@@ -113,7 +113,9 @@ export default class Field {
      * @returns {number} La valeur maximale.
      */
     get max() {
-        return this.#values[this.#values.length - 1];
+        // Indiquer que la valeur ne sera pas undefined car la liste des valeurs
+        // n'est jamais vide.
+        return /** @type {number} */ (this.#values.at(-1));
     }
 
     /**

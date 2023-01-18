@@ -1,4 +1,9 @@
-import assert from "node:assert";
+/**
+ * @license MIT
+ * @author Sébastien Règne
+ */
+
+import assert from "node:assert/strict";
 import sinon from "sinon";
 import Cron from "../src/cron.js";
 
@@ -10,14 +15,14 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake);
-                assert.strictEqual(cron.active, true);
+                assert.equal(cron.active, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, cron);
-                assert.deepStrictEqual(fake.firstCall.args, []);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, cron);
+                assert.deepEqual(fake.firstCall.args, []);
 
                 cron.stop();
                 clock.restore();
@@ -28,12 +33,12 @@ describe("cron.js", function () {
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const cron = new Cron("1 0 1 1 *", fake, { active: false });
-                assert.strictEqual(cron.active, false);
+                assert.equal(cron.active, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
@@ -47,9 +52,9 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, "foo");
-                assert.deepStrictEqual(fake.firstCall.args, []);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, "foo");
+                assert.deepEqual(fake.firstCall.args, []);
 
                 cron.stop();
                 clock.restore();
@@ -66,21 +71,21 @@ describe("cron.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, cron);
-                assert.deepStrictEqual(fake.firstCall.args, ["foo", "bar", 42]);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, cron);
+                assert.deepEqual(fake.firstCall.args, ["foo", "bar", 42]);
 
                 cron.stop();
                 clock.restore();
             });
 
-            it(`should reject when is invoked without "new"`, function () {
+            it("should reject when is invoked without 'new'", function () {
                 // @ts-ignore
                 // eslint-disable-next-line new-cap
                 assert.throws(() => Cron([], () => {}), {
                     name:    "TypeError",
                     message: "Class constructor Cron cannot be invoked" +
-                                                               " without 'new'",
+                             " without 'new'",
                 });
             });
         });
@@ -88,13 +93,13 @@ describe("cron.js", function () {
         describe("get active()", function () {
             it("should return 'true' when task is actived", function () {
                 const cron = new Cron("0 0 1 1 *", () => {});
-                assert.strictEqual(cron.active, true);
+                assert.equal(cron.active, true);
                 cron.stop();
             });
 
             it("should return 'false' when task is deactived", function () {
                 const cron = new Cron("0 0 1 1 *", () => {}, { active: false });
-                assert.strictEqual(cron.active, false);
+                assert.equal(cron.active, false);
             });
         });
 
@@ -106,13 +111,13 @@ describe("cron.js", function () {
                 const cron = new Cron("1 0 1 1 *", fake, { active: false });
                 // eslint-disable-next-line no-multi-assign
                 const active = cron.active = true;
-                assert.strictEqual(active, true);
+                assert.equal(active, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, true);
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(cron.active, true);
+                assert.equal(fake.callCount, 1);
 
                 cron.stop();
                 clock.restore();
@@ -125,13 +130,13 @@ describe("cron.js", function () {
                 const cron = new Cron("1 0 1 1 *", fake);
                 // eslint-disable-next-line no-multi-assign
                 const active = cron.active = false;
-                assert.strictEqual(active, false);
+                assert.equal(active, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, false);
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(cron.active, false);
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
@@ -143,7 +148,7 @@ describe("cron.js", function () {
                 const cron = new Cron("* * * * *", fake, { active: false });
                 cron.run();
 
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
             });
         });
 
@@ -154,13 +159,13 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake, { active: false });
                 const changed = cron.start();
-                assert.strictEqual(changed, true);
+                assert.equal(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, true);
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(cron.active, true);
+                assert.equal(fake.callCount, 1);
 
                 cron.stop();
                 clock.restore();
@@ -172,15 +177,15 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake, { active: false });
                 let changed = cron.start();
-                assert.strictEqual(changed, true);
+                assert.equal(changed, true);
                 changed = cron.start();
-                assert.strictEqual(changed, false);
+                assert.equal(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, true);
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(cron.active, true);
+                assert.equal(fake.callCount, 1);
 
                 cron.stop();
                 clock.restore();
@@ -194,13 +199,13 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake);
                 const changed = cron.stop();
-                assert.strictEqual(changed, true);
+                assert.equal(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, false);
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(cron.active, false);
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
@@ -211,28 +216,28 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake);
                 let changed = cron.stop();
-                assert.strictEqual(changed, true);
+                assert.equal(changed, true);
                 changed = cron.stop();
-                assert.strictEqual(changed, false);
+                assert.equal(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(cron.active, false);
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(cron.active, false);
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
         });
 
         describe("test()", function () {
-            it("should support one cronexp", function () {
+            it("should support one cronex", function () {
                 const cron = new Cron("0 0 1 1 *", () => {}, { active: false });
                 assert.ok(cron.test(new Date("2000-01-01T00:00")));
                 assert.ok(!cron.test(new Date("2000-01-01T00:01")));
             });
 
-            it("should support many cronexps", function () {
+            it("should support many cronexes", function () {
                 const cron = new Cron(["0 0 1 1 *", "59 23 31 12 *"],
                                       () => {},
                                       { active: false });
@@ -244,20 +249,20 @@ describe("cron.js", function () {
         });
 
         describe("next()", function () {
-            it("should support one cronexp", function () {
+            it("should support one cronex", function () {
                 const cron = new Cron("1 0 1 1 *", () => {}, { active: false });
                 const next = cron.next(new Date("2000-01-01T00:00"));
-                assert.deepStrictEqual(next, new Date("2000-01-01T00:01"));
+                assert.deepEqual(next, new Date("2000-01-01T00:01"));
             });
 
-            it("should support many cronexps", function () {
+            it("should support many cronexes", function () {
                 const cron = new Cron(["1 0 1 1 *", "59 23 31 12 *"],
                                       () => {},
                                       { active: false });
                 let next = cron.next(new Date("2000-01-01T00:00"));
-                assert.deepStrictEqual(next, new Date("2000-01-01T00:01"));
+                assert.deepEqual(next, new Date("2000-01-01T00:01"));
                 next = cron.next(new Date("2000-12-31T23:58"));
-                assert.deepStrictEqual(next, new Date("2000-12-31T23:59"));
+                assert.deepEqual(next, new Date("2000-12-31T23:59"));
             });
         });
     });

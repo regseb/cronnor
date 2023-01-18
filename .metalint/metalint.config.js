@@ -3,7 +3,7 @@ export default {
         "!/.git/",
         "!/jsdocs/",
         "!/node_modules/",
-        "!/.stryker-tmp/",
+        "!/.stryker/",
         "!/types/",
         "!*.swp",
         "**",
@@ -37,6 +37,9 @@ export default {
         }, {
             patterns: "*.json",
             linters: { "jsonlint-mod": null },
+        }, {
+            patterns: "/package.json",
+            linters: "npm-package-json-lint",
         }, {
             patterns: "*.yml",
             linters: { "yaml-lint": null },

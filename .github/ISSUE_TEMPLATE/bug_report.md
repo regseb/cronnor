@@ -13,11 +13,14 @@ assignees: ''
 
 ### To Reproduce
 
-Steps to reproduce the behavior:
+<!-- Please include a minimal reproduction case. Otherwise, include any
+     information about how you're using Cronnor. -->
 
-1. <!-- Use cron expression `"* * 13 * thu"`. -->
-2. <!-- Do something. -->
-3. <!-- ... -->
+```JavaScript
+    // Use cron expression "* * 13 * thu".
+    // Do something.
+    // ...
+```
 
 ### Expected behavior
 
@@ -25,8 +28,8 @@ Steps to reproduce the behavior:
 
 ### Environment
 
-- Cronnor version<!-- e.g. 2.0.0 -->:
-- Platform version<!-- e.g. Chrome 101.0.4951.64, Node.js v16.15.0 -->:
+- Cronnor version<!-- e.g. 2.1.0 -->:
+- Platform version<!-- e.g. Chrome 109.0.5414.74, Node.js v18.13.0 -->:
 
 ### Additional context
 

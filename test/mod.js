@@ -1,24 +1,29 @@
-import assert from "node:assert";
+/**
+ * @license MIT
+ * @author Sébastien Règne
+ */
+
+import assert from "node:assert/strict";
 import Cron, * as cronnor from "../mod.js";
 
 describe("mod.js", function () {
     describe("Cron", function () {
         it("should export Cron as default", function () {
-            assert.strictEqual(Cron.name, "Cron");
+            assert.equal(Cron.name, "Cron");
         });
     });
 
     describe("cronnor", function () {
         it("should export Cron", function () {
-            assert.strictEqual(cronnor.Cron.name, "Cron");
+            assert.equal(cronnor.Cron.name, "Cron");
         });
 
         it("should export CronExp", function () {
-            assert.strictEqual(cronnor.CronExp.name, "CronExp");
+            assert.equal(cronnor.CronExp.name, "CronExp");
         });
 
         it("should export At", function () {
-            assert.strictEqual(cronnor.At.name, "At");
+            assert.equal(cronnor.At.name, "At");
         });
     });
 });

@@ -10,14 +10,16 @@
         "target": "ESNext"
     },
     "include": [
-        "**/*"
+        "**/*",
+        "**/.*",
+        "**/.*/**/*",
+        "**/.*/**/.*"
     ],
     "exclude": [
         ".git/",
-        ".stryker-tmp/",
         "jsdocs/",
         "node_modules/",
-        "types/",
-        "**/*.swp"
+        ".stryker/",
+        "types/"
     ]
 }

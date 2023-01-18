@@ -1,10 +1,11 @@
 export default {
     plugins: [
+        "array-func",
         "eslint-comments",
         "import",
         "jsdoc",
         "mocha",
-        "node",
+        "n",
         "no-unsanitized",
         "promise",
         "regexp",
@@ -59,6 +60,7 @@ export default {
         }],
         "no-loss-of-precision": 2,
         "no-misleading-character-class": 2,
+        "no-new-native-nonconstructor": 2,
         "no-new-symbol": 2,
         "no-obj-calls": 2,
         "no-promise-executor-return": 2,
@@ -122,6 +124,9 @@ export default {
         "id-length": 0,
         "id-match": 0,
         "init-declarations": 0,
+        "logical-assignment-operators": [2, "always", {
+            enforceForIfStatements: true,
+        }],
         "max-classes-per-file": 2,
         "max-depth": [1, { max: 5 }],
         "max-lines": [1, {
@@ -148,6 +153,7 @@ export default {
         "no-else-return": [2, { allowElseIf: false }],
         "no-empty": 2,
         "no-empty-function": [2, { allow: ["arrowFunctions"] }],
+        "no-empty-static-block": 2,
         "no-eq-null": 2,
         "no-eval": 2,
         "no-extend-native": 2,
@@ -160,14 +166,14 @@ export default {
         "no-implicit-coercion": [2, { disallowTemplateShorthand: true }],
         "no-implicit-globals": 2,
         "no-implied-eval": 2,
-        "no-inline-comments": 2,
+        "no-inline-comments": [2, { ignorePattern: "@type" }],
         "no-invalid-this": 2,
         "no-iterator": 2,
         "no-label-var": 2,
         "no-labels": 2,
         "no-lone-blocks": 2,
         "no-lonely-if": 2,
-        "no-loop-func": 1,
+        "no-loop-func": 2,
         "no-magic-numbers": 0,
         "no-mixed-operators": 0,
         "no-multi-assign": 2,
@@ -190,9 +196,9 @@ export default {
         "no-redeclare": 2,
         "no-regex-spaces": 2,
         "no-restricted-exports": 0,
-        "no-restricted-globals": 2,
-        "no-restricted-imports": 2,
-        "no-restricted-properties": 2,
+        "no-restricted-globals": 0,
+        "no-restricted-imports": 0,
+        "no-restricted-properties": 0,
         "no-restricted-syntax": [
             2,
             "DebuggerStatement",
@@ -265,8 +271,9 @@ export default {
         "require-unicode-regexp": 2,
         "require-yield": 2,
         "sort-imports": [2, {
+            // Ne pas trier les imports en fonction des variables et de leur
+            // type, mais préférer un tri en fonction du fichier importé.
             ignoreDeclarationSort: true,
-            allowSeparatedGroups: true,
         }],
         "sort-keys": 0,
         "sort-vars": 0,
@@ -310,7 +317,10 @@ export default {
         "multiline-ternary": 0,
         "new-parens": 2,
         "newline-per-chained-call": 0,
-        "no-extra-parens": [2, "all", { enforceForArrowConditionals: false }],
+        "no-extra-parens": [2, "all", {
+            enforceForArrowConditionals: false,
+            allowParensAfterCommentPattern: "@type",
+        }],
         "no-mixed-spaces-and-tabs": 2,
         "no-multi-spaces": 0,
         "no-multiple-empty-lines": [2, { max: 2, maxEOF: 0, maxBOF: 0 }],
@@ -349,6 +359,14 @@ export default {
         "wrap-regex": 2,
         "yield-star-spacing": 2,
 
+        // Plugin eslint-plugin-array-func.
+        "array-func/from-map": 2,
+        "array-func/no-unnecessary-this-arg": 2,
+        "array-func/prefer-array-from": 2,
+        "array-func/avoid-reverse": 2,
+        "array-func/prefer-flat-map": 2,
+        "array-func/prefer-flat": 2,
+
         // Plugin eslint-plugin-eslint-comments.
         // Best Practices.
         "eslint-comments/disable-enable-pair": [2, { allowWholeFile: true }],
@@ -370,55 +388,78 @@ export default {
         "eslint-comments/require-description": 0,
 
         // Plugin eslint-plugin-import.
-        // Static analysis.
-        "import/no-unresolved": 2,
-        "import/named": 2,
-        "import/default": 2,
-        "import/namespace": 2,
-        "import/no-restricted-paths": 2,
-        "import/no-absolute-path": 2,
-        "import/no-dynamic-require": 2,
-        "import/no-internal-modules": 0,
-        "import/no-webpack-loader-syntax": 2,
-        "import/no-self-import": 2,
-        "import/no-cycle": 2,
-        "import/no-useless-path-segments": 2,
-        "import/no-relative-parent-imports": 0,
-        "import/no-relative-packages": 2,
-
         // Helpful warnings.
         "import/export": 2,
+        "import/no-deprecated": 2,
+        "import/no-empty-named-blocks": 2,
+        "import/no-extraneous-dependencies": [2, {
+            devDependencies: ["test/**/*.js", ".script/**/*.js"],
+        }],
+        "import/no-mutable-exports": 2,
         "import/no-named-as-default": 0,
         "import/no-named-as-default-member": 0,
-        "import/no-deprecated": 2,
-        "import/no-extraneous-dependencies": 2,
-        "import/no-mutable-exports": 2,
-        "import/no-unused-modules": 2,
+        // Ne pas appliquer cette règle car elle ne fonctionnne pas quand le nom
+        // du fichier de configuration de ESLint n'est pas standard.
+        // https://github.com/import-js/eslint-plugin-import/issues/2678
+        "import/no-unused-modules": 0,
 
         // Module systems.
-        "import/unambiguous": 0,
-        "import/no-commonjs": 2,
-        "import/no-amd": 2,
-        "import/no-nodejs-modules": 2,
+        // Désactiver cette règle car no-undef remontera une erreur car les
+        // méthodes define() et require() ne sont pas définies.
+        "import/no-amd": 0,
+        // Désactiver cette règle et préférer unicorn/prefer-module.
+        "import/no-commonjs": 0,
         "import/no-import-module-exports": 0,
+        "import/no-nodejs-modules": 2,
+        "import/unambiguous": 0,
+
+        // Static analysis.
+        "import/default": 2,
+        "import/named": 2,
+        "import/namespace": 2,
+        "import/no-absolute-path": 2,
+        "import/no-cycle": [2, { ignoreExternal: true }],
+        // Désactiver cette règle car la méthode require() est déjà interdite.
+        "import/no-dynamic-require": 0,
+        "import/no-internal-modules": 0,
+        "import/no-relative-packages": 2,
+        "import/no-relative-parent-imports": 0,
+        "import/no-restricted-paths": 0,
+        "import/no-self-import": 2,
+        "import/no-unresolved": [2, {
+            caseSensitive: true,
+            caseSensitiveStrict: true,
+        }],
+        "import/no-useless-path-segments": 2,
+        "import/no-webpack-loader-syntax": 2,
 
         // Style guide.
-        "import/first": 2,
-        "import/exports-last": 0,
-        "import/no-duplicates": 2,
-        "import/no-namespace": 0,
-        "import/extensions": [2, "ignorePackages"],
-        "import/order": 2,
-        "import/newline-after-import": 2,
-        "import/prefer-default-export": 0,
-        "import/max-dependencies": 0,
-        "import/no-unassigned-import": 2,
-        "import/no-named-default": 2,
-        "import/no-default-export": 0,
-        "import/no-named-export": 0,
-        "import/no-anonymous-default-export": 0,
-        "import/group-exports": 0,
+        // Ne pas activer cette règle qui s'applique seulement à Flow et
+        // TypeScript.
+        "import/consistent-type-specifier-style": 0,
+        // Ne pas activer cette règle qui est utile seulement avec webpack.
         "import/dynamic-import-chunkname": 0,
+        "import/exports-last": 0,
+        "import/extensions": [2, "ignorePackages"],
+        "import/first": 2,
+        "import/group-exports": 0,
+        "import/max-dependencies": 0,
+        // Ne pas activer l'option "considerComments" car les commentaires entre
+        // les imports ne sont pas gérés.
+        // https://github.com/import-js/eslint-plugin-import/issues/2673
+        "import/newline-after-import": [2, { considerComments: false }],
+        "import/no-anonymous-default-export": 2,
+        "import/no-default-export": 0,
+        "import/no-duplicates": 2,
+        "import/no-named-default": 2,
+        "import/no-named-export": 0,
+        "import/no-namespace": 0,
+        "import/no-unassigned-import": 2,
+        "import/order": [2, {
+            "newlines-between": "never",
+            alphabetize: { order: "asc" },
+        }],
+        "import/prefer-default-export": 0,
 
         // Plugin eslint-plugin-jsdoc.
         "jsdoc/check-access": 2,
@@ -501,6 +542,7 @@ export default {
         "promise/valid-params": 2,
         "promise/prefer-await-to-then": 2,
         "promise/prefer-await-to-callbacks": 0,
+        "promise/no-multiple-resolved": 2,
 
         // Plugin eslint-plugin-regexp.
         // Possible Errors.
@@ -515,7 +557,9 @@ export default {
         "regexp/no-escape-backspace": 2,
         "regexp/no-invalid-regexp": 2,
         "regexp/no-lazy-ends": 2,
+        "regexp/no-misleading-capturing-group": 2,
         "regexp/no-misleading-unicode-character": 2,
+        "regexp/no-missing-g-flag": 2,
         "regexp/no-optional-assertion": 2,
         "regexp/no-potentially-useless-backreference": 2,
         "regexp/no-super-linear-backtracking": 2,
@@ -530,6 +574,7 @@ export default {
         "regexp/control-character-escape": 2,
         "regexp/negation": 2,
         "regexp/no-dupe-characters-character-class": 2,
+        "regexp/no-extra-lookaround-assertions": 2,
         "regexp/no-invisible-character": 2,
         "regexp/no-legacy-features": 2,
         "regexp/no-non-standard-flag": 2,
@@ -595,7 +640,6 @@ export default {
         "unicorn/expiring-todo-comments": 0,
         "unicorn/explicit-length-check": 0,
         "unicorn/filename-case": [2, { case: "kebabCase" }],
-        "unicorn/import-index": 0,
         "unicorn/import-style": 2,
         "unicorn/new-for-builtins": 2,
         "unicorn/no-abusive-eslint-disable": 2,
@@ -614,6 +658,9 @@ export default {
         "unicorn/no-invalid-remove-event-listener": 2,
         "unicorn/no-keyword-prefix": 2,
         "unicorn/no-lonely-if": 2,
+        // Utiliser la règle no-negated-condition d'ESLint car celle d'unicorn
+        // apporte seulement la correction automatique.
+        "unicorn/no-negated-condition": 0,
         "unicorn/no-nested-ternary": 0,
         "unicorn/no-new-array": 2,
         "unicorn/no-new-buffer": 2,
@@ -623,6 +670,8 @@ export default {
         "unicorn/no-static-only-class": 2,
         "unicorn/no-thenable": 2,
         "unicorn/no-this-assignment": 2,
+        "unicorn/no-typeof-undefined": [2, { checkGlobalVariables: true }],
+        "unicorn/no-unnecessary-await": 2,
         "unicorn/no-unreadable-array-destructuring": 2,
         "unicorn/no-unreadable-iife": 2,
         // Désactiver la règle car il y a des faux-positifs avec les petites
@@ -640,7 +689,7 @@ export default {
         "unicorn/number-literal-case": 2,
         "unicorn/numeric-separators-style": 2,
         "unicorn/prefer-add-event-listener": 2,
-        "unicorn/prefer-array-find": 2,
+        "unicorn/prefer-array-find": [2, { checkFromLast: true }],
         "unicorn/prefer-array-flat": 2,
         "unicorn/prefer-array-flat-map": 2,
         "unicorn/prefer-array-index-of": 2,
@@ -653,10 +702,12 @@ export default {
         "unicorn/prefer-dom-node-dataset": 2,
         "unicorn/prefer-dom-node-remove": 2,
         "unicorn/prefer-dom-node-text-content": 2,
+        "unicorn/prefer-event-target": 2,
         "unicorn/prefer-export-from": [2, { ignoreUsedVariables: true }],
         "unicorn/prefer-includes": 2,
         "unicorn/prefer-json-parse-buffer": 0,
         "unicorn/prefer-keyboard-event-key": 2,
+        "unicorn/prefer-logical-operator-over-ternary": 2,
         "unicorn/prefer-math-trunc": 2,
         "unicorn/prefer-modern-dom-apis": 2,
         "unicorn/prefer-modern-math-apis": 2,
@@ -672,6 +723,7 @@ export default {
         "unicorn/prefer-reflect-apply": 2,
         "unicorn/prefer-regexp-test": 2,
         "unicorn/prefer-set-has": 2,
+        "unicorn/prefer-set-size": 2,
         "unicorn/prefer-spread": 0,
         "unicorn/prefer-string-replace-all": 2,
         "unicorn/prefer-string-slice": 2,
@@ -690,6 +742,7 @@ export default {
         // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1396
         "unicorn/require-post-message-target-origin": 0,
         "unicorn/string-content": 0,
+        "unicorn/switch-case-braces": [2, "avoid"],
         "unicorn/template-indent": 2,
         "unicorn/text-encoding-identifier-case": 2,
         "unicorn/throw-new-error": 2,
@@ -702,6 +755,7 @@ export default {
                 ".<>": "<>",
                 "Array<>": "[]",
                 object: "Object",
+                "object<>": "Object<>",
             },
             tagNamePreference: {
                 virtual: "abstract",

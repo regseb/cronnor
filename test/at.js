@@ -1,4 +1,9 @@
-import assert from "node:assert";
+/**
+ * @license MIT
+ * @author Sébastien Règne
+ */
+
+import assert from "node:assert/strict";
 import sinon from "sinon";
 import At from "../src/at.js";
 
@@ -14,9 +19,9 @@ describe("at.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, at);
-                assert.deepStrictEqual(fake.firstCall.args, []);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, at);
+                assert.deepEqual(fake.firstCall.args, []);
 
                 clock.restore();
             });
@@ -31,9 +36,9 @@ describe("at.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, "foo");
-                assert.deepStrictEqual(fake.firstCall.args, []);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, "foo");
+                assert.deepEqual(fake.firstCall.args, []);
 
                 clock.restore();
             });
@@ -49,9 +54,9 @@ describe("at.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 1);
-                assert.deepStrictEqual(fake.firstCall.thisValue, at);
-                assert.deepStrictEqual(fake.firstCall.args, ["foo", "bar", 42]);
+                assert.equal(fake.callCount, 1);
+                assert.deepEqual(fake.firstCall.thisValue, at);
+                assert.deepEqual(fake.firstCall.args, ["foo", "bar", 42]);
 
                 clock.restore();
             });
@@ -65,9 +70,9 @@ describe("at.js", function () {
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
                 clock.next();
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
 
                 clock.restore();
             });
@@ -81,7 +86,7 @@ describe("at.js", function () {
 
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
 
                 clock.restore();
             });
@@ -95,9 +100,9 @@ describe("at.js", function () {
 
                 // Incrémenter deux fois le temps pour les setTimeout().
                 clock.next();
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(fake.callCount, 0);
                 clock.next();
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
 
                 clock.restore();
             });
@@ -111,26 +116,29 @@ describe("at.js", function () {
 
                 // Incrémenter trois fois le temps pour les setTimeout().
                 clock.next();
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(fake.callCount, 0);
                 clock.next();
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(fake.callCount, 0);
                 clock.next();
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
 
                 clock.restore();
             });
 
             it(`should reject when is invoked without "new"`, function () {
+                const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 // @ts-ignore
                 // eslint-disable-next-line new-cap
-                assert.throws(() => At(new Date("2000-01-01T00:01"),
-                                       () => {}), {
+                assert.throws(() => At(new Date("2000-01-01T00:01"), fake), {
                     name:    "TypeError",
-                    message: "Class constructor At cannot be invoked" +
-                                                               " without 'new'",
+                    message: "Class constructor At cannot be invoked without" +
+                             " 'new'",
                 });
+
+                clock.next();
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
@@ -144,7 +152,7 @@ describe("at.js", function () {
                 const at = new At(new Date("2000-01-01T00:01"), fake);
                 at.run();
 
-                assert.strictEqual(fake.callCount, 1);
+                assert.equal(fake.callCount, 1);
 
                 clock.restore();
             });
@@ -161,7 +169,7 @@ describe("at.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
 
-                assert.strictEqual(fake.callCount, 0);
+                assert.equal(fake.callCount, 0);
 
                 clock.restore();
             });
