@@ -132,9 +132,9 @@ describe("at.js", function () {
                 // @ts-ignore
                 // eslint-disable-next-line new-cap
                 assert.throws(() => At(new Date("2000-01-01T00:01"), fake), {
-                    name:    "TypeError",
-                    message: "Class constructor At cannot be invoked without" +
-                             " 'new'",
+                    name: "TypeError",
+                    message:
+                        "Class constructor At cannot be invoked without 'new'",
                 });
 
                 clock.next();

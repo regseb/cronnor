@@ -38,9 +38,11 @@ describe("field.js", function () {
 
         describe("flat()", function () {
             it("should flat fields", function () {
-                const field = Field.flat([Field.range(1, 1, 1),
-                                          Field.range(2, 2, 1),
-                                          Field.range(0, 4, 2)]);
+                const field = Field.flat([
+                    Field.range(1, 1, 1),
+                    Field.range(2, 2, 1),
+                    Field.range(0, 4, 2),
+                ]);
                 assert.deepEqual(field.values(), [0, 1, 2, 4]);
                 assert.equal(field.restricted, true);
             });

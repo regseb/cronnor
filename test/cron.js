@@ -83,9 +83,10 @@ describe("cron.js", function () {
                 // @ts-ignore
                 // eslint-disable-next-line new-cap
                 assert.throws(() => Cron([], () => {}), {
-                    name:    "TypeError",
-                    message: "Class constructor Cron cannot be invoked" +
-                             " without 'new'",
+                    name: "TypeError",
+                    message:
+                        "Class constructor Cron cannot be invoked without" +
+                        " 'new'",
                 });
             });
         });
@@ -110,7 +111,7 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake, { active: false });
                 // eslint-disable-next-line no-multi-assign
-                const active = cron.active = true;
+                const active = (cron.active = true);
                 assert.equal(active, true);
 
                 // Incrémenter le temps pour le setTimeout().
@@ -129,7 +130,7 @@ describe("cron.js", function () {
 
                 const cron = new Cron("1 0 1 1 *", fake);
                 // eslint-disable-next-line no-multi-assign
-                const active = cron.active = false;
+                const active = (cron.active = false);
                 assert.equal(active, false);
 
                 // Incrémenter le temps pour le setTimeout().
@@ -238,9 +239,11 @@ describe("cron.js", function () {
             });
 
             it("should support many cronexes", function () {
-                const cron = new Cron(["0 0 1 1 *", "59 23 31 12 *"],
-                                      () => {},
-                                      { active: false });
+                const cron = new Cron(
+                    ["0 0 1 1 *", "59 23 31 12 *"],
+                    () => {},
+                    { active: false },
+                );
                 assert.ok(cron.test(new Date("2000-01-01T00:00")));
                 assert.ok(cron.test(new Date("2000-12-31T23:59")));
                 assert.ok(!cron.test(new Date("2000-01-01T00:01")));
@@ -256,9 +259,11 @@ describe("cron.js", function () {
             });
 
             it("should support many cronexes", function () {
-                const cron = new Cron(["1 0 1 1 *", "59 23 31 12 *"],
-                                      () => {},
-                                      { active: false });
+                const cron = new Cron(
+                    ["1 0 1 1 *", "59 23 31 12 *"],
+                    () => {},
+                    { active: false },
+                );
                 let next = cron.next(new Date("2000-01-01T00:00"));
                 assert.deepEqual(next, new Date("2000-01-01T00:01"));
                 next = cron.next(new Date("2000-12-31T23:58"));

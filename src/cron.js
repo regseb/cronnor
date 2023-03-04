@@ -13,7 +13,6 @@ import CronExp from "./cronexp.js";
  * @class
  */
 export default class Cron {
-
     /**
      * La liste des expressions <em>cron</em> indiquant les horaires d'exécution
      * de la tâche.
@@ -70,10 +69,12 @@ export default class Cron {
      */
     constructor(cronex, func, options) {
         this.#cronexps = Array.isArray(cronex)
-                       ? cronex.map((c) => new CronExp(c))
-                       : [new CronExp(cronex)];
-        this.#func = func.bind(options?.thisArg ?? this,
-                               ...options?.args ?? []);
+            ? cronex.map((c) => new CronExp(c))
+            : [new CronExp(cronex)];
+        this.#func = func.bind(
+            options?.thisArg ?? this,
+            ...(options?.args ?? []),
+        );
 
         if (options?.active ?? true) {
             this.#schedule();
@@ -170,8 +171,8 @@ export default class Cron {
      * @returns {Date} La prochaine date respectant une des expressions.
      */
     next(start = new Date()) {
-        return new Date(Math.min(
-            ...this.#cronexps.map((c) => c.next(start).getTime()),
-        ));
+        return new Date(
+            Math.min(...this.#cronexps.map((c) => c.next(start).getTime())),
+        );
     }
 }

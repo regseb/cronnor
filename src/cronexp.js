@@ -12,13 +12,13 @@ import Field from "./field.js";
  * @type {Object<string, string>}
  */
 const NICKNAMES = {
-    "@yearly":   "0 0 1 1 *",
+    "@yearly": "0 0 1 1 *",
     "@annually": "0 0 1 1 *",
-    "@monthly":  "0 0 1 * *",
-    "@weekly":   "0 0 * * 0",
-    "@daily":    "0 0 * * *",
+    "@monthly": "0 0 1 * *",
+    "@weekly": "0 0 * * 0",
+    "@daily": "0 0 * * *",
     "@midnight": "0 0 * * *",
-    "@hourly":   "0 * * * *",
+    "@hourly": "0 * * * *",
 };
 
 /**
@@ -69,20 +69,22 @@ const NAMES = [
  *
  * @type {Object<string, number>[]}
  */
-const NAMES_MAX = NAMES.map((n) => ("sun" in n ? { ...n, sun: 7 }
-                                               : { ...n }));
+const NAMES_MAX = NAMES.map((n) => ("sun" in n ? { ...n, sun: 7 } : { ...n }));
 
 /**
  * Les expressions rationnelles pour découper un intervalle.
  *
  * @type {RegExp[]}
  */
-const RANGE_REGEXES = NAMES.map((n) => new RegExp(
-    `^(?<min>\\d{1,2}|${Object.keys(n).join("|")})` +
-        `(?:-(?<max>\\d{1,2}|${Object.keys(n).join("|")})` +
-        "(?:/(?<step>\\d+))?)?$",
-    "u",
-));
+const RANGE_REGEXES = NAMES.map(
+    (n) =>
+        new RegExp(
+            `^(?<min>\\d{1,2}|${Object.keys(n).join("|")})` +
+                `(?:-(?<max>\\d{1,2}|${Object.keys(n).join("|")})` +
+                "(?:/(?<step>\\d+))?)?$",
+            "u",
+        ),
+);
 
 /**
  * Les valeurs minimales et maximales (incluses) saisissables dans les cinq
@@ -124,7 +126,6 @@ const ERROR = "Syntax error, unrecognized expression: ";
  * @class
  */
 export default class CronExp {
-
     /**
      * Les valeurs possibles pour les minutes.
      *
@@ -180,8 +181,9 @@ export default class CronExp {
         // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
         // les cinq champs (minutes, heures, jour du mois, mois et jour de la
         // semaine).
-        const fields = (NICKNAMES[pattern] ?? pattern).toLowerCase()
-                                                      .split(/\s+/u);
+        const fields = (NICKNAMES[pattern] ?? pattern)
+            .toLowerCase()
+            .split(/\s+/u);
         if (5 !== fields.length) {
             throw new Error(ERROR + pattern);
         }
@@ -193,7 +195,7 @@ export default class CronExp {
             }
 
             // Gérer les motifs "*/x".
-            const result = (/^\*\/(?<step>\d+)$/u).exec(field);
+            const result = /^\*\/(?<step>\d+)$/u.exec(field);
             if (undefined !== result?.groups) {
                 const step = Number(result.groups.step);
                 if (0 === step) {
@@ -204,30 +206,39 @@ export default class CronExp {
             }
 
             // Gérer les listes.
-            return Field.flat(field.split(",").map((range) => {
-                const subresult = RANGE_REGEXES[index].exec(range);
-                if (undefined === subresult?.groups) {
-                    throw new Error(ERROR + pattern);
-                }
+            return Field.flat(
+                field.split(",").map((range) => {
+                    const subresult = RANGE_REGEXES[index].exec(range);
+                    if (undefined === subresult?.groups) {
+                        throw new Error(ERROR + pattern);
+                    }
 
-                const min = NAMES[index][subresult.groups.min] ??
-                            Number(subresult.groups.min);
-                const max = undefined === subresult.groups.max
-                          ? min
-                          : NAMES_MAX[index][subresult.groups.max] ??
-                            Number(subresult.groups.max);
-                const step = undefined === subresult.groups.step
-                           ? 1
-                           : Number(subresult.groups.step);
+                    const min =
+                        NAMES[index][subresult.groups.min] ??
+                        Number(subresult.groups.min);
+                    const max =
+                        undefined === subresult.groups.max
+                            ? min
+                            : NAMES_MAX[index][subresult.groups.max] ??
+                              Number(subresult.groups.max);
+                    const step =
+                        undefined === subresult.groups.step
+                            ? 1
+                            : Number(subresult.groups.step);
 
-                // Vérifier que les valeurs sont dans les intervalles.
-                if (min < LIMITS[index].min || LIMITS[index].max < max ||
-                        max < min || 0 === step) {
-                    throw new RangeError(ERROR + pattern);
-                }
+                    // Vérifier que les valeurs sont dans les intervalles.
+                    if (
+                        min < LIMITS[index].min ||
+                        LIMITS[index].max < max ||
+                        max < min ||
+                        0 === step
+                    ) {
+                        throw new RangeError(ERROR + pattern);
+                    }
 
-                return Field.range(min, max, step);
-            }));
+                    return Field.range(min, max, step);
+                }),
+            );
         });
 
         this.#minutes = conds[0];
@@ -240,8 +251,9 @@ export default class CronExp {
 
         // Récupérer le nombre maximum de jours du mois le plus long parmi tous
         // les mois autorisés.
-        const max = Math.max(...this.#month.values()
-                                           .map((m) => MAX_DAYS_IN_MONTHS[m]));
+        const max = Math.max(
+            ...this.#month.values().map((m) => MAX_DAYS_IN_MONTHS[m]),
+        );
         if (max < this.#date.min) {
             throw new RangeError(ERROR + pattern);
         }
@@ -258,9 +270,11 @@ export default class CronExp {
     test(date = new Date()) {
         // Vérifier que les minutes, les heures et le mois respectent les
         // conditions.
-        if (!this.#minutes.test(date.getMinutes()) ||
-                !this.#hours.test(date.getHours()) ||
-                !this.#month.test(date.getMonth())) {
+        if (
+            !this.#minutes.test(date.getMinutes()) ||
+            !this.#hours.test(date.getHours()) ||
+            !this.#month.test(date.getMonth())
+        ) {
             return false;
         }
 
@@ -268,15 +282,15 @@ export default class CronExp {
         // (différent de l'astérisque), vérifier si au moins une des deux
         // conditions est respectée.
         if (this.#date.restricted && this.#day.restricted) {
-            return this.#date.test(date.getDate()) ||
-                   this.#day.test(date.getDay());
+            return (
+                this.#date.test(date.getDate()) || this.#day.test(date.getDay())
+            );
         }
 
         // Sinon : soit le jour du mois, soit le jour de la semaine ou aucun des
         // deux ne sont renseignés. Dans ce cas, vérifier classiquement les deux
         // conditions.
-        return this.#date.test(date.getDate()) &&
-               this.#day.test(date.getDay());
+        return this.#date.test(date.getDate()) && this.#day.test(date.getDay());
     }
 
     /**
@@ -343,10 +357,11 @@ export default class CronExp {
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
         const next = this.#date.next(date.getDate());
-        if (undefined === next ||
-                next > new Date(date.getFullYear(),
-                                date.getMonth() + 1,
-                                0).getDate()) {
+        if (
+            undefined === next ||
+            next >
+                new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+        ) {
             date.setMonth(date.getMonth() + 1);
             date.setDate(this.#date.min);
         } else {
@@ -373,7 +388,7 @@ export default class CronExp {
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
         const next = this.#day.next(date.getDay()) ?? this.#day.min;
-        date.setDate(date.getDate() + (next + (7 - date.getDay())) % 7);
+        date.setDate(date.getDate() + ((next + (7 - date.getDay())) % 7));
         return date;
     }
 

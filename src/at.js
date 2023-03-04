@@ -18,7 +18,6 @@ const MAX_DELAY = 2_147_483_647;
  * @class
  */
 export default class At {
-
     /**
      * La date de planification de la tâche.
      *
@@ -58,8 +57,10 @@ export default class At {
      */
     constructor(date, func, options) {
         this.#date = date;
-        this.#func = func.bind(options?.thisArg ?? this,
-                               ...options?.args ?? []);
+        this.#func = func.bind(
+            options?.thisArg ?? this,
+            ...(options?.args ?? []),
+        );
 
         this.#schedule();
     }

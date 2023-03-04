@@ -10,7 +10,6 @@
  * @class
  */
 export default class Field {
-
     /**
      * Crée un champ d'une expression <em>cron</em> avec toutes les valeurs
      * autorisées (sans restriction).
@@ -82,8 +81,9 @@ export default class Field {
     constructor(values, restricted = true) {
         // Enlever les doublons et trier les valeurs pour faciliter les
         // algorithmes.
-        this.#values = values.filter((v, i, a) => i === a.indexOf(v))
-                             .sort((v1, v2) => v1 - v2);
+        this.#values = values
+            .filter((v, i, a) => i === a.indexOf(v))
+            .sort((v1, v2) => v1 - v2);
         this.#restricted = restricted;
     }
 
