@@ -25,9 +25,9 @@
     "main": "src/index.js",
     "exports": {
         ".": "./src/index.js",
-        "./cron.js": "./src/cron.js",
-        "./cronexp.js": "./src/cronexp.js",
-        "./at.js": "./src/at.js",
+        "./cron": "./src/cron.js",
+        "./cronexp": "./src/cronexp.js",
+        "./at": "./src/at.js",
         "./package.json": "./package.json"
     },
     "types": "types/index.d.ts",
