@@ -125,7 +125,7 @@ describe("at.js", function () {
                 clock.restore();
             });
 
-            it(`should reject when is invoked without "new"`, function () {
+            it('should reject when is invoked without "new"', function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 

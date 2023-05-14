@@ -9,7 +9,7 @@ import CronExp from "../src/cronexp.js";
 describe("cronexp.js", function () {
     describe("CronExp", function () {
         describe("constructor()", function () {
-            it(`should support "@yearly"`, function () {
+            it('should support "@yearly"', function () {
                 const cronexp = new CronExp("@yearly");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2001-01-01T00:00")));
@@ -20,7 +20,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-02-01T00:00")));
             });
 
-            it(`should support "@annually"`, function () {
+            it('should support "@annually"', function () {
                 const cronexp = new CronExp("@annually");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2001-01-01T00:00")));
@@ -31,7 +31,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-02-01T00:00")));
             });
 
-            it(`should support "@monthly"`, function () {
+            it('should support "@monthly"', function () {
                 const cronexp = new CronExp("@monthly");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-02-01T00:00")));
@@ -42,7 +42,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-01-02T00:00")));
             });
 
-            it(`should support "@weekly"`, function () {
+            it('should support "@weekly"', function () {
                 const cronexp = new CronExp("@weekly");
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-09T00:00")));
@@ -54,7 +54,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-01-03T00:00")));
             });
 
-            it(`should support "@daily"`, function () {
+            it('should support "@daily"', function () {
                 const cronexp = new CronExp("@daily");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
@@ -65,7 +65,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-01-01T01:00")));
             });
 
-            it(`should support "@midnight"`, function () {
+            it('should support "@midnight"', function () {
                 const cronexp = new CronExp("@midnight");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
@@ -76,7 +76,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-01-01T01:00")));
             });
 
-            it(`should support "@hourly"`, function () {
+            it('should support "@hourly"', function () {
                 const cronexp = new CronExp("@hourly");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-01T01:00")));
@@ -112,7 +112,7 @@ describe("cronexp.js", function () {
                 assert.ok(cronexp.test(new Date("2001-01-01T00:00")));
             });
 
-            it(`should support "*"`, function () {
+            it('should support "*"', function () {
                 const cronexp = new CronExp("* * * * *");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-01T01:01")));
@@ -122,7 +122,7 @@ describe("cronexp.js", function () {
                 assert.ok(cronexp.test(new Date("2001-01-01T00:00")));
             });
 
-            it(`should reject prefix "a*/x"`, function () {
+            it('should reject prefix "a*/x"', function () {
                 assert.throws(() => new CronExp("foo*/1 * * * *"), {
                     name: "Error",
                     message:
@@ -160,7 +160,7 @@ describe("cronexp.js", function () {
                 );
             });
 
-            it(`should reject suffix "*/xa"`, function () {
+            it('should reject suffix "*/xa"', function () {
                 assert.throws(() => new CronExp("*/1foo * * * *"), {
                     name: "Error",
                     message:
@@ -198,7 +198,7 @@ describe("cronexp.js", function () {
                 );
             });
 
-            it(`should support "*/x"`, function () {
+            it('should support "*/x"', function () {
                 const cronexp = new CronExp("*/1 */2 */3 */4 */5");
                 assert.ok(cronexp.test(new Date("2000-01-07T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-07T00:01")));
@@ -213,7 +213,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-08T00:00")));
             });
 
-            it(`should support "*/xx"`, function () {
+            it('should support "*/xx"', function () {
                 const cronexp = new CronExp("*/10 */11 */12 */13 */14");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-01T00:10")));
@@ -228,7 +228,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-01T00:01")));
             });
 
-            it(`should reject "*/0"`, function () {
+            it('should reject "*/0"', function () {
                 assert.throws(() => new CronExp("*/0 * * * *"), {
                     name: "RangeError",
                     message:
@@ -262,7 +262,7 @@ describe("cronexp.js", function () {
                 });
             });
 
-            it(`should support "jan"`, function () {
+            it('should support "jan"', function () {
                 const cronexp = new CronExp("* * * jan *");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-31T23:59")));
@@ -274,7 +274,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-02-01T00:00")));
             });
 
-            it(`should support "feb"`, function () {
+            it('should support "feb"', function () {
                 const cronexp = new CronExp("* * * feb *");
                 assert.ok(cronexp.test(new Date("2000-02-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-02-29T23:59")));
@@ -286,7 +286,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-03-01T00:00")));
             });
 
-            it(`should support "mar"`, function () {
+            it('should support "mar"', function () {
                 const cronexp = new CronExp("* * * mar *");
                 assert.ok(cronexp.test(new Date("2000-03-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-03-31T23:59")));
@@ -298,7 +298,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-04-01T00:00")));
             });
 
-            it(`should support "apr"`, function () {
+            it('should support "apr"', function () {
                 const cronexp = new CronExp("* * * apr *");
                 assert.ok(cronexp.test(new Date("2000-04-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-04-30T23:59")));
@@ -310,7 +310,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-05-01T00:00")));
             });
 
-            it(`should support "may"`, function () {
+            it('should support "may"', function () {
                 const cronexp = new CronExp("* * * may *");
                 assert.ok(cronexp.test(new Date("2000-05-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-05-31T23:59")));
@@ -322,7 +322,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-06-01T00:00")));
             });
 
-            it(`should support "jun"`, function () {
+            it('should support "jun"', function () {
                 const cronexp = new CronExp("* * * jun *");
                 assert.ok(cronexp.test(new Date("2000-06-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-06-30T23:59")));
@@ -334,7 +334,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-07-01T00:00")));
             });
 
-            it(`should support "jul"`, function () {
+            it('should support "jul"', function () {
                 const cronexp = new CronExp("* * * jul *");
                 assert.ok(cronexp.test(new Date("2000-07-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-07-31T23:59")));
@@ -346,7 +346,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-08-01T00:00")));
             });
 
-            it(`should support "aug"`, function () {
+            it('should support "aug"', function () {
                 const cronexp = new CronExp("* * * aug *");
                 assert.ok(cronexp.test(new Date("2000-08-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-08-31T23:59")));
@@ -358,7 +358,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-09-01T00:00")));
             });
 
-            it(`should support "sep"`, function () {
+            it('should support "sep"', function () {
                 const cronexp = new CronExp("* * * sep *");
                 assert.ok(cronexp.test(new Date("2000-09-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-09-30T23:59")));
@@ -370,7 +370,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-10-01T00:00")));
             });
 
-            it(`should support "oct"`, function () {
+            it('should support "oct"', function () {
                 const cronexp = new CronExp("* * * oct *");
                 assert.ok(cronexp.test(new Date("2000-10-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-10-31T23:59")));
@@ -382,7 +382,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-11-01T00:00")));
             });
 
-            it(`should support "nov"`, function () {
+            it('should support "nov"', function () {
                 const cronexp = new CronExp("* * * nov *");
                 assert.ok(cronexp.test(new Date("2000-11-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-11-30T23:59")));
@@ -394,7 +394,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-12-01T00:00")));
             });
 
-            it(`should support "dec"`, function () {
+            it('should support "dec"', function () {
                 const cronexp = new CronExp("* * * dec *");
                 assert.ok(cronexp.test(new Date("2000-12-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-12-31T23:59")));
@@ -432,7 +432,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-01T00:00")));
             });
 
-            it(`should support month name in range with step`, function () {
+            it("should support month name in range with step", function () {
                 const cronexp = new CronExp("* * * mar-jun/2 *");
                 assert.ok(cronexp.test(new Date("2000-03-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-05-30T23:59")));
@@ -445,7 +445,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-04-01T00:00")));
             });
 
-            it(`should support month name in uppercase`, function () {
+            it("should support month name in uppercase", function () {
                 const cronexp = new CronExp("* * * JUL-SEP *");
                 assert.ok(cronexp.test(new Date("2000-07-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-09-30T23:59")));
@@ -458,7 +458,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2000-10-01T00:00")));
             });
 
-            it(`should support "sun"`, function () {
+            it('should support "sun"', function () {
                 const cronexp = new CronExp("* * * * sun");
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-02T23:59")));
@@ -473,7 +473,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-02T00:00")));
             });
 
-            it(`should support "mon"`, function () {
+            it('should support "mon"', function () {
                 const cronexp = new CronExp("* * * * mon");
                 assert.ok(cronexp.test(new Date("2000-01-03T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-03T23:59")));
@@ -488,7 +488,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-03T00:00")));
             });
 
-            it(`should support "tue"`, function () {
+            it('should support "tue"', function () {
                 const cronexp = new CronExp("* * * * tue");
                 assert.ok(cronexp.test(new Date("2000-01-04T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-04T23:59")));
@@ -503,7 +503,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-04T00:00")));
             });
 
-            it(`should support "wed"`, function () {
+            it('should support "wed"', function () {
                 const cronexp = new CronExp("* * * * wed");
                 assert.ok(cronexp.test(new Date("2000-01-05T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-05T23:59")));
@@ -518,7 +518,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-05T00:00")));
             });
 
-            it(`should support "thu"`, function () {
+            it('should support "thu"', function () {
                 const cronexp = new CronExp("* * * * thu");
                 assert.ok(cronexp.test(new Date("2000-01-06T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-06T23:59")));
@@ -533,7 +533,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-06T00:00")));
             });
 
-            it(`should support "fri"`, function () {
+            it('should support "fri"', function () {
                 const cronexp = new CronExp("* * * * fri");
                 assert.ok(cronexp.test(new Date("2000-01-07T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-07T23:59")));
@@ -548,7 +548,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-07T00:00")));
             });
 
-            it(`should support "sat"`, function () {
+            it('should support "sat"', function () {
                 const cronexp = new CronExp("* * * * sat");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-01T23:59")));
@@ -593,9 +593,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-01T00:00")));
             });
 
-            // prettier-ignore
-            it("should support day of week name in range with step",
-                    function () {
+            it("should support day of week name in range with step", function () {
                 const cronexp = new CronExp("* * * * tue-wed/2");
                 assert.ok(cronexp.test(new Date("2000-01-04T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-04T23:59")));
@@ -625,7 +623,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-06T00:00")));
             });
 
-            it(`should support "x,y"`, function () {
+            it('should support "x,y"', function () {
                 const cronexp = new CronExp("0,1 2,4 6,7,8 12,10 7,0");
                 assert.ok(cronexp.test(new Date("2000-10-01T02:00")));
                 assert.ok(cronexp.test(new Date("2000-10-01T02:01")));
@@ -677,7 +675,7 @@ describe("cronexp.js", function () {
                 });
             });
 
-            it(`should reject prefix "ax"`, function () {
+            it('should reject prefix "ax"', function () {
                 assert.throws(() => new CronExp("foo0 * * * *"), {
                     name: "Error",
                     message:
@@ -711,7 +709,7 @@ describe("cronexp.js", function () {
                 });
             });
 
-            it(`should reject suffix "ax"`, function () {
+            it('should reject suffix "ax"', function () {
                 assert.throws(() => new CronExp("0foo * * * *"), {
                     name: "Error",
                     message:
@@ -919,7 +917,7 @@ describe("cronexp.js", function () {
                 );
             });
 
-            it(`should support "x-y"`, function () {
+            it('should support "x-y"', function () {
                 const cronexp = new CronExp("0-1 2-4 6-9 11-12 1-6");
                 assert.ok(cronexp.test(new Date("2000-11-01T02:00")));
                 assert.ok(cronexp.test(new Date("2000-11-01T02:01")));
@@ -942,7 +940,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-11-04T02:00")));
             });
 
-            it(`should support "x-y/z"`, function () {
+            it('should support "x-y/z"', function () {
                 const cronexp = new CronExp("0-1/1 2-4/2 6-9/3 11-12/4 1-6/5");
                 assert.ok(cronexp.test(new Date("2000-11-04T02:00")));
                 assert.ok(cronexp.test(new Date("2000-11-04T02:01")));
@@ -960,7 +958,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-11-04T02:00")));
             });
 
-            it(`should support "x-y/zz"`, function () {
+            it('should support "x-y/zz"', function () {
                 const cronexp = new CronExp(
                     "0-59/10 0-23/11 1-31/12 1-12/11 *",
                 );
@@ -1035,7 +1033,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-03T00:00")));
             });
 
-            it(`should check sunday (with "7")`, function () {
+            it('should check sunday (with "7")', function () {
                 const cronexp = new CronExp("* * * * 7");
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
                 assert.ok(!cronexp.test(new Date("2001-01-03T00:00")));
@@ -1055,7 +1053,7 @@ describe("cronexp.js", function () {
                 assert.ok(!cronexp.test(new Date("2001-01-03T00:00")));
             });
 
-            it(`should check date and sunday (with "7")`, function () {
+            it('should check date and sunday (with "7")', function () {
                 const cronexp = new CronExp("* * 1 * 7");
                 assert.ok(cronexp.test(new Date("2000-01-01T00:00")));
                 assert.ok(cronexp.test(new Date("2000-01-02T00:00")));
@@ -1112,9 +1110,7 @@ describe("cronexp.js", function () {
                 assert.deepEqual(next, new Date("2000-01-03T00:00"));
             });
 
-            // prettier-ignore
-            it("should get next date (which is the last date of the month)",
-                    function () {
+            it("should get next date (which is the last date of the month)", function () {
                 const cronexp = new CronExp("* * 31 * *");
                 const next = cronexp.next(new Date("2000-01-01T00:00"));
                 assert.deepEqual(next, new Date("2000-01-31T00:00"));
@@ -1142,9 +1138,7 @@ describe("cronexp.js", function () {
                 assert.deepEqual(next, new Date("2000-01-04T00:00"));
             });
 
-            // prettier-ignore
-            it("should get next day (without being the first day)",
-                    function () {
+            it("should get next day (without being the first day)", function () {
                 const cronexp = new CronExp("* * * * 1,3");
                 const next = cronexp.next(new Date("2000-01-04T00:00"));
                 assert.deepEqual(next, new Date("2000-01-05T00:00"));

@@ -6,67 +6,60 @@
 
 export default {
     patterns: [
-        "!/CHANGELOG.md",
-        "!/.git/",
-        "!/jsdocs/",
-        "!/node_modules/",
-        "!/.stryker/",
-        "!/types/",
-        "!*.swp",
         "**",
+        // Ignorer les répertoires et les fichiers générés.
+        "!/.git/**",
+        "!/.stryker/**",
+        "!/CHANGELOG.md",
+        "!/jsdocs/**",
+        "!/node_modules/**",
+        "!/types/**",
+        // Ignorer les fichiers de configuration de Visual Studio Code.
+        "!/.vscode/**",
+        // Ignorer les fichiers temporaires de Vim.
+        "!*.swp",
+        // Ignorer les autres lockfiles.
+        "!/pnpm-lock.yaml",
+        "!/yarn.lock",
     ],
     checkers: [
         {
-            patterns: ["*.json", "*.md", "*.svg", "*.yml"],
-            linters: "prettier",
-        },
-        {
-            patterns: ["*.js", "*.ts"],
-            linters: {
-                prettier: ["prettier.config.js", { tabWidth: 4 }],
-            },
-        },
-        {
-            patterns: ["/src/**/*.js", "/mod.js"],
-            linters: "eslint",
-        },
-        {
-            patterns: "/test/**/*.js",
-            linters: {
-                eslint: [
-                    "eslint.config.js",
-                    "eslint_node.config.js",
-                    "eslint_test.config.js",
-                ],
-            },
-        },
-        {
-            patterns: "/.script/**/*.js",
-            linters: {
-                eslint: ["eslint.config.js", "eslint_node.config.js"],
-            },
-        },
-        {
-            patterns: "*.config.js",
-            linters: {
-                eslint: ["eslint.config.js", "eslint_config.config.js"],
-            },
+            patterns: "*.js",
+            linters: ["prettier", "prettier_javascript", "eslint"],
+            overrides: [
+                {
+                    patterns: "/test/**",
+                    linters: ["eslint_node", "eslint_test"],
+                },
+                {
+                    patterns: "/.script/**",
+                    linters: "eslint_node",
+                },
+                {
+                    patterns: "*.config.js",
+                    linters: ["eslint_node", "eslint_config"],
+                },
+            ],
         },
         {
             patterns: "*.md",
-            linters: "markdownlint",
+            linters: ["prettier", "markdownlint"],
         },
         {
             patterns: "*.json",
-            linters: { "jsonlint-mod": null },
-        },
-        {
-            patterns: "/package.json",
-            linters: "npm-package-json-lint",
+            linters: ["prettier", "prantlf__jsonlint"],
+            overrides: {
+                patterns: "/package.json",
+                linters: "npm-package-json-lint",
+            },
         },
         {
             patterns: "*.yml",
-            linters: { "yaml-lint": null },
+            linters: ["prettier", "yaml-lint"],
+        },
+        {
+            patterns: "*.svg",
+            linters: "prettier",
         },
     ],
 };

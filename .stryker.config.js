@@ -9,7 +9,7 @@
  */
 export default {
     incremental: true,
-    incrementalFile: ".stryker/stryker-incremental.json",
+    incrementalFile: ".stryker/incremental.json",
     ignoreStatic: true,
     reporters: ["dots", "clear-text"],
     tempDirName: ".stryker/tmp/",
