@@ -19,18 +19,30 @@
   "author": "Sébastien Règne <regseb@gmail.com> (https://github.com/regseb)",
   "funding": "https://www.paypal.me/sebastienregne",
   "files": [
-    "src/",
-    "types/"
+    "./src/",
+    "./types/"
   ],
-  "main": "src/index.js",
   "exports": {
-    ".": "./src/index.js",
-    "./cron": "./src/cron.js",
-    "./cronexp": "./src/cronexp.js",
-    "./at": "./src/at.js",
+    ".": {
+      "default": "./src/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./cron": {
+      "default": "./src/cron.js",
+      "types": "./types/cron.d.ts"
+    },
+    "./cronexp": {
+      "default": "./src/cronexp.js",
+      "types": "./types/cronexp.d.ts"
+    },
+    "./at": {
+      "default": "./src/at.js",
+      "types": "./types/at.d.ts"
+    },
     "./package.json": "./package.json"
   },
-  "types": "types/index.d.ts",
+  "main": "./src/index.js",
+  "types": "./types/index.d.ts",
   "repository": "regseb/cronnor",
   "type": "module",
   "scripts": {
