@@ -24,20 +24,20 @@
   ],
   "exports": {
     ".": {
-      "default": "./src/index.js",
-      "types": "./types/index.d.ts"
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
     },
     "./cron": {
-      "default": "./src/cron.js",
-      "types": "./types/cron.d.ts"
+      "types": "./types/cron.d.ts",
+      "default": "./src/cron.js"
     },
     "./cronexp": {
-      "default": "./src/cronexp.js",
-      "types": "./types/cronexp.d.ts"
+      "types": "./types/cronexp.d.ts",
+      "default": "./src/cronexp.js"
     },
     "./at": {
-      "default": "./src/at.js",
-      "types": "./types/at.d.ts"
+      "types": "./types/at.d.ts",
+      "default": "./src/at.js"
     },
     "./package.json": "./package.json"
   },
