@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.3](https://github.com/regseb/cronnor/compare/v2.1.2...v2.1.3) (2023-05-18)
+
+
+### Bug Fixes
+
+* Corriger l'ordre des exports pour jsDelivr. ([3ed2f5d](https://github.com/regseb/cronnor/commit/3ed2f5d24dbfe6ad6bfeced23ff11cb2ca52b0ad))
+
 ### [2.1.2](https://github.com/regseb/cronnor/compare/v2.1.1...v2.1.2) (2023-05-14)
 
 
