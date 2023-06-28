@@ -231,7 +231,11 @@ Pour chaque élément, des compositions sont possibles :
 - `*` : couvrir toutes les unités (`0`, `1`, `2`, …) ;
 - `-` : définir un intervalle (`1-3` corresponds aux unités `1`, `2` et `3`) ;
 - `/` : indiquer le pas (`2-6/2` corresponds aux unités `2`, `4` et `6`) ;
-- `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`).
+- `,` : créer une liste (`4,8` corresponds aux unités `4` et `8`) ;
+- `?` : affecter l'unité courante à la création (pour une expression _cron_
+  créée à 13h37, la valeur `13` sera utilisée pour les heures et `37` pour les
+  minutes) ;
+- `~` : générer un nombre aléatoire.
 
 Il existe aussi des chaines spéciales :
 
