@@ -22,8 +22,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 1);
                 assert.deepEqual(fake.firstCall.thisValue, at);
                 assert.deepEqual(fake.firstCall.args, []);
-
-                clock.restore();
             });
 
             it("should bind thisArg", function () {
@@ -39,8 +37,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 1);
                 assert.deepEqual(fake.firstCall.thisValue, "foo");
                 assert.deepEqual(fake.firstCall.args, []);
-
-                clock.restore();
             });
 
             it("should bind args", function () {
@@ -57,8 +53,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 1);
                 assert.deepEqual(fake.firstCall.thisValue, at);
                 assert.deepEqual(fake.firstCall.args, ["foo", "bar", 42]);
-
-                clock.restore();
             });
 
             it("should set one interval", function () {
@@ -73,8 +67,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 1);
                 clock.next();
                 assert.equal(fake.callCount, 1);
-
-                clock.restore();
             });
 
             it("should set exactly one interval", function () {
@@ -87,8 +79,6 @@ describe("at.js", function () {
                 // Incrémenter le temps pour le setTimeout().
                 clock.next();
                 assert.equal(fake.callCount, 1);
-
-                clock.restore();
             });
 
             it("should add intermediate steps", function () {
@@ -103,8 +93,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 0);
                 clock.next();
                 assert.equal(fake.callCount, 1);
-
-                clock.restore();
             });
 
             it("should add many intermediate steps", function () {
@@ -121,8 +109,6 @@ describe("at.js", function () {
                 assert.equal(fake.callCount, 0);
                 clock.next();
                 assert.equal(fake.callCount, 1);
-
-                clock.restore();
             });
 
             it('should reject when is invoked without "new"', function () {
@@ -139,22 +125,18 @@ describe("at.js", function () {
 
                 clock.next();
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
         });
 
         describe("run()", function () {
             it("should call function", function () {
                 const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 
                 const at = new At(new Date("2000-01-01T00:01"), fake);
                 at.run();
 
                 assert.equal(fake.callCount, 1);
-
-                clock.restore();
             });
         });
 
@@ -170,8 +152,6 @@ describe("at.js", function () {
                 clock.next();
 
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
         });
     });

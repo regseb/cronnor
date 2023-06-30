@@ -14,6 +14,13 @@ import parse from "./parse.js";
  */
 export default class CronExp {
     /**
+     * Les valeurs possibles pour les secondes.
+     *
+     * @type {Field}
+     */
+    #seconds;
+
+    /**
      * Les valeurs possibles pour les minutes.
      *
      * @type {Field}
@@ -45,7 +52,7 @@ export default class CronExp {
 
     /**
      * Les valeurs possibles pour le jour de la semaine (en utilisant toujours
-     * <code>0</code> pour le dimanche afin d'utiliser la même numéroration que
+     * <code>0</code> pour le dimanche afin d'utiliser la même numérotation que
      * <code>Date.prototype.getDay()</code>).
      *
      * @type {Field}
@@ -66,6 +73,7 @@ export default class CronExp {
      */
     constructor(pattern) {
         const fields = parse(pattern);
+        this.#seconds = fields.seconds;
         this.#minutes = fields.minutes;
         this.#hours = fields.hours;
         this.#date = fields.date;
@@ -82,9 +90,10 @@ export default class CronExp {
      *                    sinon <code>false</code>.
      */
     test(date = new Date()) {
-        // Vérifier que les minutes, les heures et le mois respectent les
-        // conditions.
+        // Vérifier que les secondes, minutes, les heures et le mois respectent
+        // les conditions.
         if (
+            !this.#seconds.test(date.getSeconds()) ||
             !this.#minutes.test(date.getMinutes()) ||
             !this.#hours.test(date.getHours()) ||
             !this.#month.test(date.getMonth())
@@ -108,6 +117,30 @@ export default class CronExp {
     }
 
     /**
+     * Calcule la prochaine date (ou garde la date de début si les secondes
+     * respectent la condition) en vérifiant seulement la condition des
+     * secondes.
+     *
+     * @param {Date} start La date de début.
+     * @returns {Date} La prochaine date vérifiant la condition des secondes.
+     */
+    #nextSeconds(start) {
+        if (this.#seconds.test(start.getSeconds())) {
+            return start;
+        }
+
+        const date = new Date(start.getTime());
+        const next = this.#seconds.next(date.getSeconds());
+        if (undefined === next) {
+            date.setMinutes(date.getMinutes() + 1);
+            date.setSeconds(this.#seconds.min);
+        } else {
+            date.setSeconds(next);
+        }
+        return date;
+    }
+
+    /**
      * Calcule la prochaine date (ou garde la date de début si les minutes
      * respectent la condition) en vérifiant seulement la condition des minutes.
      *
@@ -120,6 +153,7 @@ export default class CronExp {
         }
 
         const date = new Date(start.getTime());
+        date.setSeconds(this.#seconds.min);
         const next = this.#minutes.next(date.getMinutes());
         if (undefined === next) {
             date.setHours(date.getHours() + 1);
@@ -144,6 +178,7 @@ export default class CronExp {
 
         const date = new Date(start.getTime());
         date.setMinutes(this.#minutes.min);
+        date.setSeconds(this.#seconds.min);
         const next = this.#hours.next(date.getHours());
         if (undefined === next) {
             date.setDate(date.getDate() + 1);
@@ -170,6 +205,7 @@ export default class CronExp {
         const date = new Date(start.getTime());
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
+        date.setSeconds(this.#seconds.min);
         const next = this.#date.next(date.getDate());
         if (
             undefined === next ||
@@ -201,6 +237,7 @@ export default class CronExp {
         const date = new Date(start.getTime());
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
+        date.setSeconds(this.#seconds.min);
         const next = this.#day.next(date.getDay()) ?? this.#day.min;
         date.setDate(date.getDate() + ((next + (7 - date.getDay())) % 7));
         return date;
@@ -248,6 +285,7 @@ export default class CronExp {
         date.setDate(1);
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
+        date.setSeconds(this.#seconds.min);
         const next = this.#month.next(date.getMonth());
         if (undefined === next) {
             date.setFullYear(date.getFullYear() + 1);
@@ -267,9 +305,10 @@ export default class CronExp {
      */
     next(start = new Date()) {
         let date = new Date(start.getTime());
-        date.setSeconds(0, 0);
-        date.setMinutes(date.getMinutes() + 1);
+        date.setMilliseconds(0);
+        date.setSeconds(date.getSeconds() + 1);
 
+        date = this.#nextSeconds(date);
         date = this.#nextMinutes(date);
         date = this.#nextHours(date);
         date = this.#nextDateDay(date);

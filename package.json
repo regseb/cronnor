@@ -50,7 +50,7 @@
     "lint:fix": "metalint --fix",
     "lint:types": "tsc --project .tsconfig_lint.json",
     "test": "npm run test:coverage",
-    "test:unit": "mocha",
+    "test:unit": "mocha --config test/mocharc.json",
     "test:coverage": "stryker run .stryker.config.js",
     "jsdocs": "typedoc --tsconfig .tsconfig_jsdocs.json",
     "prepare": "tsc --project .tsconfig_types.json",

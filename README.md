@@ -217,14 +217,15 @@ Annule la planification.
 
 ## Expression _cron_
 
-Les expressions _cron_ sont des chaines de caractères composées de cinq éléments
-séparés par une espace. Les éléments représentent :
+Les expressions _cron_ sont des chaines de caractères composées de cinq ou six
+éléments séparés par une espace. Les éléments représentent :
 
-1. les minutes : `0` à `59` ;
-2. les heures : `0` à `23` ;
-3. le jour du mois : `1` à `31` ;
-4. le mois : `1` ou `jan`, `2` ou `feb`, …, `12` ou `dec` ;
-5. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, …, `6` ou `sat`.
+1. les secondes (optionnel ; `0` par défaut) : `0` à `59` ;
+2. les minutes : `0` à `59` ;
+3. les heures : `0` à `23` ;
+4. le jour du mois : `1` à `31` ;
+5. le mois : `1` ou `jan`, `2` ou `feb`, …, `12` ou `dec` ;
+6. le jour de la semaine : `0`, `7` ou `sun`, `1` ou `mon`, …, `6` ou `sat`.
 
 Pour chaque élément, des compositions sont possibles :
 

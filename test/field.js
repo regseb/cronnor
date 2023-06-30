@@ -69,7 +69,7 @@ describe("field.js", function () {
                 assert.deepEqual(field.values(), [1, 3]);
                 assert.equal(field.restricted, true);
 
-                stub.restore();
+                assert.equal(stub.callCount, 1);
             });
         });
 

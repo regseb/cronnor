@@ -6,23 +6,25 @@ import Field from "./field.js";
  * @type {Object<string, string>}
  */
 const NICKNAMES = {
-    "@yearly": "0 0 1 1 *",
-    "@annually": "0 0 1 1 *",
-    "@monthly": "0 0 1 * *",
-    "@weekly": "0 0 * * 0",
-    "@daily": "0 0 * * *",
-    "@midnight": "0 0 * * *",
-    "@hourly": "0 * * * *",
+    "@yearly": "0 0 0 1 1 *",
+    "@annually": "0 0 0 1 1 *",
+    "@monthly": "0 0 0 1 * *",
+    "@weekly": "0 0 0 * * 0",
+    "@daily": "0 0 0 * * *",
+    "@midnight": "0 0 0 * * *",
+    "@hourly": "0 0 * * * *",
 };
 
 /**
  * Les formes littérales des mois et des jours de la semaine avec leur
- * équivalent numérique. Les autres champs (minutes, heures et jour du mois)
- * n'en ont pas.
+ * équivalent numérique. Les autres champs (secondes, minutes, heures et jour du
+ * mois) n'en ont pas.
  *
  * @type {Object<string, number>[]}
  */
 const BASE_NAMES = [
+    // Secondes.
+    {},
     // Minutes.
     {},
     // Heures.
@@ -76,9 +78,9 @@ const NAMES = {
  * @type {Object<string, number[]>}
  */
 const LIMITS = {
-    // Minutes, heures, jour du mois, mois, jour de la semaine.
-    MIN: [0, 0, 1, 1, 0],
-    MAX: [59, 23, 31, 12, 7],
+    // Secondes, Minutes, heures, jour du mois, mois, jour de la semaine.
+    MIN: [0, 0, 0, 1, 1, 0],
+    MAX: [59, 59, 23, 31, 12, 7],
 };
 
 /**
@@ -133,8 +135,8 @@ const FORMATS = [
             /** @type {string} */ (format)
                 .replaceAll("*", "\\*")
                 .replaceAll("{step}", "(?<step>\\d+)")
-                .replaceAll("{min}", "(?<min>\\d+|[a-z]+|\\?)")
-                .replaceAll("{max}", "(?<max>\\d+|[a-z]+|\\?)") +
+                .replaceAll("{min}", "(?<min>[\\da-z?]+)")
+                .replaceAll("{max}", "(?<max>[\\da-z?]+)") +
             "$",
         "iu",
     ),
@@ -154,21 +156,23 @@ const FORMATS = [
 const getIndexValue = (date, index, max = false) => {
     switch (index) {
         case 0:
-            return date.getMinutes();
+            return date.getSeconds();
         case 1:
-            return date.getHours();
+            return date.getMinutes();
         case 2:
-            return date.getDate();
+            return date.getHours();
         case 3:
+            return date.getDate();
+        case 4:
             // Incrémenter d'un pour faire commencer les mois à un.
             return date.getMonth() + 1;
-        case 4:
+        case 5:
             // Utiliser le nombre sept pour le dimanche quand il est placé dans
             // la borne supérieure.
             return max && 0 === date.getDay() ? 7 : date.getDay();
         // Stryker disable next-line all: Désactiver Stryker pour le défaut car
         // la fonction getIndexValue() est toujours appelée avec un index entre
-        // 0 et 4. Il est donc impossible de tester cette condition.
+        // 0 et 5. Il est donc impossible de tester cette condition.
         default:
             // Stryker disable next-line all
             throw new TypeError(`Invalid index ${index}`);
@@ -266,10 +270,14 @@ const parseField = (parts, index, now, pattern) => {
  */
 export default function parse(pattern) {
     // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
-    // les cinq champs (minutes, heures, jour du mois, mois et jour de la
-    // semaine).
+    // les cinq ou six champs (secondes, minutes, heures, jour du mois, mois et
+    // jour de la semaine).
     const fields = (NICKNAMES[pattern.toLowerCase()] ?? pattern).split(/\s+/u);
-    if (5 !== fields.length) {
+    if (5 === fields.length) {
+        // Ajouter la valeur "0" pour les secondes (car elles ne sont pas
+        // renseignées).
+        fields.unshift("0");
+    } else if (6 !== fields.length) {
         throw new Error(ERROR + pattern);
     }
 
@@ -277,25 +285,26 @@ export default function parse(pattern) {
     // mêmes valeurs.
     const now = new Date();
 
-    // Parcourir les cinq champs.
-    const [minutes, hours, date, month, day] = fields.map((field, index) => {
-        return Field.flat(
-            // Parcourir les sous-champs.
-            field.split(",").map((subfield) => {
-                for (const [format, complements] of FORMATS) {
-                    const result = format.exec(subfield);
-                    if (null !== result) {
-                        const parts = {
-                            ...result.groups,
-                            ...complements,
-                        };
-                        return parseField(parts, index, now, pattern);
+    // Parcourir les six champs.
+    const [seconds, minutes, hours, date, month, day] = fields.map(
+        (field, index) =>
+            Field.flat(
+                // Parcourir les sous-champs.
+                field.split(",").map((subfield) => {
+                    for (const [format, complements] of FORMATS) {
+                        const result = format.exec(subfield);
+                        if (null !== result) {
+                            const parts = {
+                                ...result.groups,
+                                ...complements,
+                            };
+                            return parseField(parts, index, now, pattern);
+                        }
                     }
-                }
-                throw new Error(ERROR + pattern);
-            }),
-        );
-    });
+                    throw new Error(ERROR + pattern);
+                }),
+            ),
+    );
 
     // Récupérer le nombre maximum de jours du mois le plus long parmi tous
     // les mois autorisés.
@@ -308,6 +317,7 @@ export default function parse(pattern) {
     }
 
     return {
+        seconds,
         minutes,
         hours,
         date,

@@ -25,7 +25,6 @@ describe("cron.js", function () {
                 assert.deepEqual(fake.firstCall.args, []);
 
                 cron.stop();
-                clock.restore();
             });
 
             it("should not activate task", function () {
@@ -39,8 +38,6 @@ describe("cron.js", function () {
                 clock.next();
 
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
 
             it("should bind thisArg", function () {
@@ -57,7 +54,6 @@ describe("cron.js", function () {
                 assert.deepEqual(fake.firstCall.args, []);
 
                 cron.stop();
-                clock.restore();
             });
 
             it("should bind args", function () {
@@ -76,7 +72,6 @@ describe("cron.js", function () {
                 assert.deepEqual(fake.firstCall.args, ["foo", "bar", 42]);
 
                 cron.stop();
-                clock.restore();
             });
 
             it("should reject when is invoked without 'new'", function () {
@@ -121,7 +116,6 @@ describe("cron.js", function () {
                 assert.equal(fake.callCount, 1);
 
                 cron.stop();
-                clock.restore();
             });
 
             it("should deactivate with 'false'", function () {
@@ -138,8 +132,6 @@ describe("cron.js", function () {
 
                 assert.equal(cron.active, false);
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
         });
 
@@ -169,7 +161,6 @@ describe("cron.js", function () {
                 assert.equal(fake.callCount, 1);
 
                 cron.stop();
-                clock.restore();
             });
 
             it("should ignore call when task is active", function () {
@@ -189,7 +180,6 @@ describe("cron.js", function () {
                 assert.equal(fake.callCount, 1);
 
                 cron.stop();
-                clock.restore();
             });
         });
 
@@ -207,8 +197,6 @@ describe("cron.js", function () {
 
                 assert.equal(cron.active, false);
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
 
             it("should ignore call when task is deactive", function () {
@@ -226,8 +214,6 @@ describe("cron.js", function () {
 
                 assert.equal(cron.active, false);
                 assert.equal(fake.callCount, 0);
-
-                clock.restore();
             });
         });
 
