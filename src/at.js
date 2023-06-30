@@ -8,7 +8,7 @@
  * La valeur maximale du délai accepté par <em>Node.js</em>.
  *
  * @type {number}
- * @see https://nodejs.org/api/timers.html
+ * @see https://nodejs.org/api/timers.html#setintervalcallback-delay-args
  */
 const MAX_DELAY = 2_147_483_647;
 

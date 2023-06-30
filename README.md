@@ -51,13 +51,14 @@ import Cron from "https://deno.land/x/cronnor/mod.js";
 
 ### Navigateurs
 
-Elle est aussi accessible directement avec le CDN [jsDelivr][link-jsdelivr] (ou
-[UNPKG](https://unpkg.com/browse/cronnor/), [esm.sh](https://esm.sh/cronnor)) :
+Elle est aussi accessible directement avec le CDN
+[esm.sh](https://esm.sh/cronnor) (ou [jsDelivr][link-jsdelivr],
+[UNPKG](https://unpkg.com/browse/cronnor/)) :
 
 ```JavaScript
-import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
+import Cron from "https://esm.sh/cronnor@2";
+// import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
 // import Cron from "https://unpkg.com/cronnor@2";
-// import Cron from "https://esm.sh/cronnor@2";
 ```
 
 ## API
@@ -83,6 +84,8 @@ import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
 
 ```JavaScript
 import Cron from "cronnor/cron";
+// import { Cron } from "https://deno.land/x/cronnor/mod.js";
+// import Cron from "https://esm.sh/cronnor@2/cron";
 ```
 
 #### `new Cron(cronex, func, [options])`
@@ -155,6 +158,8 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 
 ```JavaScript
 import CronExp from "cronnor/cronexp";
+// import { CronExp } from "https://deno.land/x/cronnor/mod.js";
+// import CronExp from "https://esm.sh/cronnor@2/cronexp";
 ```
 
 #### `new CronExp(pattern)`
@@ -190,6 +195,8 @@ Calcule la prochaine date respectant l'expression.
 
 ```JavaScript
 import At from "cronnor/at";
+// import { At } from "https://deno.land/x/cronnor/mod.js";
+// import At from "https://esm.sh/cronnor@2/at";
 ```
 
 #### `new At(date, func, [options])`
