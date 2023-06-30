@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/regseb/cronnor/compare/v2.1.3...v2.2.0) (2023-06-30)
+
+
+### Features
+
+* Ajouter le support des secondes. ([c966de3](https://github.com/regseb/cronnor/commit/c966de3a3fefaba78fa51cdbfed3066fcd0b3570))
+* Ajouter le support du "~" (aléatoire). ([444958d](https://github.com/regseb/cronnor/commit/444958d59daa2ffed356487b11d31163289782c9))
+
 ### [2.1.3](https://github.com/regseb/cronnor/compare/v2.1.2...v2.1.3) (2023-05-18)
 
 
