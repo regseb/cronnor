@@ -11,7 +11,7 @@ import parse from "../src/parse.js";
  * Génère les valeurs d'un intervalle.
  *
  * @param {number} min    La valeur minimale (incluse) de l'intervalle.
- * @param {number} max    La valeur maximal (incluse) de l'intervalle.
+ * @param {number} max    La valeur maximale (incluse) de l'intervalle.
  * @param {number} [step] Le pas entre les valeurs (<code>1></code> par défaut).
  * @returns {number[]} La liste des valeurs.
  */
@@ -313,7 +313,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should support litteral uppercase month", function () {
+        it("should support literal uppercase month", function () {
             const fields = parse("* * * * DEC *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -323,7 +323,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject litteral invalid month", function () {
+        it("should reject literal invalid month", function () {
             assert.throws(() => parse("* * * * foo *"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * * foo *",
@@ -400,7 +400,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [6]);
         });
 
-        it("should support litteral uppercase day", function () {
+        it("should support literal uppercase day", function () {
             const fields = parse("* * * * * SAT");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -410,7 +410,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [6]);
         });
 
-        it("should reject litteral invalid day", function () {
+        it("should reject literal invalid day", function () {
             assert.throws(() => parse("* * * * * foo"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * * * foo",
@@ -537,7 +537,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [1, 2, 3, 4, 5, 6]);
         });
 
-        it("should support litteral month in max", function () {
+        it("should support literal month in max", function () {
             const fields = parse("* * * * 6-sep *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -547,7 +547,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should support litteral uppercase month in max", function () {
+        it("should support literal uppercase month in max", function () {
             const fields = parse("* * * * 5-OCT *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -557,7 +557,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject litteral invalid month in max", function () {
+        it("should reject literal invalid month in max", function () {
             assert.throws(() => parse("* * * * 1-foo *"), {
                 name: "Error",
                 message:
@@ -565,7 +565,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should support litteral day in max", function () {
+        it("should support literal day in max", function () {
             const fields = parse("* * * * * 1-fri");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -575,7 +575,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [1, 2, 3, 4, 5]);
         });
 
-        it("should support litteral uppercase day in max", function () {
+        it("should support literal uppercase day in max", function () {
             const fields = parse("* * * * * 2-THU");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -595,7 +595,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 6]);
         });
 
-        it("should reject litteral invalid day in max", function () {
+        it("should reject literal invalid day in max", function () {
             assert.throws(() => parse("* * * * * 0-foo"), {
                 name: "Error",
                 message:

@@ -81,7 +81,7 @@ export default class At {
             // Planifier l'exécution.
             this.#timeoutID = setTimeout(() => this.run(), delay);
         } else {
-            // Planifier des étapes intermédiaires car Node.js n'accepte pas
+            // Planifier des étapes intermédiaires, car Node.js n'accepte pas
             // un grand délai.
             this.#timeoutID = setTimeout(() => this.#schedule(), MAX_DELAY);
         }

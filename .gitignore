@@ -1,4 +1,4 @@
-# Ignorer les répertoires et les fichiers générés.
+# Ignorer les répertoires générés.
 /.stryker/
 /jsdocs/
 /node_modules/

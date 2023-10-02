@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @license MIT
+ * @author Sébastien Règne
+ */
+
 import Field from "./field.js";
 
 /**
@@ -170,7 +176,7 @@ const getIndexValue = (date, index, max = false) => {
             // Utiliser le nombre sept pour le dimanche quand il est placé dans
             // la borne supérieure.
             return max && 0 === date.getDay() ? 7 : date.getDay();
-        // Stryker disable next-line all: Désactiver Stryker pour le défaut car
+        // Stryker disable next-line all: Désactiver Stryker pour le défaut, car
         // la fonction getIndexValue() est toujours appelée avec un index entre
         // 0 et 5. Il est donc impossible de tester cette condition.
         default:

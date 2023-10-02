@@ -87,13 +87,13 @@ describe("cron.js", function () {
         });
 
         describe("get active()", function () {
-            it("should return 'true' when task is actived", function () {
+            it("should return 'true' when task is activated", function () {
                 const cron = new Cron("0 0 1 1 *", () => {});
                 assert.equal(cron.active, true);
                 cron.stop();
             });
 
-            it("should return 'false' when task is deactived", function () {
+            it("should return 'false' when task is deactivated", function () {
                 const cron = new Cron("0 0 1 1 *", () => {}, { active: false });
                 assert.equal(cron.active, false);
             });
@@ -199,7 +199,7 @@ describe("cron.js", function () {
                 assert.equal(fake.callCount, 0);
             });
 
-            it("should ignore call when task is deactive", function () {
+            it("should ignore call when task is deactivated", function () {
                 const fake = sinon.fake();
                 const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
 

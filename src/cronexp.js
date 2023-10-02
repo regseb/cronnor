@@ -284,7 +284,7 @@ export default class CronExp {
 
         const date = new Date(start.getTime());
         // Mettre temporairement le premier jour du mois et calculer le bon jour
-        // après avoir trouver le bon mois.
+        // après avoir trouvé le bon mois.
         date.setDate(1);
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
