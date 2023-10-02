@@ -97,7 +97,7 @@ Crée une tâche _cronée_.
     _cron_](#expression-cron) indiquant les horaires d'exécution de la tâche.
   - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
     expressions _cron_.
-  - `options` (`Object`) : Les options de la tâche _cronnée_.
+  - `options` (`Object`) : Les options de la tâche _cronée_.
     - `active` (`boolean`) : `true` (par défaut) pour activer la tâche ; sinon
       `false`.
     - `thisArg` (`any`) : Le `this` utilisé pour la fonction (la tâche _cronée_
