@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.3](https://github.com/regseb/cronnor/compare/v2.2.2...v2.2.3) (2023-10-02)
+
+
+### Bug Fixes
+
+* Corriger la publication dans npm. ([9e0e2cf](https://github.com/regseb/cronnor/commit/9e0e2cfbc9bcea5101b4f29797f0c22813bbd204))
+
 ## [2.2.2](https://github.com/regseb/cronnor/compare/v2.2.1...v2.2.2) (2023-10-02)
 
 
