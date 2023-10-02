@@ -4,8 +4,11 @@
  * @author Sébastien Règne
  */
 
-import Field from "./field.js";
 import parse from "./parse.js";
+
+/**
+ * @typedef {import("./field.js").default} Field
+ */
 
 /**
  * La classe d'une expression <em>cron</em>.
