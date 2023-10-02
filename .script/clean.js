@@ -18,10 +18,11 @@ const PATHS = [
     "node_modules/",
     "types/",
     // Supprimer les autres lockfiles.
+    "bun.lockb",
     "pnpm-lock.yaml",
     "yarn.lock",
 ];
 
 for (const path of PATHS) {
-    fs.rm(path, { force: true, recursive: true });
+    await fs.rm(path, { force: true, recursive: true });
 }

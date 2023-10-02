@@ -1,11 +1,11 @@
 # Cronnor
 
-<!-- Utiliser du HTML pour faire flotter l'image à droite. -->
+<!-- Utiliser du HTML (avec l'attribut "align" obsolète) pour faire flotter
+     l'image à droite. -->
 <!-- markdownlint-disable-next-line no-inline-html-->
 <img src="asset/logo.svg" align="right" alt="">
 
 [![npm][img-npm]][link-npm]
-[![jsdelivr][img-jsdelivr]][link-jsdelivr]
 [![build][img-build]][link-build]
 [![coverage][img-coverage]][link-coverage]
 [![semver][img-semver]][link-semver]
@@ -52,7 +52,8 @@ import Cron from "https://deno.land/x/cronnor/mod.js";
 ### Navigateurs
 
 Elle est aussi accessible directement avec le CDN
-[esm.sh](https://esm.sh/cronnor) (ou [jsDelivr][link-jsdelivr],
+[esm.sh](https://esm.sh/cronnor) (ou
+[jsDelivr](https://www.jsdelivr.com/package/npm/cronnor),
 [UNPKG](https://unpkg.com/browse/cronnor/)) :
 
 ```JavaScript
@@ -256,17 +257,11 @@ Il existe aussi des chaines spéciales :
 Pour plus d'information, vous pouvez consulter le [manuel de
 _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
-[img-npm]: https://img.shields.io/npm/dm/cronnor?label=npm&logo=npm&logoColor=white
-[img-jsdelivr]: https://img.shields.io/jsdelivr/npm/hm/cronnor?logo=jsdelivr&logoColor=white
-[img-build]: https://img.shields.io/github/actions/workflow/status/regseb/cronnor/ci.yml?branch=main&logo=github&logoColor=white
-
-<!-- Attendre que le logo de Stryker soit accepté.
-     https://github.com/simple-icons/simple-icons/pull/7388 -->
-
-[img-coverage]: https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain
-[img-semver]: https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&logoColor=white
+[img-npm]: https://img.shields.io/npm/dm/cronnor?label=npm&logo=npm&logoColor=whitesmoke
+[img-build]: https://img.shields.io/github/actions/workflow/status/regseb/cronnor/ci.yml?branch=main&logo=github&logoColor=whitesmoke
+[img-coverage]: https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain&logo=stryker&logoColor=whitesmoke
+[img-semver]: https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&logoColor=whitesmoke
 [link-npm]: https://www.npmjs.com/package/cronnor
-[link-jsdelivr]: https://www.jsdelivr.com/package/npm/cronnor
 [link-build]: https://github.com/regseb/cronnor/actions/workflows/ci.yml?query=branch%3Amain
 [link-coverage]: https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/main
 [link-semver]: https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"

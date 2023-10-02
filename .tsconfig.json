@@ -15,6 +15,7 @@
     "jsdocs/",
     "node_modules/",
     "types/",
-    ".vscode/"
+    ".vscode/",
+    ".idea/"
   ]
 }

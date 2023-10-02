@@ -24,7 +24,7 @@ export default {
 
     env: {
         "shared-node-browser": true,
-        es2022: true,
+        es2023: true,
     },
 
     rules: {
@@ -222,9 +222,9 @@ export default {
         "no-nested-ternary": "off",
         "no-new": "error",
         "no-new-func": "error",
-        "no-new-object": "error",
         "no-new-wrappers": "error",
         "no-nonoctal-decimal-escape": "error",
+        "no-object-constructor": "error",
         "no-octal": "error",
         "no-octal-escape": "error",
         "no-param-reassign": [
@@ -265,7 +265,6 @@ export default {
             "JSXText",
         ],
         "no-return-assign": "error",
-        "no-return-await": "error",
         "no-script-url": "error",
         "no-sequences": ["error", { allowInParentheses: false }],
         "no-shadow": "error",
@@ -601,7 +600,7 @@ export default {
         "jsdoc/no-multi-asterisks": "error",
         "jsdoc/no-restricted-syntax": "off",
         "jsdoc/no-types": "off",
-        "jsdoc/no-undefined-types": ["error", { definedTypes: ["Timeout"] }],
+        "jsdoc/no-undefined-types": "error",
         "jsdoc/require-asterisk-prefix": "error",
         "jsdoc/require-description": "error",
         "jsdoc/require-description-complete-sentence": "off",
@@ -794,10 +793,6 @@ export default {
         "unicorn/no-unnecessary-await": "error",
         "unicorn/no-unreadable-array-destructuring": "error",
         "unicorn/no-unreadable-iife": "error",
-        // Désactiver la règle car il y a des faux-positifs avec les petites
-        // valeurs de quantification.
-        // https://github.com/davisjam/safe-regex/issues/10
-        "unicorn/no-unsafe-regex": "off",
         "unicorn/no-unused-properties": "error",
         "unicorn/no-useless-fallback-in-spread": "error",
         "unicorn/no-useless-length-check": "error",
