@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.1](https://github.com/regseb/cronnor/compare/v2.2.0...v2.2.1) (2023-10-02)
+
+
+### Bug Fixes
+
+* Corriger la documentation du README. ([18b6c29](https://github.com/regseb/cronnor/commit/18b6c2939ff7ade7eff2d67580140c1b7daf7b8c))
+* Enlever un import inutile. ([e141c29](https://github.com/regseb/cronnor/commit/e141c294a574581fb4d58529712fb28bc5ecbef6))
+
 ## [2.2.0](https://github.com/regseb/cronnor/compare/v2.1.3...v2.2.0) (2023-06-30)
 
 
