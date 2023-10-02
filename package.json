@@ -54,7 +54,6 @@
     "test:coverage": "stryker run .stryker.config.js",
     "jsdocs": "typedoc --tsconfig .tsconfig_jsdocs.json",
     "prepare": "tsc --project .tsconfig_types.json",
-    "release": "standard-version",
     "clean": "node .script/clean.js"
   },
   "devDependencies": {
@@ -82,7 +81,6 @@
     "npm-package-json-lint": "6.4.0",
     "prettier": "2.8.8",
     "sinon": "15.2.0",
-    "standard-version": "9.5.0",
     "typedoc": "0.24.8",
     "typescript": "5.1.6",
     "yaml-lint": "1.7.0"
