@@ -9,6 +9,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     steps:
       - name: Run Release Please
         uses: google-github-actions/release-please-action@v3
