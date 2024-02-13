@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0](https://github.com/regseb/cronnor/compare/v2.2.3...v2.3.0) (2024-02-13)
+
+### Features
+
+- Ajouter le support de Bun. ([40d2c1c](https://github.com/regseb/cronnor/commit/40d2c1c82247408d014ab1b48b7fbb4e5365b8e1))
+
 ## [2.2.3](https://github.com/regseb/cronnor/compare/v2.2.2...v2.2.3) (2023-10-02)
 
 ### Bug Fixes
