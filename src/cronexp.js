@@ -7,11 +7,11 @@
 import parse from "./parse.js";
 
 /**
- * @typedef {import("./field.js").default} Field
+ * @import Field from "./field.js"
  */
 
 /**
- * La classe d'une expression <em>cron</em>.
+ * La classe d'une expression _cron_.
  *
  * @class
  */
@@ -46,8 +46,7 @@ export default class CronExp {
 
     /**
      * Les valeurs possibles pour le mois (dont les numéros commencent à zéro
-     * afin d'utiliser la même numérotation que
-     * <code>Date.prototype.getMonth()</code>).
+     * afin d'utiliser la même numérotation que `Date.prototype.getMonth()`).
      *
      * @type {Field}
      */
@@ -55,24 +54,23 @@ export default class CronExp {
 
     /**
      * Les valeurs possibles pour le jour de la semaine (en utilisant toujours
-     * <code>0</code> pour le dimanche afin d'utiliser la même numérotation que
-     * <code>Date.prototype.getDay()</code>).
+     * `0` pour le dimanche afin d'utiliser la même numérotation que
+     * `Date.prototype.getDay()`).
      *
      * @type {Field}
      */
     #day;
 
     /**
-     * Crée une expression <em>cron</em>.
+     * Crée une expression _cron_.
      *
-     * @param {string} pattern Le motif de l'expression <em>cron</em>.
+     * @param {string} pattern Le motif de l'expression _cron_.
      * @throws {Error}      Si la syntaxe du motif est incorrecte.
      * @throws {RangeError} Si un intervalle est invalide (hors limite ou quand
      *                      la borne supérieure est plus petite que la borne
      *                      inférieure).
-     * @throws {TypeError}  Si le constructeur est appelé sans le mot clé
-     *                      <code>new</code> ou si le motif n'est pas une chaine
-     *                      de caractères.
+     * @throws {TypeError}  Si le constructeur est appelé sans le mot clé `new`
+     *                      ou si le motif n'est pas une chaine de caractères.
      */
     constructor(pattern) {
         const fields = parse(pattern);
@@ -89,8 +87,7 @@ export default class CronExp {
      *
      * @param {Date} [date] La date qui sera testée (ou l'instant présent par
      *                      défaut).
-     * @returns {boolean} <code>true</code> si l'expression est respectée ;
-     *                    sinon <code>false</code>.
+     * @returns {boolean} `true` si l'expression est respectée ; sinon `false`.
      */
     test(date = new Date()) {
         // Vérifier que les secondes, minutes, les heures et le mois respectent

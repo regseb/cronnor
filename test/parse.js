@@ -12,7 +12,7 @@ import parse from "../src/parse.js";
  *
  * @param {number} min    La valeur minimale (incluse) de l'intervalle.
  * @param {number} max    La valeur maximale (incluse) de l'intervalle.
- * @param {number} [step] Le pas entre les valeurs (<code>1></code> par défaut).
+ * @param {number} [step] Le pas entre les valeurs (`1` par défaut).
  * @returns {number[]} La liste des valeurs.
  */
 const range = (min, max, step = 1) => {

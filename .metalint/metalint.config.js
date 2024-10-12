@@ -1,9 +1,15 @@
 /**
- * @module
  * @license MIT
  * @author Sébastien Règne
  */
 
+/**
+ * @import { Config } from "metalint/types"
+ */
+
+/**
+ * @type {Config}
+ */
 export default {
     patterns: [
         "**",

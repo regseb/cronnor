@@ -67,8 +67,8 @@ const BASE_NAMES = [
 /**
  * Les formes littérales des mois et des jours de la semaine avec leur
  * équivalent numérique pour la borne minimum et maximum. La seule différence
- * entre le minimum et la maximum est pour le dimanche qui utilise le nombre
- * <code>0</code> ou <code>7</code>.
+ * entre le minimum et la maximum est pour le dimanche qui utilise le nombre `0`
+ * ou `7`.
  *
  * @type {Object<string, Object<string, number>[]>}
  */
@@ -109,8 +109,8 @@ const DEFAULT_STEPS = {
 const MAX_DAYS_IN_MONTHS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 /**
- * Le message d'erreur (qui sera suivi de l'expression <em>cron</em>) envoyé
- * dans l'exception.
+ * Le message d'erreur (qui sera suivi de l'expression _cron_) envoyé dans
+ * l'exception.
  *
  * @type {string}
  */
@@ -195,13 +195,12 @@ const getIndexValue = (date, index, max = false) => {
  *                                           pseudo-intervalle.
  * @param {string}  [parts.step]             Le pas du pseudo-intervalle.
  * @param {Object}  [parts.extra]            Les informations supplémentaires.
- * @param {boolean} [parts.extra.restricted] <code>true</code> (par défaut) pour
- *                                           un champ qui était différent de
- *                                           <code>"*"</code> ; sinon
- *                                           <code>false</code>.
- * @param {boolean} [parts.extra.random]     <code>false</code> (par défaut)
- *                                           pour générer un nombre aléatoire
- *                                           pour le minimum.
+ * @param {boolean} [parts.extra.restricted] `true` (par défaut) pour un champ
+ *                                           qui était différent de `"*"` ;
+ *                                           sinon `false`.
+ * @param {boolean} [parts.extra.random]     `false` (par défaut) pour générer
+ *                                           un nombre aléatoire pour le
+ *                                           minimum.
  * @param {number}  index                    L'index du champ.
  * @param {Date}    now                      La date courante.
  * @param {string}  pattern                  Le motif complet.
@@ -264,11 +263,11 @@ const parseField = (parts, index, now, pattern) => {
 };
 
 /**
- * Extrait les valeurs d'une expression <em>cron</em>.
+ * Extrait les valeurs d'une expression _cron_.
  *
- * @param {string} pattern Le motif de l'expression <em>cron</em>
- * @returns {Object<string, Field>} Les valeurs de l'expression <em>cron</em>
- *                                  pour chaque champ.
+ * @param {string} pattern Le motif de l'expression _cron_
+ * @returns {Object<string, Field>} Les valeurs de l'expression _cron_ pour
+ *                                  chaque champ.
  * @throws {Error}      Si la syntaxe du motif est incorrecte.
  * @throws {RangeError} Si un intervalle est invalide (hors limite ou quand la
  *                      borne supérieure est plus petite que la borne

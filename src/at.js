@@ -5,10 +5,10 @@
  */
 
 /**
- * La valeur maximale du délai accepté par <em>Node.js</em>.
+ * La valeur maximale du délai accepté par _Node.js_.
  *
  * @type {number}
- * @see https://nodejs.org/api/timers.html#setintervalcallback-delay-args
+ * @see https://nodejs.org/api/timers.html#settimeoutcallback-delay-args
  */
 const MAX_DELAY = 2_147_483_647;
 
@@ -47,13 +47,11 @@ export default class At {
      *                                     planifiée.
      * @param {Object}   [options]         Les options de la planification de la
      *                                     tâche.
-     * @param {any}      [options.thisArg] Le <code>this</code> utilisé pour la
-     *                                     fonction (la tâche planifiée par
-     *                                     défaut).
+     * @param {any}      [options.thisArg] Le `this` utilisé pour la fonction
+     *                                     (la tâche planifiée par défaut).
      * @param {any[]}    [options.args]    Les paramètres passés à la fonction
      *                                     (aucun paramètre par défaut).
-     * @throws {TypeError} Si le constructeur est appelé sans le mot clé
-     *                     <code>new</code>.
+     * @throws {TypeError} Si le constructeur est appelé sans le mot clé `new`.
      */
     constructor(date, func, options) {
         this.#date = date;

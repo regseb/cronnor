@@ -16,25 +16,25 @@ const random = (min, max) => {
 };
 
 /**
- * La classe d'un champ d'une expression <em>cron</em>.
+ * La classe d'un champ d'une expression _cron_.
  *
  * @class
  */
 export default class Field {
     /**
-     * Crée un champ d'une expression <em>cron</em> avec un intervalle de
-     * valeurs autorisées.
+     * Crée un champ d'une expression _cron_ avec un intervalle de valeurs
+     * autorisées.
      *
      * @param {number}  min              La valeur minimale (incluse) autorisée.
      * @param {number}  max              La valeur maximale (incluse) autorisée.
      * @param {number}  step             Le pas entre les valeurs.
      * @param {Object}  extra            Les informations supplémentaires.
-     * @param {boolean} extra.restricted <code>true</code> pour un champ qui
-     *                                   était différent de <code>"*"</code> ;
-     *                                   sinon <code>false</code>.
-     * @param {boolean} extra.random     <code>false</code> pour générer un
-     *                                   nombre aléatoire pour le minimum.
+     * @param {boolean} extra.restricted `true` pour un champ qui était
+     *                                   différent de `"*"` ; sinon `false`.
+     * @param {boolean} extra.random     `false` pour générer un nombre
+     *                                   aléatoire pour le minimum.
      * @returns {Field} Le champ avec les valeurs de l'intervalle.
+     * @see https://github.com/tc39/proposal-iterator.range
      */
     static range(min, max, step, extra) {
         const values = [];
@@ -73,21 +73,19 @@ export default class Field {
     #values;
 
     /**
-     * <code>true</code> si le champ était différent de <code>"*"</code> ; sinon
-     * <code>false</code>.
+     * `true` si le champ était différent de `"*"` ; sinon `false`.
      *
      * @type {boolean}
      */
     #restricted;
 
     /**
-     * Crée un champ d'une expression <em>cron</em>.
+     * Crée un champ d'une expression _cron_.
      *
      * @param {number[]} values     La liste des valeurs autorisées pour le
      *                              champ.
-     * @param {boolean}  restricted <code>true</code> pour un champ qui était
-     *                              différent de <code>"*"</code> ; sinon
-     *                              <code>false</code>.
+     * @param {boolean}  restricted `true` pour un champ qui était différent de
+     *                              `"*"` ; sinon `false`.
      */
     constructor(values, restricted) {
         // Enlever les doublons et trier les valeurs pour faciliter les
@@ -99,11 +97,10 @@ export default class Field {
     }
 
     /**
-     * Retourne la marque indiquant si le champ était différent de
-     * <code>"*"</code>.
+     * Retourne la marque indiquant si le champ était différent de `"*"`.
      *
-     * @returns {boolean} <code>true</code> si le champ était différent de
-     *                    <code>"*"</code> ; sinon <code>false</code>.
+     * @returns {boolean} `true` si le champ était différent de `"*"` ; sinon
+     *                    `false`.
      */
     get restricted() {
         return this.#restricted;
@@ -154,8 +151,7 @@ export default class Field {
      * Teste si une valeur est présente dans la liste des valeurs.
      *
      * @param {number} value La valeur qui sera testée.
-     * @returns {boolean} <code>true</code> si la valeur est présente ; sinon
-     *                    <code>false</code>.
+     * @returns {boolean} `true` si la valeur est présente ; sinon `false`.
      */
     test(value) {
         return this.#values.includes(value);
@@ -165,9 +161,9 @@ export default class Field {
      * Calcule la prochaine valeur supérieure à une valeur.
      *
      * @param {number} value La valeur initiale.
-     * @returns {number|undefined} La prochaine valeur ; ou
-     *                             <code>undefined</code> si la valeur initiale
-     *                             est supérieure à la valeur maximale.
+     * @returns {number|undefined} La prochaine valeur ; ou `undefined` si la
+     *                             valeur initiale est supérieure à la valeur
+     *                             maximale.
      */
     next(value) {
         return this.#values.find((v) => value < v);
