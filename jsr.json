@@ -1,0 +1,14 @@
+{
+  "name": "@regseb/cronnor",
+  "version": "2.3.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.js",
+    "./cron": "./src/cron.js",
+    "./cronexp": "./src/cronexp.js",
+    "./at": "./src/at.js"
+  },
+  "publish": {
+    "include": ["src/", "types/", "LICENSE", "README.md", "package.json"]
+  }
+}

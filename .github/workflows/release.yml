@@ -47,11 +47,8 @@ jobs:
       - name: Format files
         if: ${{ steps.release.outputs.pr }}
         run: >
-          npm run lint:fix --
-          .release-please/manifest.json
-          CHANGELOG.md
-          package.json
-          package-lock.json
+          npm run lint:fix -- .release-please/manifest.json CHANGELOG.md
+          jsr.json package.json package-lock.json
 
       - name: Commit and push
         if: ${{ steps.release.outputs.pr }}
@@ -59,7 +56,7 @@ jobs:
           git commit --all --message 'chore: format files'
           git push
 
-      # Si la release a été créée : publier le paquet dans npm.
+      # Si la release a été créée : publier le paquet dans npm et JSR.
       - name: Checkout repository
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
@@ -80,3 +77,25 @@ jobs:
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish in JSR
+        if: ${{ steps.release.outputs.release_created }}
+        run: npx jsr publish
+
+      - name: Env package name
+        if: ${{ steps.release.outputs.release_created }}
+        # Enlever les guillemets qui entourent le nom du paquet.
+        # https://github.com/npm/cli/issues/5508
+        run: echo "NPM_NAME=$(npm pkg get name | tr -d \")" >> $GITHUB_ENV
+
+      - name: Download tarball from npm
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm pack ${{ env.NPM_NAME }}
+
+      - name: Upload tarball to release
+        if: ${{ steps.release.outputs.release_created }}
+        run: >
+          gh release upload ${{ steps.release.outputs.tag_name }} ${{
+          env.NPM_NAME }}-*.tgz
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

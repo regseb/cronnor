@@ -15,7 +15,7 @@
 ## Description
 
 **Cronnor** est une bibliothèque moderne fournissant une classe **`Cron`** pour
-créer des tâches récurrentes. Elle est disponible pour Node.js, Deno et les
+créer des tâches récurrentes. Elle est disponible pour Node.js, Bun, Deno et les
 navigateurs.
 
 ```JavaScript
@@ -36,8 +36,8 @@ cron.stop();
 Cronnor est publiée dans [npm][link-npm] (ses CDN :
 [esm.sh](https://esm.sh/cronnor),
 [jsDelivr](https://www.jsdelivr.com/package/npm/cronnor),
-[UNPKG](https://unpkg.com/browse/cronnor/)) et
-[Deno](https://deno.land/x/cronnor).
+[UNPKG](https://unpkg.com/browse/cronnor/)),
+[JSR](https://jsr.io/@regseb/cronnor) et [Deno](https://deno.land/x/cronnor).
 
 ```JavaScript
 // Node.js et Bun (après `npm install cronnor`) :
@@ -48,8 +48,8 @@ import Cron from "https://esm.sh/cronnor@2";
 import Cron from "https://cdn.jsdelivr.net/npm/cronnor@2";
 import Cron from "https://unpkg.com/cronnor@2";
 
-// Deno :
-import Cron from "https://deno.land/x/cronnor/mod.js";
+// Deno (après `deno add jsr:@regseb/cronnor`) :
+import Cron from "jsr:@regseb/cronnor";
 ```
 
 ## API
@@ -76,7 +76,7 @@ import Cron from "https://deno.land/x/cronnor/mod.js";
 ```JavaScript
 import Cron from "cronnor/cron";
 // import Cron from "https://esm.sh/cronnor@2/cron";
-// import { Cron } from "https://deno.land/x/cronnor/mod.js";
+// import Cron from "jsr:@regseb/cronnor/cron";
 ```
 
 #### `new Cron(cronex, func, [options])`
@@ -150,7 +150,7 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 ```JavaScript
 import CronExp from "cronnor/cronexp";
 // import CronExp from "https://esm.sh/cronnor@2/cronexp";
-// import { CronExp } from "https://deno.land/x/cronnor/mod.js";
+// import CronExp from "jsr:@regseb/cronnor/cronexp";
 ```
 
 #### `new CronExp(pattern)`
@@ -187,7 +187,7 @@ Calcule la prochaine date respectant l'expression.
 ```JavaScript
 import At from "cronnor/at";
 // import At from "https://esm.sh/cronnor@2/at";
-// import { At } from "https://deno.land/x/cronnor/mod.js";
+// import At from "jsr:@regseb/cronnor/at";
 ```
 
 #### `new At(date, func, [options])`
