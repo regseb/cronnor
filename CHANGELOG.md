@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/regseb/cronnor/compare/v2.3.0...v2.4.0) (2025-01-04)
+
+### Features
+
+- Publier dans JSR.
+  ([3e5e03e](https://github.com/regseb/cronnor/commit/3e5e03e1b9c01ddafd030af9f255a970b69adaed))
+
 ## [2.3.0](https://github.com/regseb/cronnor/compare/v2.2.3...v2.3.0) (2024-02-13)
 
 ### Features
