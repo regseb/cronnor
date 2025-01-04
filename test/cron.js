@@ -4,78 +4,98 @@
  */
 
 import assert from "node:assert/strict";
-import sinon from "sinon";
+import { mock } from "node:test";
 import Cron from "../src/cron.js";
 
 describe("cron.js", function () {
+    afterEach(function () {
+        mock.reset();
+    });
+
     describe("Cron", function () {
         describe("constructor()", function () {
             it("should use default values", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake);
+                const cron = new Cron("1 0 1 1 *", func);
                 assert.equal(cron.active, true);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
-                assert.equal(fake.callCount, 1);
-                assert.deepEqual(fake.firstCall.thisValue, cron);
-                assert.deepEqual(fake.firstCall.args, []);
+                assert.equal(func.mock.callCount(), 1);
+                assert.deepEqual(func.mock.calls[0].this, cron);
+                assert.deepEqual(func.mock.calls[0].arguments, []);
 
                 cron.stop();
             });
 
             it("should not activate task", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, { active: false });
+                const cron = new Cron("1 0 1 1 *", func, { active: false });
                 assert.equal(cron.active, false);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
-                assert.equal(fake.callCount, 0);
+                assert.equal(func.mock.callCount(), 0);
             });
 
             it("should bind thisArg", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, { thisArg: "foo" });
+                const cron = new Cron("1 0 1 1 *", func, { thisArg: "foo" });
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
-                assert.equal(fake.callCount, 1);
-                assert.deepEqual(fake.firstCall.thisValue, "foo");
-                assert.deepEqual(fake.firstCall.args, []);
+                assert.equal(func.mock.callCount(), 1);
+                assert.deepEqual(func.mock.calls[0].this, "foo");
+                assert.deepEqual(func.mock.calls[0].arguments, []);
 
                 cron.stop();
             });
 
             it("should bind args", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, {
+                const cron = new Cron("1 0 1 1 *", func, {
                     args: ["foo", "bar", 42],
                 });
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
-                assert.equal(fake.callCount, 1);
-                assert.deepEqual(fake.firstCall.thisValue, cron);
-                assert.deepEqual(fake.firstCall.args, ["foo", "bar", 42]);
+                assert.equal(func.mock.callCount(), 1);
+                assert.deepEqual(func.mock.calls[0].this, cron);
+                assert.deepEqual(func.mock.calls[0].arguments, [
+                    "foo",
+                    "bar",
+                    42,
+                ]);
 
                 cron.stop();
             });
 
             it("should reject when is invoked without 'new'", function () {
-                // @ts-ignore
+                // @ts-expect-error
                 // eslint-disable-next-line new-cap
                 assert.throws(() => Cron([], () => {}), {
                     name: "TypeError",
@@ -101,83 +121,95 @@ describe("cron.js", function () {
 
         describe("set active()", function () {
             it("should activate with 'true'", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, { active: false });
+                const cron = new Cron("1 0 1 1 *", func, { active: false });
                 // eslint-disable-next-line no-multi-assign
                 const active = (cron.active = true);
                 assert.equal(active, true);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, true);
-                assert.equal(fake.callCount, 1);
+                assert.equal(func.mock.callCount(), 1);
 
                 cron.stop();
             });
 
             it("should deactivate with 'false'", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake);
+                const cron = new Cron("1 0 1 1 *", func);
                 // eslint-disable-next-line no-multi-assign
                 const active = (cron.active = false);
                 assert.equal(active, false);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, false);
-                assert.equal(fake.callCount, 0);
+                assert.equal(func.mock.callCount(), 0);
             });
         });
 
         describe("run()", function () {
             it("should call function", function () {
-                const fake = sinon.fake();
-                const cron = new Cron("* * * * *", fake, { active: false });
+                const func = mock.fn();
+                const cron = new Cron("* * * * *", func, { active: false });
                 cron.run();
 
-                assert.equal(fake.callCount, 1);
+                assert.equal(func.mock.callCount(), 1);
             });
         });
 
         describe("start()", function () {
             it("should activate task", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, { active: false });
+                const cron = new Cron("1 0 1 1 *", func, { active: false });
                 const changed = cron.start();
                 assert.equal(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, true);
-                assert.equal(fake.callCount, 1);
+                assert.equal(func.mock.callCount(), 1);
 
                 cron.stop();
             });
 
             it("should ignore call when task is active", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake, { active: false });
+                const cron = new Cron("1 0 1 1 *", func, { active: false });
                 let changed = cron.start();
                 assert.equal(changed, true);
                 changed = cron.start();
                 assert.equal(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, true);
-                assert.equal(fake.callCount, 1);
+                assert.equal(func.mock.callCount(), 1);
 
                 cron.stop();
             });
@@ -185,35 +217,41 @@ describe("cron.js", function () {
 
         describe("stop()", function () {
             it("should deactivate task", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake);
+                const cron = new Cron("1 0 1 1 *", func);
                 const changed = cron.stop();
                 assert.equal(changed, true);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, false);
-                assert.equal(fake.callCount, 0);
+                assert.equal(func.mock.callCount(), 0);
             });
 
             it("should ignore call when task is deactivated", function () {
-                const fake = sinon.fake();
-                const clock = sinon.useFakeTimers(new Date("2000-01-01T00:00"));
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
 
-                const cron = new Cron("1 0 1 1 *", fake);
+                const cron = new Cron("1 0 1 1 *", func);
                 let changed = cron.stop();
                 assert.equal(changed, true);
                 changed = cron.stop();
                 assert.equal(changed, false);
 
                 // Incrémenter le temps pour le setTimeout().
-                clock.next();
+                mock.timers.tick(60_000);
 
                 assert.equal(cron.active, false);
-                assert.equal(fake.callCount, 0);
+                assert.equal(func.mock.callCount(), 0);
             });
         });
 

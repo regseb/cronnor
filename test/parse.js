@@ -4,7 +4,7 @@
  */
 
 import assert from "node:assert/strict";
-import sinon from "sinon";
+import { mock } from "node:test";
 import parse from "../src/parse.js";
 
 /**
@@ -24,6 +24,10 @@ const range = (min, max, step = 1) => {
 };
 
 describe("parse.js", function () {
+    afterEach(function () {
+        mock.reset();
+    });
+
     describe("parse()", function () {
         it('should support "@yearly"', function () {
             const fields = parse("@yearly");
@@ -438,7 +442,10 @@ describe("parse.js", function () {
         });
 
         it('should support "?"', function () {
-            sinon.useFakeTimers(new Date("2000-01-02T03:04:05"));
+            mock.timers.enable({
+                apis: ["Date"],
+                now: new Date("2000-01-02T03:04:05"),
+            });
 
             const fields = parse("? ? ? ? ? ?");
             assert.deepEqual(fields.seconds.values(), [5]);
@@ -604,7 +611,10 @@ describe("parse.js", function () {
         });
 
         it('should support "?" in min', function () {
-            sinon.useFakeTimers(new Date("2000-01-02T03:04:05"));
+            mock.timers.enable({
+                apis: ["Date"],
+                now: new Date("2000-01-02T03:04:05"),
+            });
 
             const fields = parse("?-5 ?-10 ?-20 ?-30 ?-6 ?-5");
             assert.deepEqual(fields.seconds.values(), [5]);
@@ -616,7 +626,10 @@ describe("parse.js", function () {
         });
 
         it('should support "?" in max', function () {
-            sinon.useFakeTimers(new Date("2000-05-10T20:30:40"));
+            mock.timers.enable({
+                apis: ["Date"],
+                now: new Date("2000-05-10T20:30:40"),
+            });
 
             const fields = parse("1-? 2-? 3-? 4-? 5-? 0-?");
             assert.deepEqual(fields.seconds.values(), range(1, 40));
@@ -628,7 +641,10 @@ describe("parse.js", function () {
         });
 
         it('should support "?" in max when it\'s sunday', function () {
-            sinon.useFakeTimers(new Date("2000-02-06T00:00:00"));
+            mock.timers.enable({
+                apis: ["Date"],
+                now: new Date("2000-02-06T00:00:00"),
+            });
 
             const fields = parse("* * * * * 0-?");
             assert.ok(!fields.seconds.restricted);
@@ -848,14 +864,19 @@ describe("parse.js", function () {
         });
 
         it('should support "~"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("~ ~ ~ ~ ~ ~");
             assert.deepEqual(fields.seconds.values(), [0]);
@@ -865,18 +886,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [9]);
             assert.deepEqual(fields.day.values(), [2]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "~/{step}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("~/2 ~/3 ~/4 ~/3 ~/5 ~/1");
             assert.deepEqual(fields.seconds.values(), range(0, 58, 2));
@@ -886,18 +912,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [3, 8]);
             assert.deepEqual(fields.day.values(), [0, 1, 2, 3, 4, 5, 6]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "{min}~"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("45~ 30~ 12~ 15~ 6~ 4~");
             assert.deepEqual(fields.seconds.values(), [45]);
@@ -907,18 +938,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [10]);
             assert.deepEqual(fields.day.values(), [5]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "{min}~/{step}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("44~/15 29~/10 11~/3 15~/5 6~/2 4~/2");
             assert.deepEqual(fields.seconds.values(), [44, 59]);
@@ -928,18 +964,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [6, 8, 10]);
             assert.deepEqual(fields.day.values(), [4, 6]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "~{max}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("~45 ~10 ~20 ~30 ~10 ~5");
             assert.deepEqual(fields.seconds.values(), [0]);
@@ -949,18 +990,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [7]);
             assert.deepEqual(fields.day.values(), [1]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "~{max}/{step}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("~44/15 ~29/10 ~11/3 ~15/5 ~6/2 ~5/2");
             assert.deepEqual(fields.seconds.values(), [0, 15, 30]);
@@ -970,18 +1016,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [1, 3, 5]);
             assert.deepEqual(fields.day.values(), [0, 2, 4]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "{min}~{max}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("10~50 20~40 8~14 10~20 5~8 1~5");
             assert.deepEqual(fields.seconds.values(), [10]);
@@ -991,18 +1042,23 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [7]);
             assert.deepEqual(fields.day.values(), [2]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it('should support "{min}~{max}/{step}"', function () {
-            // prettier-ignore
-            const stub = sinon.stub(Math, "random")
-                .onCall(0).returns(0)
-                .onCall(1).returns(0.99)
-                .onCall(2).returns(0.5)
-                .onCall(3).returns(0.25)
-                .onCall(4).returns(0.75)
-                .onCall(5).returns(0.33);
+            let times = 0;
+            const random = mock.method(Math, "random", () => {
+                // prettier-ignore
+                switch (times++) {
+                    case 0: return 0;
+                    case 1: return 0.99;
+                    case 2: return 0.5;
+                    case 3: return 0.25;
+                    case 4: return 0.75;
+                    case 5: return 0.33;
+                    default: return undefined;
+                }
+            });
 
             const fields = parse("15~45/15 10~30/5 1~13/3 5~15/5 3~6/2 3~7/2");
             assert.deepEqual(fields.seconds.values(), [15, 30, 45]);
@@ -1012,7 +1068,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.month.values(), [3, 5]);
             assert.deepEqual(fields.day.values(), [0, 3, 5]);
 
-            assert.equal(stub.callCount, 6);
+            assert.equal(random.mock.callCount(), 6);
         });
 
         it("should reject min date over max days in month", function () {

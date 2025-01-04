@@ -4,7 +4,7 @@
  */
 
 import assert from "node:assert/strict";
-import sinon from "sinon";
+import { mock } from "node:test";
 import Field from "../src/field.js";
 
 describe("field.js", function () {
@@ -59,7 +59,7 @@ describe("field.js", function () {
             });
 
             it("should create field with random value", function () {
-                const stub = sinon.stub(Math, "random").returns(0);
+                const random = mock.method(Math, "random", () => 0);
 
                 const field = Field.range(1, 4, 2, {
                     restricted: true,
@@ -69,7 +69,7 @@ describe("field.js", function () {
                 assert.deepEqual(field.values(), [1, 3]);
                 assert.equal(field.restricted, true);
 
-                assert.equal(stub.callCount, 1);
+                assert.equal(random.mock.callCount(), 1);
             });
         });
 

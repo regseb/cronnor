@@ -21,7 +21,8 @@ export default {
         "!/types/**",
         // Ignorer les fichiers de configuration de Visual Studio Code.
         "!/.vscode/**",
-        // Ignorer les fichiers de configuration de IntelliJ IDEA.
+        // Ignorer les fichiers de configuration des IDEs de JetBrains :
+        // WebStorm, IntelliJ IDEA...
         "!/.idea/**",
         // Ignorer les fichiers temporaires de Vim.
         "!*.swp",
@@ -52,17 +53,13 @@ export default {
         {
             patterns: "*.md",
             linters: ["prettier", "markdownlint"],
-            overrides: {
-                patterns: "/CHANGELOG.md",
-                linters: "markdownlint_changelog",
-            },
         },
         {
             patterns: "*.json",
             linters: ["prettier", "prantlf__jsonlint"],
             overrides: {
                 patterns: "/package.json",
-                linters: "npm-package-json-lint",
+                linters: ["npm-package-json-lint", "publint"],
             },
         },
         {

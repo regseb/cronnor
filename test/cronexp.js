@@ -25,7 +25,7 @@ describe("cronexp.js", function () {
             });
 
             it("should reject when is invoked without 'new'", function () {
-                // @ts-ignore
+                // @ts-expect-error
                 // eslint-disable-next-line new-cap
                 assert.throws(() => CronExp("* * * * * *"), {
                     name: "TypeError",

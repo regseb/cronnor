@@ -5,10 +5,8 @@
 <!-- markdownlint-disable-next-line no-inline-html-->
 <img src="asset/logo.svg" align="right" alt="">
 
-[![npm][img-npm]][link-npm]
-[![build][img-build]][link-build]
-[![coverage][img-coverage]][link-coverage]
-[![semver][img-semver]][link-semver]
+[![npm][img-npm]][link-npm] [![build][img-build]][link-build]
+[![coverage][img-coverage]][link-coverage] [![semver][img-semver]][link-semver]
 
 > Bibliothèque JavaScript implémentant un programme _cron_.
 
@@ -18,12 +16,12 @@
 créer des tâches récurrentes. Elle est disponible pour Node.js, Bun, Deno et les
 navigateurs.
 
-```JavaScript
+```javascript
 import Cron from "cronnor";
 
 function task() {
-    // Awesome task to be done every working day at 8am.
-};
+  // Awesome task to be done every working day at 8am.
+}
 
 const cron = new Cron("0 8 * * mon-fri", task);
 
@@ -39,7 +37,7 @@ Cronnor est publiée dans [npm][link-npm] (ses CDN :
 [UNPKG](https://unpkg.com/browse/cronnor/)),
 [JSR](https://jsr.io/@regseb/cronnor) et [Deno](https://deno.land/x/cronnor).
 
-```JavaScript
+```javascript
 // Node.js et Bun (après `npm install cronnor`) :
 import Cron from "cronnor";
 
@@ -73,7 +71,7 @@ import Cron from "jsr:@regseb/cronnor";
 
 ### Cron
 
-```JavaScript
+```javascript
 import Cron from "cronnor/cron";
 // import Cron from "https://esm.sh/cronnor@2/cron";
 // import Cron from "jsr:@regseb/cronnor/cron";
@@ -84,8 +82,9 @@ import Cron from "cronnor/cron";
 Crée une tâche _cronée_.
 
 - Paramètres :
-  - `cronex` (`string` ou `string[]`) : La ou les [expressions
-    _cron_](#expression-cron) indiquant les horaires d'exécution de la tâche.
+  - `cronex` (`string` ou `string[]`) : La ou les
+    [expressions _cron_](#expression-cron) indiquant les horaires d'exécution de
+    la tâche.
   - `func` (`Function`) : La fonction appelée à chaque horaire indiqué dans les
     expressions _cron_.
   - `options` (`Object`) : Les options de la tâche _cronée_.
@@ -147,7 +146,7 @@ Calcule la prochaine date respectant une des expressions _cron_ de la tâche.
 
 ### CronExp
 
-```JavaScript
+```javascript
 import CronExp from "cronnor/cronexp";
 // import CronExp from "https://esm.sh/cronnor@2/cronexp";
 // import CronExp from "jsr:@regseb/cronnor/cronexp";
@@ -184,7 +183,7 @@ Calcule la prochaine date respectant l'expression.
 
 ### At
 
-```JavaScript
+```javascript
 import At from "cronnor/at";
 // import At from "https://esm.sh/cronnor@2/at";
 // import At from "jsr:@regseb/cronnor/at";
@@ -244,14 +243,20 @@ Il existe aussi des chaines spéciales :
 - `"@daily"` ou `"@midnight"` : tous les jours à minuit (`"0 0 * * *"`) ;
 - `"@hourly"` : toutes les heures (`"0 * * * *"`).
 
-Pour plus d'information, vous pouvez consulter le [manuel de
-_crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
+Pour plus d'information, vous pouvez consulter le
+[manuel de _crontab_](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
-[img-npm]: https://img.shields.io/npm/dm/cronnor?label=npm&logo=npm&logoColor=whitesmoke
-[img-build]: https://img.shields.io/github/actions/workflow/status/regseb/cronnor/ci.yml?branch=main&logo=github&logoColor=whitesmoke
-[img-coverage]: https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain&logo=stryker&logoColor=whitesmoke
-[img-semver]: https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&logoColor=whitesmoke
+[img-npm]:
+  https://img.shields.io/npm/dm/cronnor?label=npm&logo=npm&logoColor=whitesmoke
+[img-build]:
+  https://img.shields.io/github/actions/workflow/status/regseb/cronnor/ci.yml?branch=main&logo=github&logoColor=whitesmoke
+[img-coverage]:
+  https://img.shields.io/endpoint?label=coverage&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fregseb%2Fcronnor%2Fmain
+[img-semver]:
+  https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&logoColor=whitesmoke
 [link-npm]: https://www.npmjs.com/package/cronnor
-[link-build]: https://github.com/regseb/cronnor/actions/workflows/ci.yml?query=branch%3Amain
-[link-coverage]: https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/main
+[link-build]:
+  https://github.com/regseb/cronnor/actions/workflows/ci.yml?query=branch%3Amain
+[link-coverage]:
+  https://dashboard.stryker-mutator.io/reports/github.com/regseb/cronnor/main
 [link-semver]: https://semver.org/spec/v2.0.0.html "Semantic Versioning 2.0.0"

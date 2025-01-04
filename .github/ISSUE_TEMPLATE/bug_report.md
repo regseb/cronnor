@@ -15,10 +15,10 @@ assignees: ""
 <!-- Please include a minimal reproduction case. Otherwise, include any
      information about how you're using Cronnor. -->
 
-```JavaScript
-    // Use cron expression "* * 13 * thu".
-    // Do something.
-    // ...
+```javascript
+// Use cron expression "* * 13 * thu".
+// Do something.
+// ...
 ```
 
 ### Expected behavior
@@ -27,8 +27,8 @@ assignees: ""
 
 ### Environment
 
-- Cronnor version<!-- e.g. 2.3.0 -->:
-- Platform version<!-- e.g. Chrome 121.0.6167.160, Node.js v20.11.0 -->:
+- Cronnor version<!-- e.g. 2.4.0 -->:
+- Platform version<!-- e.g. Chrome 131.0.6778.139, Node v22.12.0 -->:
 
 ### Additional context
 

@@ -139,12 +139,12 @@ const FORMATS = [
     new RegExp(
         "^" +
             /** @type {string} */ (format)
-                .replaceAll("*", "\\*")
-                .replaceAll("{step}", "(?<step>\\d+)")
-                .replaceAll("{min}", "(?<min>[\\da-z?]+)")
-                .replaceAll("{max}", "(?<max>[\\da-z?]+)") +
+                .replaceAll("*", String.raw`\*`)
+                .replaceAll("{step}", String.raw`(?<step>\d+)`)
+                .replaceAll("{min}", String.raw`(?<min>[\da-z?]+)`)
+                .replaceAll("{max}", String.raw`(?<max>[\da-z?]+)`) +
             "$",
-        "iu",
+        "iv",
     ),
     complements,
 ]);
@@ -218,7 +218,7 @@ const parseField = (parts, index, now, pattern) => {
         min = getIndexValue(now, index);
     } else if (parts.min.toLowerCase() in NAMES.MIN[index]) {
         min = NAMES.MIN[index][parts.min.toLowerCase()];
-    } else if (/^\d+$/u.test(parts.min)) {
+    } else if (/^\d+$/v.test(parts.min)) {
         min = Number(parts.min);
     } else {
         throw new Error(ERROR + pattern);
@@ -232,7 +232,7 @@ const parseField = (parts, index, now, pattern) => {
         max = getIndexValue(now, index, true);
     } else if (parts.max.toLowerCase() in NAMES.MAX[index]) {
         max = NAMES.MAX[index][parts.max.toLowerCase()];
-    } else if (/^\d+$/u.test(parts.max)) {
+    } else if (/^\d+$/v.test(parts.max)) {
         max = Number(parts.max);
     } else {
         throw new Error(ERROR + pattern);
@@ -277,7 +277,7 @@ export default function parse(pattern) {
     // Remplacer l'éventuelle chaine spéciale par son équivalent et séparer
     // les cinq ou six champs (secondes, minutes, heures, jour du mois, mois et
     // jour de la semaine).
-    const fields = (NICKNAMES[pattern.toLowerCase()] ?? pattern).split(/\s+/u);
+    const fields = (NICKNAMES[pattern.toLowerCase()] ?? pattern).split(/\s+/v);
     if (5 === fields.length) {
         // Ajouter la valeur "0" pour les secondes (car elles ne sont pas
         // renseignées).

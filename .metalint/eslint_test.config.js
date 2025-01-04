@@ -3,6 +3,9 @@
  * @author Sébastien Règne
  */
 
+import mocha from "eslint-plugin-mocha";
+import globals from "globals";
+
 /**
  * @import { Linter } from "eslint"
  */
@@ -11,9 +14,11 @@
  * @type {Linter.Config}
  */
 export default {
-    env: {
-        mocha: true,
+    languageOptions: {
+        globals: { ...globals.mocha },
     },
+
+    plugins: { mocha },
 
     rules: {
         // Suggestions.
@@ -26,6 +31,7 @@ export default {
         "prefer-arrow-callback": "off",
 
         // Plugin eslint-plugin-mocha.
+        "mocha/consistent-spacing-between-blocks": "error",
         "mocha/handle-done-callback": "error",
         "mocha/max-top-level-suites": "error",
         "mocha/no-async-describe": "error",
@@ -33,8 +39,13 @@ export default {
         "mocha/no-exclusive-tests": "error",
         "mocha/no-exports": "error",
         "mocha/no-global-tests": "error",
-        "mocha/no-hooks": "error",
-        "mocha/no-hooks-for-single-case": "error",
+        // Autoriser les hooks "afterEach", car ils sont toujours exécutés après
+        // les tests (pour nettoyer l'environnement) même si les tests ont
+        // échoué.
+        "mocha/no-hooks": ["error", { allow: ["afterEach"] }],
+        // Désactiver cette règle, car il n'y a pas de condition différente avec
+        // la règle "no-hook".
+        "mocha/no-hooks-for-single-case": "off",
         "mocha/no-identical-title": "error",
         "mocha/no-mocha-arrows": "error",
         "mocha/no-nested-tests": "error",
@@ -56,5 +67,8 @@ export default {
         // Plugin eslint-plugin-unicorn.
         // Ne pas obliger à sortir les fonctions des tests.
         "unicorn/consistent-function-scoping": "off",
+        // Autoriser la valeur null pour pouvoir tester cette valeur dans les
+        // tests.
+        "unicorn/no-null": "off",
     },
 };
