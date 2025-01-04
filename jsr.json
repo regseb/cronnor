@@ -9,12 +9,6 @@
     "./at": "./src/at.js"
   },
   "publish": {
-    "include": [
-      "src/",
-      "types/",
-      "LICENSE",
-      "README.md",
-      "package.json"
-    ]
+    "include": ["src/", "types/", "LICENSE", "README.md", "package.json"]
   }
 }
