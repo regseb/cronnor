@@ -4,8 +4,8 @@
  */
 
 import assert from "node:assert/strict";
-import { mock } from "node:test";
-import parse from "../src/parse.js";
+import { afterEach, describe, it, mock } from "node:test";
+import parse from "../../src/parse.js";
 
 /**
  * Génère les valeurs d'un intervalle.
@@ -23,13 +23,13 @@ const range = (min, max, step = 1) => {
     return values;
 };
 
-describe("parse.js", function () {
-    afterEach(function () {
+describe("parse.js", () => {
+    afterEach(() => {
         mock.reset();
     });
 
-    describe("parse()", function () {
-        it('should support "@yearly"', function () {
+    describe("parse()", () => {
+        it('should support "@yearly"', () => {
             const fields = parse("@yearly");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -39,7 +39,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "@annually"', function () {
+        it('should support "@annually"', () => {
             const fields = parse("@annually");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -49,7 +49,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "@monthly"', function () {
+        it('should support "@monthly"', () => {
             const fields = parse("@monthly");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -59,7 +59,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "@weekly"', function () {
+        it('should support "@weekly"', () => {
             const fields = parse("@weekly");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -69,7 +69,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0]);
         });
 
-        it('should support "@daily"', function () {
+        it('should support "@daily"', () => {
             const fields = parse("@daily");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -79,7 +79,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "@midnight"', function () {
+        it('should support "@midnight"', () => {
             const fields = parse("@midnight");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -89,7 +89,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "@hourly"', function () {
+        it('should support "@hourly"', () => {
             const fields = parse("@hourly");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -99,7 +99,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should support uppercase nicknames", function () {
+        it("should support uppercase nicknames", () => {
             const fields = parse("@HOURLY");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.deepEqual(fields.minutes.values(), [0]);
@@ -109,21 +109,21 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject when too many fields", function () {
+        it("should reject when too many fields", () => {
             assert.throws(() => parse("* * * * * * *"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * * * * *",
             });
         });
 
-        it("should reject when not enough fields", function () {
+        it("should reject when not enough fields", () => {
             assert.throws(() => parse("* * * *"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * *",
             });
         });
 
-        it("should support many whitespaces", function () {
+        it("should support many whitespaces", () => {
             const fields = parse("* *  *   *    *\t\u00A0*");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -133,7 +133,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should use "0" by default to seconds', function () {
+        it('should use "0" by default to seconds', () => {
             const fields = parse("* * * * *");
             assert.deepEqual(fields.seconds.values(), [0]);
             assert.ok(!fields.minutes.restricted);
@@ -143,7 +143,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject invalide field", function () {
+        it("should reject invalide field", () => {
             assert.throws(() => parse("& * * * * *"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: & * * * * *",
@@ -171,7 +171,7 @@ describe("parse.js", function () {
             });
         });
 
-        it('should support "*"', function () {
+        it('should support "*"', () => {
             const fields = parse("* * * * * *");
             assert.deepEqual(fields.seconds.values(), range(0, 59));
             assert.ok(!fields.seconds.restricted);
@@ -187,7 +187,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support "*/{step}"', function () {
+        it('should support "*/{step}"', () => {
             const fields = parse("*/1 */2 */3 */15 */12 */10");
             assert.deepEqual(fields.seconds.values(), range(0, 59));
             assert.deepEqual(fields.minutes.values(), range(0, 59, 2));
@@ -197,7 +197,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0]);
         });
 
-        it('should support month "jan"', function () {
+        it('should support month "jan"', () => {
             const fields = parse("* * * * jan *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -207,7 +207,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "feb"', function () {
+        it('should support month "feb"', () => {
             const fields = parse("* * * * feb *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -217,7 +217,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "mar"', function () {
+        it('should support month "mar"', () => {
             const fields = parse("* * * * mar *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -227,7 +227,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "apr"', function () {
+        it('should support month "apr"', () => {
             const fields = parse("* * * * apr *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -237,7 +237,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "may"', function () {
+        it('should support month "may"', () => {
             const fields = parse("* * * * may *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -247,7 +247,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "jun"', function () {
+        it('should support month "jun"', () => {
             const fields = parse("* * * * jun *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -257,7 +257,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "jul"', function () {
+        it('should support month "jul"', () => {
             const fields = parse("* * * * jul *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -267,7 +267,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "aug"', function () {
+        it('should support month "aug"', () => {
             const fields = parse("* * * * aug *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -277,7 +277,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "sep"', function () {
+        it('should support month "sep"', () => {
             const fields = parse("* * * * sep *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -287,7 +287,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "oct"', function () {
+        it('should support month "oct"', () => {
             const fields = parse("* * * * oct *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -297,7 +297,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "nov"', function () {
+        it('should support month "nov"', () => {
             const fields = parse("* * * * nov *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -307,7 +307,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it('should support month "dec"', function () {
+        it('should support month "dec"', () => {
             const fields = parse("* * * * dec *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -317,7 +317,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should support literal uppercase month", function () {
+        it("should support literal uppercase month", () => {
             const fields = parse("* * * * DEC *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -327,14 +327,14 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject literal invalid month", function () {
+        it("should reject literal invalid month", () => {
             assert.throws(() => parse("* * * * foo *"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * * foo *",
             });
         });
 
-        it('should support day "sun"', function () {
+        it('should support day "sun"', () => {
             const fields = parse("* * * * * sun");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -344,7 +344,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0]);
         });
 
-        it('should support day "mon"', function () {
+        it('should support day "mon"', () => {
             const fields = parse("* * * * * mon");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -354,7 +354,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [1]);
         });
 
-        it('should support day "tue"', function () {
+        it('should support day "tue"', () => {
             const fields = parse("* * * * * tue");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -364,7 +364,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [2]);
         });
 
-        it('should support day "wed"', function () {
+        it('should support day "wed"', () => {
             const fields = parse("* * * * * wed");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -374,7 +374,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [3]);
         });
 
-        it('should support day "thu"', function () {
+        it('should support day "thu"', () => {
             const fields = parse("* * * * * thu");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -384,7 +384,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [4]);
         });
 
-        it('should support day "fri"', function () {
+        it('should support day "fri"', () => {
             const fields = parse("* * * * * fri");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -394,7 +394,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [5]);
         });
 
-        it('should support day "sat"', function () {
+        it('should support day "sat"', () => {
             const fields = parse("* * * * * sat");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -404,7 +404,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [6]);
         });
 
-        it("should support literal uppercase day", function () {
+        it("should support literal uppercase day", () => {
             const fields = parse("* * * * * SAT");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -414,14 +414,14 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [6]);
         });
 
-        it("should reject literal invalid day", function () {
+        it("should reject literal invalid day", () => {
             assert.throws(() => parse("* * * * * foo"), {
                 name: "Error",
                 message: "Syntax error, unrecognized expression: * * * * * foo",
             });
         });
 
-        it('should support many sub-fields"', function () {
+        it('should support many sub-fields"', () => {
             const fields = parse("1,2 3,4 5,6 7,8 9,10 0,1");
             assert.deepEqual(fields.seconds.values(), [1, 2]);
             assert.deepEqual(fields.minutes.values(), [3, 4]);
@@ -431,7 +431,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 1]);
         });
 
-        it('should support "{min}"', function () {
+        it('should support "{min}"', () => {
             const fields = parse("1 2 3 4 5 6");
             assert.deepEqual(fields.seconds.values(), [1]);
             assert.deepEqual(fields.minutes.values(), [2]);
@@ -441,7 +441,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [6]);
         });
 
-        it('should support "?"', function () {
+        it('should support "?"', () => {
             mock.timers.enable({
                 apis: ["Date"],
                 now: new Date("2000-01-02T03:04:05"),
@@ -456,7 +456,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0]);
         });
 
-        it("should reject prefix", function () {
+        it("should reject prefix", () => {
             assert.throws(() => parse("foo0 * * * * *"), {
                 name: "Error",
                 message:
@@ -495,7 +495,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should reject suffix", function () {
+        it("should reject suffix", () => {
             assert.throws(() => parse("0foo * * * * *"), {
                 name: "Error",
                 message:
@@ -534,7 +534,7 @@ describe("parse.js", function () {
             });
         });
 
-        it('should support "{min}-{max}"', function () {
+        it('should support "{min}-{max}"', () => {
             const fields = parse("1-58 2-57 1-22 2-30 2-11 1-6");
             assert.deepEqual(fields.seconds.values(), range(1, 58));
             assert.deepEqual(fields.minutes.values(), range(2, 57));
@@ -544,7 +544,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [1, 2, 3, 4, 5, 6]);
         });
 
-        it("should support literal month in max", function () {
+        it("should support literal month in max", () => {
             const fields = parse("* * * * 6-sep *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -554,7 +554,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should support literal uppercase month in max", function () {
+        it("should support literal uppercase month in max", () => {
             const fields = parse("* * * * 5-OCT *");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -564,7 +564,7 @@ describe("parse.js", function () {
             assert.ok(!fields.day.restricted);
         });
 
-        it("should reject literal invalid month in max", function () {
+        it("should reject literal invalid month in max", () => {
             assert.throws(() => parse("* * * * 1-foo *"), {
                 name: "Error",
                 message:
@@ -572,7 +572,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should support literal day in max", function () {
+        it("should support literal day in max", () => {
             const fields = parse("* * * * * 1-fri");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -582,7 +582,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [1, 2, 3, 4, 5]);
         });
 
-        it("should support literal uppercase day in max", function () {
+        it("should support literal uppercase day in max", () => {
             const fields = parse("* * * * * 2-THU");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -592,7 +592,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [2, 3, 4]);
         });
 
-        it('should support day "sun" in max', function () {
+        it('should support day "sun" in max', () => {
             const fields = parse("* * * * * 6-SUN");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
@@ -602,7 +602,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 6]);
         });
 
-        it("should reject literal invalid day in max", function () {
+        it("should reject literal invalid day in max", () => {
             assert.throws(() => parse("* * * * * 0-foo"), {
                 name: "Error",
                 message:
@@ -610,7 +610,7 @@ describe("parse.js", function () {
             });
         });
 
-        it('should support "?" in min', function () {
+        it('should support "?" in min', () => {
             mock.timers.enable({
                 apis: ["Date"],
                 now: new Date("2000-01-02T03:04:05"),
@@ -625,7 +625,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), range(0, 5));
         });
 
-        it('should support "?" in max', function () {
+        it('should support "?" in max', () => {
             mock.timers.enable({
                 apis: ["Date"],
                 now: new Date("2000-05-10T20:30:40"),
@@ -640,7 +640,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 1, 2, 3]);
         });
 
-        it('should support "?" in max when it\'s sunday', function () {
+        it(`should support "?" in max when it's sunday`, () => {
             mock.timers.enable({
                 apis: ["Date"],
                 now: new Date("2000-02-06T00:00:00"),
@@ -655,7 +655,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 1, 2, 3, 4, 5, 6]);
         });
 
-        it("should reject prefix in max", function () {
+        it("should reject prefix in max", () => {
             assert.throws(() => parse("0-foo0 * * * * *"), {
                 name: "Error",
                 message:
@@ -697,7 +697,7 @@ describe("parse.js", function () {
             );
         });
 
-        it("should reject suffix in max", function () {
+        it("should reject suffix in max", () => {
             assert.throws(() => parse("0-0foo * * * * *"), {
                 name: "Error",
                 message:
@@ -739,7 +739,7 @@ describe("parse.js", function () {
             );
         });
 
-        it('should support "{min}-{max}/{step}"', function () {
+        it('should support "{min}-{max}/{step}"', () => {
             const fields = parse("1-5/2 10-20/2 6-12/3 20-30/4 1-11/5 1-7/1");
             assert.deepEqual(fields.seconds.values(), [1, 3, 5]);
             assert.deepEqual(fields.minutes.values(), [10, 12, 14, 16, 18, 20]);
@@ -749,7 +749,7 @@ describe("parse.js", function () {
             assert.deepEqual(fields.day.values(), [0, 1, 2, 3, 4, 5, 6]);
         });
 
-        it("should reject input under limit", function () {
+        it("should reject input under limit", () => {
             assert.throws(() => parse("* * * 0 * *"), {
                 name: "RangeError",
                 message: "Syntax error, unrecognized expression: * * * 0 * *",
@@ -764,7 +764,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should reject input over limit", function () {
+        it("should reject input over limit", () => {
             assert.throws(() => parse("60 * * * * *"), {
                 name: "RangeError",
                 message: "Syntax error, unrecognized expression: 60 * * * * *",
@@ -796,7 +796,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should reject min over max", function () {
+        it("should reject min over max", () => {
             assert.throws(() => parse("1-0 * * * * *"), {
                 name: "RangeError",
                 message: "Syntax error, unrecognized expression: 1-0 * * * * *",
@@ -830,7 +830,7 @@ describe("parse.js", function () {
             });
         });
 
-        it("should reject step equal zero", function () {
+        it("should reject step equal zero", () => {
             assert.throws(() => parse("*/0 * * * * *"), {
                 name: "RangeError",
                 message: "Syntax error, unrecognized expression: */0 * * * * *",
@@ -863,7 +863,7 @@ describe("parse.js", function () {
             });
         });
 
-        it('should support "~"', function () {
+        it('should support "~"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -889,7 +889,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "~/{step}"', function () {
+        it('should support "~/{step}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -915,7 +915,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "{min}~"', function () {
+        it('should support "{min}~"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -941,7 +941,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "{min}~/{step}"', function () {
+        it('should support "{min}~/{step}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -967,7 +967,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "~{max}"', function () {
+        it('should support "~{max}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -993,7 +993,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "~{max}/{step}"', function () {
+        it('should support "~{max}/{step}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -1019,7 +1019,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "{min}~{max}"', function () {
+        it('should support "{min}~{max}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -1045,7 +1045,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it('should support "{min}~{max}/{step}"', function () {
+        it('should support "{min}~{max}/{step}"', () => {
             let times = 0;
             const random = mock.method(Math, "random", () => {
                 // prettier-ignore
@@ -1071,7 +1071,7 @@ describe("parse.js", function () {
             assert.equal(random.mock.callCount(), 6);
         });
 
-        it("should reject min date over max days in month", function () {
+        it("should reject min date over max days in month", () => {
             assert.throws(() => parse("* * * 30 feb *"), {
                 name: "RangeError",
                 message:

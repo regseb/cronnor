@@ -4,17 +4,17 @@
  */
 
 import assert from "node:assert/strict";
-import { mock } from "node:test";
-import Cron from "../src/cron.js";
+import { afterEach, describe, it, mock } from "node:test";
+import Cron from "../../src/cron.js";
 
-describe("cron.js", function () {
-    afterEach(function () {
+describe("cron.js", () => {
+    afterEach(() => {
         mock.reset();
     });
 
-    describe("Cron", function () {
-        describe("constructor()", function () {
-            it("should use default values", function () {
+    describe("Cron", () => {
+        describe("constructor()", () => {
+            it("should use default values", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -34,7 +34,7 @@ describe("cron.js", function () {
                 cron.stop();
             });
 
-            it("should not activate task", function () {
+            it("should not activate task", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -50,7 +50,7 @@ describe("cron.js", function () {
                 assert.equal(func.mock.callCount(), 0);
             });
 
-            it("should bind thisArg", function () {
+            it("should bind thisArg", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -69,7 +69,7 @@ describe("cron.js", function () {
                 cron.stop();
             });
 
-            it("should bind args", function () {
+            it("should bind args", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -94,33 +94,47 @@ describe("cron.js", function () {
                 cron.stop();
             });
 
-            it("should reject when is invoked without 'new'", function () {
+            it("should reject when is invoked without 'new'", () => {
                 // @ts-expect-error
                 // eslint-disable-next-line new-cap
-                assert.throws(() => Cron([], () => {}), {
+                assert.throws(() => Cron([], () => undefined), {
                     name: "TypeError",
-                    message:
-                        "Class constructor Cron cannot be invoked without" +
-                        " 'new'",
+                    message: new RegExp(
+                        "^(" +
+                            // Vérifier le message d'erreur de Node.js.
+                            RegExp.escape(
+                                "Class constructor Cron cannot be invoked" +
+                                    " without 'new'",
+                            ) +
+                            ")|(" +
+                            // Vérifier le message d'erreur de Bun.
+                            RegExp.escape(
+                                "Cannot call a class constructor without |new|",
+                            ) +
+                            ")$",
+                        "v",
+                    ),
                 });
             });
         });
 
-        describe("get active()", function () {
-            it("should return 'true' when task is activated", function () {
-                const cron = new Cron("0 0 1 1 *", () => {});
+        describe("get active()", () => {
+            it("should return 'true' when task is activated", () => {
+                const cron = new Cron("0 0 1 1 *", () => undefined);
                 assert.equal(cron.active, true);
                 cron.stop();
             });
 
-            it("should return 'false' when task is deactivated", function () {
-                const cron = new Cron("0 0 1 1 *", () => {}, { active: false });
+            it("should return 'false' when task is deactivated", () => {
+                const cron = new Cron("0 0 1 1 *", () => undefined, {
+                    active: false,
+                });
                 assert.equal(cron.active, false);
             });
         });
 
-        describe("set active()", function () {
-            it("should activate with 'true'", function () {
+        describe("set active()", () => {
+            it("should activate with 'true'", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -141,7 +155,7 @@ describe("cron.js", function () {
                 cron.stop();
             });
 
-            it("should deactivate with 'false'", function () {
+            it("should deactivate with 'false'", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -161,8 +175,8 @@ describe("cron.js", function () {
             });
         });
 
-        describe("run()", function () {
-            it("should call function", function () {
+        describe("run()", () => {
+            it("should call function", () => {
                 const func = mock.fn();
                 const cron = new Cron("* * * * *", func, { active: false });
                 cron.run();
@@ -171,8 +185,8 @@ describe("cron.js", function () {
             });
         });
 
-        describe("start()", function () {
-            it("should activate task", function () {
+        describe("start()", () => {
+            it("should activate task", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -192,7 +206,7 @@ describe("cron.js", function () {
                 cron.stop();
             });
 
-            it("should ignore call when task is active", function () {
+            it("should ignore call when task is active", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -215,8 +229,8 @@ describe("cron.js", function () {
             });
         });
 
-        describe("stop()", function () {
-            it("should deactivate task", function () {
+        describe("stop()", () => {
+            it("should deactivate task", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -234,7 +248,7 @@ describe("cron.js", function () {
                 assert.equal(func.mock.callCount(), 0);
             });
 
-            it("should ignore call when task is deactivated", function () {
+            it("should ignore call when task is deactivated", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -255,17 +269,19 @@ describe("cron.js", function () {
             });
         });
 
-        describe("test()", function () {
-            it("should support one cronex", function () {
-                const cron = new Cron("0 0 1 1 *", () => {}, { active: false });
+        describe("test()", () => {
+            it("should support one cronex", () => {
+                const cron = new Cron("0 0 1 1 *", () => undefined, {
+                    active: false,
+                });
                 assert.ok(cron.test(new Date("2000-01-01T00:00")));
                 assert.ok(!cron.test(new Date("2000-01-01T00:01")));
             });
 
-            it("should support many cronexes", function () {
+            it("should support many cronexes", () => {
                 const cron = new Cron(
                     ["0 0 1 1 *", "59 23 31 12 *"],
-                    () => {},
+                    () => undefined,
                     { active: false },
                 );
                 assert.ok(cron.test(new Date("2000-01-01T00:00")));
@@ -275,17 +291,19 @@ describe("cron.js", function () {
             });
         });
 
-        describe("next()", function () {
-            it("should support one cronex", function () {
-                const cron = new Cron("1 0 1 1 *", () => {}, { active: false });
+        describe("next()", () => {
+            it("should support one cronex", () => {
+                const cron = new Cron("1 0 1 1 *", () => undefined, {
+                    active: false,
+                });
                 const next = cron.next(new Date("2000-01-01T00:00"));
                 assert.deepEqual(next, new Date("2000-01-01T00:01"));
             });
 
-            it("should support many cronexes", function () {
+            it("should support many cronexes", () => {
                 const cron = new Cron(
                     ["1 0 1 1 *", "59 23 31 12 *"],
-                    () => {},
+                    () => undefined,
                     { active: false },
                 );
                 let next = cron.next(new Date("2000-01-01T00:00"));

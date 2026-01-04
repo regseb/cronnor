@@ -17,5 +17,8 @@ export default {
     ignoreStatic: true,
     reporters: ["dots", "clear-text"],
     tempDirName: ".stryker/tmp/",
-    testRunner: "mocha",
+    testRunner: "tap",
+    tap: {
+        testFiles: ["test/unit/**/*.test.js"],
+    },
 };

@@ -4,25 +4,26 @@
  */
 
 import assert from "node:assert/strict";
-import Cron, * as cronnor from "../mod.js";
+import { describe, it } from "node:test";
+import Cron, * as cronnor from "../../src/index.js";
 
-describe("mod.js", function () {
-    describe("Cron", function () {
-        it("should export Cron as default", function () {
+describe("index.js", () => {
+    describe("Cron", () => {
+        it("should export Cron as default", () => {
             assert.equal(Cron.name, "Cron");
         });
     });
 
-    describe("cronnor", function () {
-        it("should export Cron", function () {
+    describe("cronnor", () => {
+        it("should export Cron", () => {
             assert.equal(cronnor.Cron.name, "Cron");
         });
 
-        it("should export CronExp", function () {
+        it("should export CronExp", () => {
             assert.equal(cronnor.CronExp.name, "CronExp");
         });
 
-        it("should export At", function () {
+        it("should export At", () => {
             assert.equal(cronnor.At.name, "At");
         });
     });

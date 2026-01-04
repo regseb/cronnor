@@ -4,13 +4,17 @@
  */
 
 import assert from "node:assert/strict";
-import { mock } from "node:test";
-import Field from "../src/field.js";
+import { afterEach, describe, it, mock } from "node:test";
+import Field from "../../src/field.js";
 
-describe("field.js", function () {
-    describe("Field", function () {
-        describe("range()", function () {
-            it("should create field with interval", function () {
+describe("field.js", () => {
+    afterEach(() => {
+        mock.reset();
+    });
+
+    describe("Field", () => {
+        describe("range()", () => {
+            it("should create field with interval", () => {
                 let field = Field.range(0, 3, 1, {
                     restricted: true,
                     random: false,
@@ -40,7 +44,7 @@ describe("field.js", function () {
                 assert.equal(field.restricted, true);
             });
 
-            it("should create field with all values", function () {
+            it("should create field with all values", () => {
                 const field = Field.range(0, 7, 1, {
                     restricted: false,
                     random: false,
@@ -49,7 +53,7 @@ describe("field.js", function () {
                 assert.equal(field.restricted, false);
             });
 
-            it("should support MAX_SAFE_INTEGER for step", function () {
+            it("should support MAX_SAFE_INTEGER for step", () => {
                 const field = Field.range(1, 12, Number.MAX_SAFE_INTEGER, {
                     restricted: false,
                     random: false,
@@ -58,7 +62,7 @@ describe("field.js", function () {
                 assert.equal(field.restricted, false);
             });
 
-            it("should create field with random value", function () {
+            it("should create field with random value", () => {
                 const random = mock.method(Math, "random", () => 0);
 
                 const field = Field.range(1, 4, 2, {
@@ -73,8 +77,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("flat()", function () {
-            it("should flat fields", function () {
+        describe("flat()", () => {
+            it("should flat fields", () => {
                 const field = Field.flat([
                     Field.range(1, 1, 1, { restricted: true, random: false }),
                     Field.range(2, 2, 1, { restricted: true, random: false }),
@@ -85,8 +89,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("get min()", function () {
-            it("should return min", function () {
+        describe("get min()", () => {
+            it("should return min", () => {
                 const field = Field.range(2, 5, 1, {
                     restricted: true,
                     random: false,
@@ -95,8 +99,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("get max()", function () {
-            it("should return max", function () {
+        describe("get max()", () => {
+            it("should return max", () => {
                 const field = Field.range(1, 3, 1, {
                     restricted: true,
                     random: false,
@@ -105,8 +109,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("values()", function () {
-            it("should return values", function () {
+        describe("values()", () => {
+            it("should return values", () => {
                 const field = Field.range(53, 59, 3, {
                     restricted: true,
                     random: false,
@@ -115,8 +119,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("map()", function () {
-            it("should apply function to values", function () {
+        describe("map()", () => {
+            it("should apply function to values", () => {
                 const field1 = Field.range(10, 12, 1, {
                     restricted: true,
                     random: false,
@@ -128,7 +132,7 @@ describe("field.js", function () {
                 assert.equal(field2.restricted, true);
             });
 
-            it("should transmit restricted property", function () {
+            it("should transmit restricted property", () => {
                 const field1 = Field.range(1, 3, 1, {
                     restricted: false,
                     random: false,
@@ -141,8 +145,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("test()", function () {
-            it("should test if value is present", function () {
+        describe("test()", () => {
+            it("should test if value is present", () => {
                 const field = Field.range(21, 23, 1, {
                     restricted: true,
                     random: false,
@@ -155,8 +159,8 @@ describe("field.js", function () {
             });
         });
 
-        describe("next()", function () {
-            it("should calculate next value", function () {
+        describe("next()", () => {
+            it("should calculate next value", () => {
                 const field = Field.range(11, 44, 11, {
                     restricted: true,
                     random: false,
@@ -166,7 +170,7 @@ describe("field.js", function () {
                 assert.equal(field.next(34), 44);
             });
 
-            it("should return 'undefined'", function () {
+            it("should return 'undefined'", () => {
                 const field = Field.range(3, 9, 3, {
                     restricted: true,
                     random: false,

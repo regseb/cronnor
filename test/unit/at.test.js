@@ -4,17 +4,17 @@
  */
 
 import assert from "node:assert/strict";
-import { mock } from "node:test";
-import At from "../src/at.js";
+import { afterEach, describe, it, mock } from "node:test";
+import At from "../../src/at.js";
 
-describe("at.js", function () {
-    afterEach(function () {
+describe("at.js", () => {
+    afterEach(() => {
         mock.reset();
     });
 
-    describe("At", function () {
-        describe("constructor()", function () {
-            it("should use default values", function () {
+    describe("At", () => {
+        describe("constructor()", () => {
+            it("should use default values", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -31,7 +31,7 @@ describe("at.js", function () {
                 assert.deepEqual(func.mock.calls[0].arguments, []);
             });
 
-            it("should bind thisArg", function () {
+            it("should bind thisArg", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -49,7 +49,7 @@ describe("at.js", function () {
                 assert.deepEqual(func.mock.calls[0].arguments, []);
             });
 
-            it("should bind args", function () {
+            it("should bind args", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -72,7 +72,7 @@ describe("at.js", function () {
                 ]);
             });
 
-            it("should set one interval", function () {
+            it("should set one interval", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -89,7 +89,7 @@ describe("at.js", function () {
                 assert.equal(func.mock.callCount(), 1);
             });
 
-            it("should set exactly one interval", function () {
+            it("should set exactly one interval", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -104,7 +104,7 @@ describe("at.js", function () {
                 assert.equal(func.mock.callCount(), 1);
             });
 
-            it("should add intermediate steps", function () {
+            it("should add intermediate steps", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -122,7 +122,7 @@ describe("at.js", function () {
                 assert.equal(func.mock.callCount(), 1);
             });
 
-            it("should add many intermediate steps", function () {
+            it("should add many intermediate steps", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -141,7 +141,7 @@ describe("at.js", function () {
                 assert.equal(func.mock.callCount(), 1);
             });
 
-            it('should reject when is invoked without "new"', function () {
+            it('should reject when is invoked without "new"', () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -152,8 +152,21 @@ describe("at.js", function () {
                 // eslint-disable-next-line new-cap
                 assert.throws(() => At(new Date("2000-01-01T00:01"), func), {
                     name: "TypeError",
-                    message:
-                        "Class constructor At cannot be invoked without 'new'",
+                    message: new RegExp(
+                        "^(" +
+                            // Vérifier le message d'erreur de Node.js.
+                            RegExp.escape(
+                                "Class constructor At cannot be invoked" +
+                                    " without 'new'",
+                            ) +
+                            ")|(" +
+                            // Vérifier le message d'erreur de Bun.
+                            RegExp.escape(
+                                "Cannot call a class constructor without |new|",
+                            ) +
+                            ")$",
+                        "v",
+                    ),
                 });
 
                 mock.timers.tick(60_000);
@@ -161,8 +174,8 @@ describe("at.js", function () {
             });
         });
 
-        describe("run()", function () {
-            it("should call function", function () {
+        describe("run()", () => {
+            it("should call function", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
@@ -176,8 +189,8 @@ describe("at.js", function () {
             });
         });
 
-        describe("abort()", function () {
-            it("should cancel task", function () {
+        describe("abort()", () => {
+            it("should cancel task", () => {
                 const func = mock.fn();
                 mock.timers.enable({
                     apis: ["setTimeout", "Date"],
