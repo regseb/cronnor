@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/regseb/cronnor/compare/v2.4.0...v2.5.0) (2026-01-04)
+
+### Features
+
+- Support Bun.
+  ([73aa001](https://github.com/regseb/cronnor/commit/73aa00148ef8d9893705feaaea14c2b59537a0e6))
+
 ## [2.4.0](https://github.com/regseb/cronnor/compare/v2.3.0...v2.4.0) (2025-01-04)
 
 ### Features
