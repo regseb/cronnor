@@ -93,10 +93,12 @@ export default class CronExp {
         // Vérifier que les secondes, minutes, les heures et le mois respectent
         // les conditions.
         if (
-            !this.#seconds.test(date.getSeconds()) ||
-            !this.#minutes.test(date.getMinutes()) ||
-            !this.#hours.test(date.getHours()) ||
-            !this.#month.test(date.getMonth())
+            !(
+                this.#seconds.test(date.getSeconds()) &&
+                this.#minutes.test(date.getMinutes()) &&
+                this.#hours.test(date.getHours()) &&
+                this.#month.test(date.getMonth())
+            )
         ) {
             return false;
         }
@@ -129,7 +131,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         const next = this.#seconds.next(date.getSeconds());
         if (undefined === next) {
             date.setMinutes(date.getMinutes() + 1);
@@ -152,7 +154,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         date.setSeconds(this.#seconds.min);
         const next = this.#minutes.next(date.getMinutes());
         if (undefined === next) {
@@ -176,7 +178,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         date.setMinutes(this.#minutes.min);
         date.setSeconds(this.#seconds.min);
         const next = this.#hours.next(date.getHours());
@@ -202,7 +204,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
         date.setSeconds(this.#seconds.min);
@@ -234,7 +236,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         date.setHours(this.#hours.min);
         date.setMinutes(this.#minutes.min);
         date.setSeconds(this.#seconds.min);
@@ -279,7 +281,7 @@ export default class CronExp {
             return start;
         }
 
-        const date = new Date(start.getTime());
+        const date = new Date(start);
         // Mettre temporairement le premier jour du mois et calculer le bon jour
         // après avoir trouvé le bon mois.
         date.setDate(1);
@@ -304,7 +306,7 @@ export default class CronExp {
      * @returns {Date} La prochaine date respectant l'expression.
      */
     next(start = new Date()) {
-        let date = new Date(start.getTime());
+        let date = new Date(start);
         date.setMilliseconds(0);
         date.setSeconds(date.getSeconds() + 1);
 

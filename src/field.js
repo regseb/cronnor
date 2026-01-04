@@ -10,6 +10,7 @@
  * @param {number} min La valeur minimale (incluse).
  * @param {number} max La valeur maximale (incluse).
  * @returns {number} Le nombre aléatoire généré.
+ * @see https://github.com/tc39/proposal-random-functions
  */
 const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -92,7 +93,7 @@ export default class Field {
         // algorithmes.
         this.#values = values
             .filter((v, i, a) => i === a.indexOf(v))
-            .sort((v1, v2) => v1 - v2);
+            .toSorted((v1, v2) => v1 - v2);
         this.#restricted = restricted;
     }
 

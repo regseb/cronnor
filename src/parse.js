@@ -84,7 +84,7 @@ const NAMES = {
  * @type {Object<string, number[]>}
  */
 const LIMITS = {
-    // Secondes, Minutes, heures, jour du mois, mois, jour de la semaine.
+    // Secondes, minutes, heures, jour du mois, mois, jour de la semaine.
     MIN: [0, 0, 0, 1, 1, 0],
     MAX: [59, 59, 23, 31, 12, 7],
 };
@@ -286,7 +286,7 @@ export default function parse(pattern) {
         throw new Error(ERROR + pattern);
     }
 
-    // Figer la date courante pour remplacer tous les éventuelles "?" par les
+    // Figer la date courante pour remplacer tous les éventuels "?" par les
     // mêmes valeurs.
     const now = new Date();
 

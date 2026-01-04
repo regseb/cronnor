@@ -1,5 +1,7 @@
 /**
  * @license MIT
+ * @see https://eslint.org/docs/latest/rules/
+ * @see https://github.com/eslint-community/eslint-plugin-n#-rules
  * @author Sébastien Règne
  */
 
@@ -68,9 +70,11 @@ export default {
         "n/no-unsupported-features/node-builtins": [
             "error",
             {
-                // Ignorer les vérifications de test.mock.timers qui est en
-                // expérimental dans Node v20.
+                // Ignorer les vérifications de fetch, test.describe et
+                // test.mock.timers qui sont en expérimental dans Node v20.
                 ignores: [
+                    "fetch",
+                    "test.describe",
                     "test.mock.timers",
                     "test.mock.timers.tick",
                     "test.mock.timers.enable",
@@ -94,6 +98,7 @@ export default {
         "n/no-restricted-import": ["error", ["node:assert"]],
         "n/no-restricted-require": "error",
         "n/no-sync": "error",
+        "n/no-top-level-await": "off",
         // Désactiver les règles n/prefer-global, car aucune variable globale de
         // Node n'est déclarée, donc si elles sont utilisées : la règle no-undef
         // remontera une erreur.

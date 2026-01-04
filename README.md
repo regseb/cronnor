@@ -2,8 +2,8 @@
 
 <!-- Utiliser du HTML (avec l'attribut "align" obsolète) pour faire flotter
      l'image à droite. -->
-<!-- markdownlint-disable-next-line no-inline-html-->
-<img src="asset/logo.svg" align="right" alt="">
+<!-- markdownlint-disable-next-line no-inline-html -->
+<img src="asset/logo.svg" align="right" width="100" height="100" alt="">
 
 [![npm][img-npm]][link-npm] [![build][img-build]][link-build]
 [![coverage][img-coverage]][link-coverage] [![semver][img-semver]][link-semver]
@@ -34,8 +34,8 @@ cron.stop();
 Cronnor est publiée dans [npm][link-npm] (ses CDN :
 [esm.sh](https://esm.sh/cronnor),
 [jsDelivr](https://www.jsdelivr.com/package/npm/cronnor),
-[UNPKG](https://unpkg.com/browse/cronnor/)),
-[JSR](https://jsr.io/@regseb/cronnor) et [Deno](https://deno.land/x/cronnor).
+[UNPKG](https://unpkg.com/browse/cronnor/)) et
+[JSR](https://jsr.io/@regseb/cronnor).
 
 ```javascript
 // Node.js et Bun (après `npm install cronnor`) :
@@ -201,7 +201,7 @@ Crée une tâche planifiée.
       par défaut).
     - `args` (`any[]`) : Les paramètres passés à la fonction (aucun paramètre
       par défaut).
-- Exceptions :
+- Exception :
   - `TypeError` : Si le constructeur est appelé sans le mot clé `new`.
 
 #### `At.run()`
