@@ -6,6 +6,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import CronExp from "../../src/cronexp.js";
+import "../polyfills/regexp.js";
 
 describe("cronexp.js", () => {
     describe("CronExp", () => {
@@ -40,7 +41,7 @@ describe("cronexp.js", () => {
                             ")|(" +
                             // Vérifier le message d'erreur de Bun.
                             RegExp.escape(
-                                "Cannot call a class constructor without |new|",
+                                "Cannot call a class constructor CronExp without |new|",
                             ) +
                             ")$",
                         "v",

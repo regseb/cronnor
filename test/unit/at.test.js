@@ -6,6 +6,7 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it, mock } from "node:test";
 import At from "../../src/at.js";
+import "../polyfills/regexp.js";
 
 describe("at.js", () => {
     afterEach(() => {
@@ -162,7 +163,7 @@ describe("at.js", () => {
                             ")|(" +
                             // Vérifier le message d'erreur de Bun.
                             RegExp.escape(
-                                "Cannot call a class constructor without |new|",
+                                "Cannot call a class constructor At without |new|",
                             ) +
                             ")$",
                         "v",

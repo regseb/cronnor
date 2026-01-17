@@ -20,7 +20,7 @@ import { mock as mockBun, setSystemTime, spyOn } from "bun:test";
  * @prop {string} type  Type du résultat (`"incomplete"`, `"return"` ou
  *                      `"throw"`).
  * @prop {any}    value Valeur du résultat pour le type `"return"`.
- * @see https://github.com/oven-sh/bun/blob/bun-v1.3.5/packages/bun-types/test.d.ts#L2101
+ * @see https://github.com/oven-sh/bun/blob/bun-v1.3.6/packages/bun-types/test.d.ts#L2101
  */
 
 /**

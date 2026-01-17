@@ -6,6 +6,7 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it, mock } from "node:test";
 import Cron from "../../src/cron.js";
+import "../polyfills/regexp.js";
 
 describe("cron.js", () => {
     afterEach(() => {
@@ -109,7 +110,7 @@ describe("cron.js", () => {
                             ")|(" +
                             // Vérifier le message d'erreur de Bun.
                             RegExp.escape(
-                                "Cannot call a class constructor without |new|",
+                                "Cannot call a class constructor Cron without |new|",
                             ) +
                             ")$",
                         "v",
