@@ -4,6 +4,8 @@
  * @author Sébastien Règne
  */
 
+/* @ts-self-types="../types/parse.d.ts" */
+
 import Field from "./field.js";
 
 /**

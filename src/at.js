@@ -4,6 +4,8 @@
  * @author Sébastien Règne
  */
 
+/* @ts-self-types="../types/at.d.ts" */
+
 /**
  * La valeur maximale du délai accepté par _Node.js_.
  *

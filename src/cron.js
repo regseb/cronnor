@@ -4,6 +4,8 @@
  * @author Sébastien Règne
  */
 
+/* @ts-self-types="../types/cron.d.ts" */
+
 import At from "./at.js";
 import CronExp from "./cronexp.js";
 

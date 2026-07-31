@@ -4,6 +4,8 @@
  * @author Sébastien Règne
  */
 
+/* @ts-self-types="../types/field.d.ts" */
+
 /**
  * Génère un nombre aléatoire entre le minimum et le maximum.
  *

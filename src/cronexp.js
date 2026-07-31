@@ -4,6 +4,8 @@
  * @author Sébastien Règne
  */
 
+/* @ts-self-types="../types/cronexp.d.ts" */
+
 import parse from "./parse.js";
 
 /**
