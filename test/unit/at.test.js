@@ -202,7 +202,31 @@ describe("at.js", () => {
                 at.abort();
 
                 // Incrémenter le temps pour le setTimeout().
-                mock.timers.tick(1);
+                mock.timers.tick(60_000);
+
+                assert.equal(func.mock.callCount(), 0);
+            });
+        });
+
+        describe("[Symbol.dispose]", () => {
+            it("should cancel task", () => {
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
+
+                {
+                    // Ne pas utiliser `using` qui n'est pas encore géré par
+                    // Node.js 22.
+                    const at = new At(new Date("2000-01-01T00:01"), func);
+                    // Appeler la méthode manuellement pour simuler la
+                    // libération automatique de la ressource.
+                    at[Symbol.dispose]();
+                }
+
+                // Incrémenter le temps pour le setTimeout().
+                mock.timers.tick(60_000);
 
                 assert.equal(func.mock.callCount(), 0);
             });

@@ -270,6 +270,30 @@ describe("cron.js", () => {
             });
         });
 
+        describe("[Symbol.dispose]", () => {
+            it("should deactivate task", () => {
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
+
+                {
+                    // Ne pas utiliser `using` qui n'est pas encore géré par
+                    // Node.js 22.
+                    const cron = new Cron("1 0 1 1 *", func);
+                    // Appeler la méthode manuellement pour simuler la
+                    // libération automatique de la ressource.
+                    cron[Symbol.dispose]();
+                }
+
+                // Incrémenter le temps pour le setTimeout().
+                mock.timers.tick(60_000);
+
+                assert.equal(func.mock.callCount(), 0);
+            });
+        });
+
         describe("test()", () => {
             it("should support one cronex", () => {
                 const cron = new Cron("0 0 1 1 *", () => undefined, {

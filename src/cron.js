@@ -149,6 +149,13 @@ export default class Cron {
     }
 
     /**
+     * Désactive la tâche lors de la suppression de l'objet.
+     */
+    [Symbol.dispose]() {
+        this.stop();
+    }
+
+    /**
      * Teste si une date respecte une des expressions _cron_ de la tâche.
      *
      * @param {Date} [date] La date qui sera testée (ou l'instant présent par

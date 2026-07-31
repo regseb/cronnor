@@ -93,4 +93,11 @@ export default class At {
     abort() {
         clearTimeout(this.#timeoutID);
     }
+
+    /**
+     * Annule la planification lors de la suppression de l'objet.
+     */
+    [Symbol.dispose]() {
+        this.abort();
+    }
 }
