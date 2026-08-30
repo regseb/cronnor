@@ -28,7 +28,7 @@ assignees: ""
 ### Environment
 
 - Cronnor version<!-- e.g. 2.5.0 -->:
-- Platform version<!-- e.g. Chrome 143.0.7499.146, Node v24.12.0 -->:
+- Platform version<!-- e.g. Chrome 151.0.7922.108, Node.js v26.6.0 -->:
 
 ### Additional context
 

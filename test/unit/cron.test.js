@@ -35,6 +35,24 @@ describe("cron.js", () => {
                 cron.stop();
             });
 
+            it("should run many times", () => {
+                const func = mock.fn();
+                mock.timers.enable({
+                    apis: ["setTimeout", "Date"],
+                    now: new Date("2000-01-01T00:00"),
+                });
+
+                const cron = new Cron("* * * * *", func);
+
+                // Incrémenter deux fois le temps pour deux appels.
+                mock.timers.tick(60_000);
+                assert.equal(func.mock.callCount(), 1);
+                mock.timers.tick(60_000);
+                assert.equal(func.mock.callCount(), 2);
+
+                cron.stop();
+            });
+
             it("should not activate task", () => {
                 const func = mock.fn();
                 mock.timers.enable({
@@ -96,7 +114,7 @@ describe("cron.js", () => {
             });
 
             it("should reject when is invoked without 'new'", () => {
-                // @ts-expect-error
+                // @ts-expect-error -- Tester une mauvaise utilisation.
                 // eslint-disable-next-line new-cap
                 assert.throws(() => Cron([], () => undefined), {
                     name: "TypeError",

@@ -34,30 +34,30 @@ export default class Cron {
      * La planification de la prochaine exécution ; ou `undefined` si la tâche
      * est désactivée.
      *
-     * @type {At|undefined}
+     * @type {At | undefined}
      */
     #at;
 
     /**
      * Crée une tâche _cronée_.
      *
-     * @param {string|string[]} cronex            La ou les expressions _cron_
-     *                                            indiquant les horaires
-     *                                            d'exécution de la tâche.
-     * @param {Function}        func              La fonction appelée à chaque
-     *                                            horaire indiqué dans les
-     *                                            expressions _cron_.
-     * @param {Object}          [options]         Les options de la tâche
-     *                                            _cronée_.
-     * @param {boolean}         [options.active]  `true` (par défaut) pour
-     *                                            activer la tâche ; sinon
-     *                                            `false`.
-     * @param {any}             [options.thisArg] Le `this` utilisé pour la
-     *                                            fonction (la tâche _cronée_
-     *                                            par défaut).
-     * @param {any[]}           [options.args]    Les paramètres passés à la
-     *                                            fonction (aucun paramètre par
-     *                                            défaut).
+     * @param {string | string[]} cronex            La ou les expressions _cron_
+     *                                              indiquant les horaires
+     *                                              d'exécution de la tâche.
+     * @param {Function}          func              La fonction appelée à chaque
+     *                                              horaire indiqué dans les
+     *                                              expressions _cron_.
+     * @param {Object}            [options]         Les options de la tâche
+     *                                              _cronée_.
+     * @param {boolean}           [options.active]  `true` (par défaut) pour
+     *                                              activer la tâche ; sinon
+     *                                              `false`.
+     * @param {any}               [options.thisArg] Le `this` utilisé pour la
+     *                                              fonction (la tâche _cronée_
+     *                                              par défaut).
+     * @param {any[]}             [options.args]    Les paramètres passés à la
+     *                                              fonction (aucun paramètre
+     *                                              par défaut).
      * @throws {Error}      Si la syntaxe d'une expression _cron_ est
      *                      incorrecte.
      * @throws {RangeError} Si un intervalle d'une expression _cron_ est

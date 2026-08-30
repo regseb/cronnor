@@ -92,16 +92,14 @@ export default class CronExp {
      * @returns {boolean} `true` si l'expression est respectée ; sinon `false`.
      */
     test(date = new Date()) {
-        // Vérifier que les secondes, minutes, les heures et le mois respectent
+        // Vérifier si les secondes, minutes, les heures et le mois respectent
         // les conditions.
-        if (
-            !(
-                this.#seconds.test(date.getSeconds()) &&
-                this.#minutes.test(date.getMinutes()) &&
-                this.#hours.test(date.getHours()) &&
-                this.#month.test(date.getMonth())
-            )
-        ) {
+        if (!(
+            this.#seconds.test(date.getSeconds()) &&
+            this.#minutes.test(date.getMinutes()) &&
+            this.#hours.test(date.getHours()) &&
+            this.#month.test(date.getMonth())
+        )) {
             return false;
         }
 
@@ -211,11 +209,9 @@ export default class CronExp {
         date.setMinutes(this.#minutes.min);
         date.setSeconds(this.#seconds.min);
         const next = this.#date.next(date.getDate());
-        if (
-            undefined === next ||
-            next >
-                new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-        ) {
+        // Calculer le dernier jour du mois.
+        const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        if (undefined === next || next > last.getDate()) {
             date.setMonth(date.getMonth() + 1);
             date.setDate(this.#date.min);
         } else {

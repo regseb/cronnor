@@ -124,7 +124,7 @@ describe("parse.js", () => {
         });
 
         it("should support many whitespaces", () => {
-            const fields = parse("* *  *   *    *\t\u00A0*");
+            const fields = parse("* *  *   *    *\t\u{A0}*");
             assert.ok(!fields.seconds.restricted);
             assert.ok(!fields.minutes.restricted);
             assert.ok(!fields.hours.restricted);

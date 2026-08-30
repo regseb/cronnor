@@ -149,7 +149,7 @@ describe("at.js", () => {
                     now: new Date("2000-01-01T00:00"),
                 });
 
-                // @ts-expect-error
+                // @ts-expect-error -- Tester une mauvaise utilisation.
                 // eslint-disable-next-line new-cap
                 assert.throws(() => At(new Date("2000-01-01T00:01"), func), {
                     name: "TypeError",

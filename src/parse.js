@@ -154,14 +154,14 @@ const FORMATS = [
 /**
  * Retourne la valeur d'une date en fonction de l'index du champ.
  *
- * @param {Date}    date  La date.
- * @param {number}  index L'index du champ.
- * @param {boolean} [max] La marque indiquant si la valeur est pour le maximum
- *                        (utilisé pour le jour de la semaine).
+ * @param {Date}    date    La date.
+ * @param {number}  index   L'index du champ.
+ * @param {boolean} [isMax] La marque indiquant si la valeur est pour le maximum
+ *                          (utilisé pour le jour de la semaine).
  * @returns {number} La valeur du champ.
  * @throws {TypeError} Si l'index est invalide.
  */
-const getIndexValue = (date, index, max = false) => {
+const getIndexValue = (date, index, isMax = false) => {
     switch (index) {
         case 0:
             return date.getSeconds();
@@ -177,7 +177,7 @@ const getIndexValue = (date, index, max = false) => {
         case 5:
             // Utiliser le nombre sept pour le dimanche quand il est placé dans
             // la borne supérieure.
-            return max && 0 === date.getDay() ? 7 : date.getDay();
+            return isMax && 0 === date.getDay() ? 7 : date.getDay();
         // Stryker disable next-line all: Désactiver Stryker pour le défaut, car
         // la fonction getIndexValue() est toujours appelée avec un index entre
         // 0 et 5. Il est donc impossible de tester cette condition.
@@ -218,7 +218,7 @@ const parseField = (parts, index, now, pattern) => {
         min = LIMITS.MIN[index];
     } else if ("?" === parts.min) {
         min = getIndexValue(now, index);
-    } else if (parts.min.toLowerCase() in NAMES.MIN[index]) {
+    } else if (Object.hasOwn(NAMES.MIN[index], parts.min.toLowerCase())) {
         min = NAMES.MIN[index][parts.min.toLowerCase()];
     } else if (/^\d+$/v.test(parts.min)) {
         min = Number(parts.min);
@@ -232,7 +232,7 @@ const parseField = (parts, index, now, pattern) => {
         max = min;
     } else if ("?" === parts.max) {
         max = getIndexValue(now, index, true);
-    } else if (parts.max.toLowerCase() in NAMES.MAX[index]) {
+    } else if (Object.hasOwn(NAMES.MAX[index], parts.max.toLowerCase())) {
         max = NAMES.MAX[index][parts.max.toLowerCase()];
     } else if (/^\d+$/v.test(parts.max)) {
         max = Number(parts.max);
@@ -245,23 +245,22 @@ const parseField = (parts, index, now, pattern) => {
                 ? DEFAULT_STEPS.RANDOM
                 : DEFAULT_STEPS.NORMAL
             : Number(parts.step);
-    const extra = {
-        random: false,
-        restricted: true,
-        ...parts.extra,
-    };
 
     // Vérifier que les valeurs sont dans les intervalles.
     if (
+        0 === step ||
         min < LIMITS.MIN[index] ||
         LIMITS.MAX[index] < max ||
-        max < min ||
-        0 === step
+        max < min
     ) {
         throw new RangeError(ERROR + pattern);
     }
 
-    return Field.range(min, max, step, extra);
+    return Field.range(min, max, step, {
+        random: false,
+        restricted: true,
+        ...parts.extra,
+    });
 };
 
 /**

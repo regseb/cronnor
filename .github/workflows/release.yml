@@ -3,6 +3,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -17,7 +21,7 @@ jobs:
       id-token: write
     steps:
       - name: Run Release Please
-        uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
           config-file: .release-please/config.json
@@ -29,7 +33,7 @@ jobs:
       # https://github.com/googleapis/release-please/issues/1802
       - name: Checkout repository
         if: ${{ steps.release.outputs.pr }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: true
           ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
@@ -46,9 +50,9 @@ jobs:
 
       - name: Setup Node.js
         if: ${{ steps.release.outputs.pr }}
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
+          node-version: 26
           package-manager-cache: false
 
       - name: Install dependencies
@@ -70,15 +74,15 @@ jobs:
       # Si la release a été créée : publier le paquet dans npm et JSR.
       - name: Checkout repository
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Setup Node.js
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
+          node-version: 26
           package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
@@ -88,9 +92,7 @@ jobs:
 
       - name: Publish in npm
         if: ${{ steps.release.outputs.release_created }}
-        # Forcer l'accès public, car la valeur par défaut n'est pas utilisée.
-        # https://github.com/npm/cli/issues/7706
-        run: npm publish --access public
+        run: npm publish
 
       - name: Publish in JSR
         if: ${{ steps.release.outputs.release_created }}

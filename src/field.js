@@ -164,9 +164,9 @@ export default class Field {
      * Calcule la prochaine valeur supérieure à une valeur.
      *
      * @param {number} value La valeur initiale.
-     * @returns {number|undefined} La prochaine valeur ; ou `undefined` si la
-     *                             valeur initiale est supérieure à la valeur
-     *                             maximale.
+     * @returns {number | undefined} La prochaine valeur ; ou `undefined` si la
+     *                               valeur initiale est supérieure à la valeur
+     *                               maximale.
      */
     next(value) {
         return this.#values.find((v) => value < v);
