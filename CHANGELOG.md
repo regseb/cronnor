@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.6.0](https://github.com/regseb/cronnor/compare/v2.5.0...v2.6.0) (2026-08-30)
+
+### Features
+
+- Support `Symbol.dispose`.
+  ([b26393e](https://github.com/regseb/cronnor/commit/b26393e6ea9caedaafcc19dc49868a00c1304210))
+- Support Deno.
+  ([cb6a9c1](https://github.com/regseb/cronnor/commit/cb6a9c1cd9580e3e2ddaad4c037190ace0fcc2c3))
+
+### Bug Fixes
+
+- Link source and types (JSR "slow types").
+  ([289acb4](https://github.com/regseb/cronnor/commit/289acb42eadb4ddf77e35db71b555a2b4bd8c888))
+
 ## [2.5.0](https://github.com/regseb/cronnor/compare/v2.4.0...v2.5.0) (2026-01-04)
 
 ### Features
