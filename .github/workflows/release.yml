@@ -31,6 +31,7 @@ jobs:
         if: ${{ steps.release.outputs.pr }}
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
+          persist-credentials: true
           ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
           # Récupérer deux commits sinon la réparation du commit (pour le
           # formatage) rompt le lien entre la branche de la release et la
@@ -48,6 +49,7 @@ jobs:
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 24
+          package-manager-cache: false
 
       - name: Install dependencies
         if: ${{ steps.release.outputs.pr }}
@@ -69,12 +71,15 @@ jobs:
       - name: Checkout repository
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 24
+          package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies and build declaration files (d.ts)
@@ -99,16 +104,15 @@ jobs:
 
       - name: Download tarball from npm
         if: ${{ steps.release.outputs.release_created }}
-        # Essayer de télécharger le paquet pendant cinq minutes (en essayant
-        # toutes les minutes).
-        run:
-          node .script/retry.js 5 60000 "npm pack ${{ env.NPM_NAME }}@${{
-          steps.release.outputs.tag_name }}"
+        env:
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+          NPM_NAME: ${{ env.NPM_NAME }}
+        run: npm pack --min-release-age 0 ${NPM_NAME}@${TAG_NAME}
 
       - name: Upload tarball to release
         if: ${{ steps.release.outputs.release_created }}
-        run: >
-          gh release upload ${{ steps.release.outputs.tag_name }} ${{
-          env.NPM_NAME }}-*.tgz
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+          NPM_NAME: ${{ env.NPM_NAME }}
+        run: gh release upload ${TAG_NAME} ${NPM_NAME}-*.tgz
